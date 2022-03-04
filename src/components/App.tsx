@@ -6,7 +6,10 @@ const dummyData: RecipieSetFormat = {
     { name: "Toast" },
     { name: "Ham" },
     { name: "Bread" },
-    { name: "Steak" }
+    { name: "Steak" },
+    { name: "Lamb" },
+    { name: "Hummus" },
+    { name: "Gravy" },
   ]
 }
 
