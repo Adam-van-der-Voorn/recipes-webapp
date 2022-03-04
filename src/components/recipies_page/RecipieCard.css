@@ -1,0 +1,8 @@
+.RecipieCard {
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 15rem;
+    height: 10rem;
+    padding: 8px;
+    margin: 12px;
+}
