@@ -1,17 +1,5 @@
-import { RecipieSetFormat } from "../types/recipieTypes";
+import { dummyData } from "../types/recipieTypes";
 import RecipieCardContainer from "./recipies_page/RecipieCardContainer";
-
-const dummyData: RecipieSetFormat = {
-  recipies: [
-    { name: "Toast" },
-    { name: "Ham" },
-    { name: "Bread" },
-    { name: "Steak" },
-    { name: "Lamb" },
-    { name: "Hummus" },
-    { name: "Gravy" },
-  ]
-}
 
 function App() {
   return (

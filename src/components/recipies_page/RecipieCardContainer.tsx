@@ -1,12 +1,12 @@
 import React from 'react';
-import { RecipieSetFormat } from '../../types/recipieTypes';
+import { RecipieSet } from '../../types/recipieTypes';
 import RecipieCard from './RecipieCard';
 
 import './RecipieCardContainer.css';
 
 
 type Props = {
-    recipieData: RecipieSetFormat;
+    recipieData: RecipieSet;
 }
 
 function RecipieCardContainer({ recipieData }: Props) {
