@@ -10,6 +10,14 @@
       "StackName": "amplify-amplifyd453914956854-staging-191044",
       "StackId": "arn:aws:cloudformation:us-west-2:172636956926:stack/amplify-amplifyd453914956854-staging-191044/f3c0dc20-a16e-11ec-b2b1-021b794e81c5",
       "AmplifyAppId": "d3037m2pi6bma1"
+    },
+    "categories": {
+      "function": {
+        "getRecipies": {
+          "deploymentBucketName": "amplify-amplifyd453914956854-staging-191044-deployment",
+          "s3Key": "amplify-builds/getRecipies-79767434507479667751-build.zip"
+        }
+      }
     }
   }
 }

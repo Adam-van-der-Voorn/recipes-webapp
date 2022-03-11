@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/recipies": {
+      "name": "/recipies",
+      "lambdaFunction": "getRecipies",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
