@@ -1,11 +1,16 @@
-import { dummyData } from "../types/recipieTypes";
 import RecipieCardContainer from "./recipies_page/RecipieCardContainer";
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <RecipieCardContainer recipieData={dummyData} />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <RecipieCardContainer />
+      </div>
+    </QueryClientProvider>
+
   );
 }
 

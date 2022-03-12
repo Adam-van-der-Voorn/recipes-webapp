@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports'
 import reportWebVitals from './reportWebVitals';
 import './palette.css'
 import './style.css'
+
+Amplify.configure(awsconfig)
 
 ReactDOM.render(
   <React.StrictMode>
