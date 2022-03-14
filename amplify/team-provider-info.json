@@ -17,6 +17,30 @@
           "deploymentBucketName": "amplify-amplifyd453914956854-staging-191044-deployment",
           "s3Key": "amplify-builds/getRecipies-79767434507479667751-build.zip"
         }
+      },
+      "auth": {
+        "recipies8d6f4596": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-recipies-prod-90512-authRole",
+      "UnauthRoleArn": "arn:aws:iam::172636956926:role/amplify-recipies-prod-90512-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::172636956926:role/amplify-recipies-prod-90512-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-recipies-prod-90512-deployment",
+      "UnauthRoleName": "amplify-recipies-prod-90512-unauthRole",
+      "StackName": "amplify-recipies-prod-90512",
+      "StackId": "arn:aws:cloudformation:us-west-2:172636956926:stack/amplify-recipies-prod-90512/bbb678e0-a23f-11ec-a7b0-06fe6bfeb8eb",
+      "AmplifyAppId": "d3037m2pi6bma1"
+    },
+    "categories": {
+      "function": {
+        "getRecipies": {}
+      },
+      "auth": {
+        "recipies8d6f4596": {}
       }
     }
   }

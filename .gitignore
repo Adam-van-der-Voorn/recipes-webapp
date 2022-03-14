@@ -18,6 +18,7 @@
 .env.test.local
 .env.production.local
 key.csv
+secret.json
 .vscode
 
 npm-debug.log*
