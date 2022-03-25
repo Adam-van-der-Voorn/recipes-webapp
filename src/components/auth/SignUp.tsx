@@ -3,9 +3,13 @@ import { useRef } from "react";
 
 async function signUp(username: string, password: string) {
     try {
+        
         await Auth.signUp({
-            username,
-            password,
+            "username": username,
+            "password": password,
+            "attributes": {
+                email: username
+            }
         });
         console.log(`${username}  - Sign up successful`);
     } catch (error) {

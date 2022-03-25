@@ -5,7 +5,10 @@
       "name": "/recipies",
       "lambdaFunction": "getRecipies",
       "permissions": {
-        "setting": "open"
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
       }
     }
   }
