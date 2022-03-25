@@ -1,7 +1,6 @@
 import './RecipieCard.css'
 
 type Props = {
-    key: string;
     recipieName: string;
 }
 
