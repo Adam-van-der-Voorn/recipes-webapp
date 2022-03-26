@@ -5,6 +5,7 @@ import { dummyData, Recipie } from "../types/recipieTypes";
 type RecipiesContextType = {
   recipies: Recipie[];
   setRecipies: (recipies: Recipie[]) => void;
+  addRecipie: (recipie: Recipie) => void;
 }
 
 export const RecipiesContext = createContext<RecipiesContextType>({} as RecipiesContextType)
@@ -12,11 +13,16 @@ export const RecipiesContext = createContext<RecipiesContextType>({} as Recipies
 function App() {
 
   const [recipies, setRecipies] = useState<Recipie[]>(dummyData);
+  
+  const addRecipie = (recipie: Recipie) => {
+      setRecipies(old => [...old, recipie])
+  }
 
   return (
     <RecipiesContext.Provider value={{
       "recipies": recipies,
-      "setRecipies": setRecipies
+      "setRecipies": setRecipies,
+      "addRecipie": addRecipie
     }}>
       <div className="App">
         <Outlet />
