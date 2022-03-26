@@ -1,17 +1,14 @@
-import React from 'react';
-import { RecipieSet } from '../../types/recipieTypes';
+import { useContext } from 'react';
 import RecipieCard from './RecipieCard';
 
 import './RecipieCardContainer.css';
+import { RecipiesContext } from '../../App';
 
+function RecipieCardContainer() {
 
-type Props = {
-    recipieData: RecipieSet;
-}
+    const {recipies, setRecipies} = useContext(RecipiesContext);
 
-function RecipieCardContainer({ recipieData }: Props) {
-
-    const cards: JSX.Element[] = recipieData.recipies.map(recipie => {
+    const cards: JSX.Element[] = recipies.map(recipie => {
         return <RecipieCard recipieName={recipie.name} />
     })
 
