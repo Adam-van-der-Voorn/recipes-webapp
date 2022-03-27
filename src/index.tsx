@@ -7,6 +7,7 @@ import './palette.css'
 import './style.css'
 import AddRecipiePage from './components/routes/add-recipie/AddRecipiePage';
 import RecipieSetPage from './components/routes/home/RecipieSetPage';
+import ViewRecipiePage from './components/routes/view-recipie/ViewRecipiePage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route index element={<RecipieSetPage />} />
           <Route path="add-recipie" element={<AddRecipiePage />} />
+          <Route path=":recipieName" element={<ViewRecipiePage />} />
         </Route>
         <Route path="*" element={<div>BAD PATH !!!!</div>} />
       </Routes>

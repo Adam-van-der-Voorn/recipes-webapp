@@ -3,22 +3,21 @@ import { Ingredient, Recipie, UnitVal } from "../../../types/recipieTypes";
 import * as Yup from 'yup';
 import { useContext } from "react";
 import { RecipiesContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+[aA-zZ]$/;
-const unitValValidPatternWithGroups = /(^\d+(\.\d+)?) *([aA-zZ ]+[aA-zZ]) *$/
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
-const unitValPatternOptionalWithGroups = /^(\d+(\.\d+)?)([aA-zZ ]*)$/
 
 type IngredientInput = {
     name: string;
     quantity: string;
-}
+};
 
 const parseUnitValInput = (input: string): UnitVal => {
     console.assert(input.match(unitValPattern) || input.match(unitValPatternOptional),
         "Error parsing unitval input: Does not match defined pattern");
-    const unitValGroups = /^(?<value>\d+(\.\d+)?) *(?<unit>[aA-zZ ]*?) *$/
-    const {value, unit}: any = input.match(unitValGroups)?.groups;
+    const unitValGroups = /^(?<value>\d+(\.\d+)?) *(?<unit>[aA-zZ ]*?) *$/;
+    const { value, unit }: any = input.match(unitValGroups)?.groups;
     return {
         value: parseFloat(value),
         unit: unit
@@ -27,6 +26,7 @@ const parseUnitValInput = (input: string): UnitVal => {
 
 function AddRecipiePage() {
     const addRecipie = useContext(RecipiesContext).addRecipie;
+    const navigate = useNavigate();
 
     return (
         <div className="AddRecipiePage">
@@ -67,27 +67,37 @@ function AddRecipiePage() {
                         .max(10000, 'Please make this shorter'),
                 })}
                 onSubmit={(values) => {
-                    // convert units to UnitVal
-                    const parsedIngredients: Ingredient[] = []
-                    for (const ingredient of values.ingredients.list) {
-                        const parsedQuantity: UnitVal = parseUnitValInput(ingredient.quantity);
-                        parsedIngredients.push({
-                            name: ingredient.name,
-                            quantity: parsedQuantity
-                        })
-                    }
-                    const parsedServings: UnitVal = parseUnitValInput(values.servings);
                     const newRecipie: Recipie = {
                         name: values.name,
-                        servings: parsedServings,
-                        timeframe: values.timeframe,
                         ingredients: {
-                            list: parsedIngredients
-                        },
-                        instructions: values.instructions
+                            list: []
+                        }
+                    };
+
+                    if (values.servings != '') {
+                        newRecipie.servings = parseUnitValInput(values.servings);
                     }
+
+                    if (values.timeframe != '') {
+                        newRecipie.timeframe = values.timeframe;
+                    }
+
+                    // parse and add ingredients
+                    for (const ingredient of values.ingredients.list) {
+                        const parsedQuantity: UnitVal = parseUnitValInput(ingredient.quantity);
+                        newRecipie.ingredients.list.push({
+                            name: ingredient.name,
+                            quantity: parsedQuantity
+                        });
+                    }
+
+                    if (values.instructions != '') {
+                        newRecipie.instructions = values.instructions;
+                    }
+
                     console.log("submit", newRecipie);
-                    addRecipie(newRecipie)
+                    addRecipie(newRecipie);
+                    navigate(`/${newRecipie.name}`);
                 }}
             >
                 {({ values }) => (

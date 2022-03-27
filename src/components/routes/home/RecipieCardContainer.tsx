@@ -9,7 +9,7 @@ function RecipieCardContainer() {
     const {recipies, setRecipies} = useContext(RecipiesContext);
 
     const cards: JSX.Element[] = recipies.map(recipie => {
-        return <RecipieCard recipieName={recipie.name} />
+        return <RecipieCard key={recipie.name} recipieName={recipie.name} />
     })
 
     return (

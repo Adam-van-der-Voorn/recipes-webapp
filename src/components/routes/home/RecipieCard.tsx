@@ -1,3 +1,4 @@
+import { Link, useNavigate } from 'react-router-dom';
 import './RecipieCard.css'
 
 type Props = {
@@ -5,8 +6,10 @@ type Props = {
 }
 
 function RecipieCard({recipieName}: Props) {
+    const navigate = useNavigate();
+
     return (
-      <div className="RecipieCard">
+      <div className="RecipieCard" onClick={() => navigate(`/${recipieName}`)}>
         {recipieName}
       </div>
     );
