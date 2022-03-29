@@ -7,7 +7,7 @@ import './palette.css';
 import './style.css';
 import AddRecipiePage from './components/routes/add-recipie/AddRecipiePage';
 import RecipieSetPage from './components/routes/home/RecipieSetPage';
-import ViewRecipiePage from './components/routes/view-recipie/ViewRecipiePage';
+import RecipiePage from './components/routes/recipie/RecipiePage';
 import * as ServiceWorkerRegistration from './serviceWorkerRegistration'
 
 ReactDOM.render(
@@ -17,7 +17,7 @@ ReactDOM.render(
                 <Route path="/" element={<App />}>
                     <Route index element={<RecipieSetPage />} />
                     <Route path="add-recipie" element={<AddRecipiePage />} />
-                    <Route path=":recipieName" element={<ViewRecipiePage />} />
+                    <Route path=":recipieName" element={<RecipiePage />} />
                 </Route>
                 <Route path="*" element={<div>BAD PATH !!!!</div>} />
             </Routes>
