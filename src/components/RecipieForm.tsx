@@ -36,7 +36,10 @@ type Props = {
 
 function RecipieForm({ doSubmit, initialValues }: Props) {
     const recipiesContext = useContext(RecipiesContext);
-    const recipieNames = recipiesContext.recipies.map(recipie => recipie.name);
+    const invalidRecipieNames = recipiesContext.recipies
+        .map(recipie => recipie.name)
+        // remove initial name from invalid names
+        .filter(name => name !== initialValues.name);
 
     return (
         <div className="RecipieForm">
@@ -48,7 +51,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         .trim()
                         .max(150, 'Please make this shorter.')
                         .lowercase()
-                        .notOneOf(recipieNames, 'A recipie with this name already exists'),
+                        .notOneOf(invalidRecipieNames, 'A recipie with this name already exists'),
                     timeframe: Yup.string()
                         .max(150, 'Please make this shorter.'),
                     ingredients: Yup.object().shape({
