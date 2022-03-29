@@ -25,7 +25,9 @@ const parseUnitValInput = (input: string): UnitVal => {
 };
 
 function AddRecipiePage() {
-    const addRecipie = useContext(RecipiesContext).addRecipie;
+    const recipiesContext = useContext(RecipiesContext);
+    const addRecipie = recipiesContext.addRecipie;
+    const recipieNames = recipiesContext.recipies.map(recipie => recipie.name);
     const navigate = useNavigate();
 
     return (
@@ -43,7 +45,10 @@ function AddRecipiePage() {
                 validationSchema={Yup.object({
                     name: Yup.string()
                         .required("Required")
-                        .max(150, 'Please make this shorter.'),
+                        .trim()
+                        .max(150, 'Please make this shorter.')
+                        .lowercase()
+                        .notOneOf(recipieNames, 'A recipie with this name already exists'),
                     timeframe: Yup.string()
                         .max(150, 'Please make this shorter.'),
                     ingredients: Yup.object().shape({
@@ -68,7 +73,7 @@ function AddRecipiePage() {
                 })}
                 onSubmit={(values) => {
                     const newRecipie: Recipie = {
-                        name: values.name,
+                        name: values.name.trim(),
                         ingredients: {
                             list: []
                         }
@@ -79,7 +84,7 @@ function AddRecipiePage() {
                     }
 
                     if (values.timeframe != '') {
-                        newRecipie.timeframe = values.timeframe;
+                        newRecipie.timeframe = values.timeframe.trim();
                     }
 
                     // parse and add ingredients
@@ -92,12 +97,12 @@ function AddRecipiePage() {
                     }
 
                     if (values.instructions != '') {
-                        newRecipie.instructions = values.instructions;
+                        newRecipie.instructions = values.instructions.trimEnd();
                     }
 
-                    console.log("submit", newRecipie);
                     addRecipie(newRecipie);
-                    navigate(`/${newRecipie.name}`);
+
+                    navigate(`/${newRecipie.name}`, { replace: true });
                 }}
             >
                 {({ values }) => (
