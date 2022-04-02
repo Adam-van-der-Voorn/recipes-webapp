@@ -1,8 +1,8 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext } from "react";
-import { UnitVal, Recipie } from "../types/recipieTypes";
-import { RecipiesContext } from "./App";
+import { UnitVal, Recipie } from "../../types/recipieTypes";
+import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+[aA-zZ]$/;

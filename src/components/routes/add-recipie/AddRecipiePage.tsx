@@ -2,7 +2,7 @@ import { Recipie } from "../../../types/recipieTypes";
 import { useContext } from "react";
 import { RecipiesContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import RecipieForm from "../../RecipieForm";
+import RecipieForm from "../../recipie-form/RecipieForm";
 
 function AddRecipiePage() {
     const addRecipie = useContext(RecipiesContext).addRecipie;

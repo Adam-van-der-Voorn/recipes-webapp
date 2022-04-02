@@ -2,7 +2,7 @@ import { Recipie, UnitVal } from "../../../types/recipieTypes";
 import { useContext } from "react";
 import { RecipiesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import RecipieForm from "../../RecipieForm";
+import RecipieForm from "../../recipie-form/RecipieForm";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
