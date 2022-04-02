@@ -5,7 +5,7 @@ import { UnitVal, Recipie } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 
-const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+[aA-zZ]$/;
+const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
 const decimalValPattern = /^\d+(\.\d+)?$/;
 
