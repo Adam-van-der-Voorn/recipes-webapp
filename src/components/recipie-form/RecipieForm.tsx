@@ -4,21 +4,11 @@ import { useContext } from "react";
 import { UnitVal, Recipie } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
+import parseUnitValInput from "./parseUnitValInput";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
 const decimalValPattern = /^\d+(\.\d+)?$/;
-
-const parseUnitValInput = (input: string): UnitVal => {
-    console.assert(input.match(unitValPattern) || input.match(unitValPatternOptional),
-        "Error parsing unitval input: Does not match defined pattern");
-    const unitValGroups = /^(?<value>\d+(\.\d+)?) *(?<unit>[aA-zZ ]*?) *$/;
-    const { value, unit }: any = input.match(unitValGroups)?.groups;
-    return {
-        value: parseFloat(value),
-        unit: unit
-    };
-};
 
 export type RecipieFormData = {
     name: string,
@@ -26,8 +16,8 @@ export type RecipieFormData = {
     ingredients: {
         list: {
             name: string,
-            quantity: string;
-            percentage?: string
+            quantity: string,
+            percentage: string,
         }[],
         anchor: string,
     },
@@ -107,7 +97,9 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             quantity: parsedQuantity
                         });
                     }
-                    
+
+                    newRecipie.ingredients.anchor = values.ingredients.anchor
+
                     if (values.instructions !== '') {
                         newRecipie.instructions = values.instructions.trimEnd();
                     }

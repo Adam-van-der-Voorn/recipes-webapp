@@ -32,10 +32,11 @@ function EditRecipiePage() {
         return null;
     }
 
-    const parsedIngredientsList: {name: string, quantity: string}[] = recipie.ingredients.list.map(ingredient => {
+    const parsedIngredientsList: {name: string, quantity: string, percentage: string}[] = recipie.ingredients.list.map(ingredient => {
         return {
             name: ingredient.name,
             quantity: unitValToString(ingredient.quantity),
+            percentage: ''
         }
     })
 
