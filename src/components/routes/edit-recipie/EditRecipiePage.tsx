@@ -43,7 +43,8 @@ function EditRecipiePage() {
         name: originalRecipieName,
         timeframe: recipie.timeframe || '',
         ingredients: {
-            list: parsedIngredientsList
+            list: parsedIngredientsList,
+            anchor: recipie.ingredients.anchor || '',
         },
         servings: unitValToString(recipie.servings),
         instructions: recipie.instructions || '',

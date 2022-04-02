@@ -17,7 +17,8 @@ function AddRecipiePage() {
         name: '',
         timeframe: '',
         ingredients: {
-            list: Array<{name: string, quantity: string}>(0)
+            list: Array<{name: string, quantity: string, percentage: string}>(0),
+            anchor: ''
         },
         servings: '',
         instructions: ''

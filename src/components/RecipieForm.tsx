@@ -3,9 +3,11 @@ import * as Yup from 'yup';
 import { useContext } from "react";
 import { UnitVal, Recipie } from "../types/recipieTypes";
 import { RecipiesContext } from "./App";
+import IngredientsField from "./IngredientsField";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+[aA-zZ]$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
+const decimalValPattern = /^\d+(\.\d+)?$/;
 
 const parseUnitValInput = (input: string): UnitVal => {
     console.assert(input.match(unitValPattern) || input.match(unitValPatternOptional),
@@ -18,20 +20,24 @@ const parseUnitValInput = (input: string): UnitVal => {
     };
 };
 
+export type RecipieFormData = {
+    name: string,
+    timeframe: string,
+    ingredients: {
+        list: {
+            name: string,
+            quantity: string;
+            percentage?: string
+        }[],
+        anchor: string,
+    },
+    servings: string,
+    instructions: string;
+};
+
 type Props = {
     doSubmit: (recipie: Recipie) => void;
-    initialValues: {
-        name: string,
-        timeframe: string,
-        ingredients: {
-            list: {
-                name: string,
-                quantity: string
-            }[]
-        },
-        servings: string,
-        instructions: string;
-    };
+    initialValues: RecipieFormData;
 };
 
 function RecipieForm({ doSubmit, initialValues }: Props) {
@@ -64,9 +70,12 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                     quantity: Yup.string()
                                         .matches(unitValPattern, 'Must be a number, followed by a unit')
                                         .max(30, 'please make this shorter')
-                                        .required('Ingredient quantity is required.')
+                                        .required('Ingredient quantity is required.'),
+                                    percentage: Yup.string()
+                                        .matches(decimalValPattern, 'Must be a valid percentage'),
                                 })
                             ),
+                        anchor: Yup.string()
                     }),
                     servings: Yup.string()
                         .matches(unitValPatternOptional, 'Must be a number, optionally followed by a unit.')
@@ -98,13 +107,13 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             quantity: parsedQuantity
                         });
                     }
-
+                    
                     if (values.instructions !== '') {
                         newRecipie.instructions = values.instructions.trimEnd();
                     }
 
                     // do something with the data
-                    doSubmit(newRecipie)
+                    doSubmit(newRecipie);
                 }}
             >
                 {({ values }) => (
@@ -120,27 +129,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <br />
 
                         <FieldArray name="ingredients.list" render={arrayHelpers => (
-                            <div>
-                                {values.ingredients.list.map((ingredient, index) => (
-                                    <div key={index}>
-                                        <Field name={`ingredients.list.${index}.name`} type="text" />
-                                        <Field name={`ingredients.list.${index}.quantity`} type="text" />
-                                        <button type="button" onClick={() => arrayHelpers.remove(index)}>
-                                            -
-                                        </button>
-                                        <br />
-                                        <ErrorMessage name={`ingredients.list.${index}.name`} /> <br />
-                                        <ErrorMessage name={`ingredients.list.${index}.quantity`} />
-                                    </div>
-                                ))}
-                                <button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '' })}>
-                                    +
-                                </button>
-                            </div>
+                            <IngredientsField arrayHelpers={arrayHelpers} />
                         )} />
-                        <ErrorMessage name="servings" />
-                        <ErrorMessage name="servings" />
-
 
                         <label htmlFor='servings'>Serves</label>
                         <Field name="servings" type="text" />
