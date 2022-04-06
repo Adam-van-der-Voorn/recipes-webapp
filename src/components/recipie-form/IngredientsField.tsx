@@ -2,6 +2,8 @@ import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps } from "fo
 import { useEffect, useState } from "react";
 import parseUnitValInput from "./parseUnitValInput";
 import { RecipieFormData } from "./RecipieForm";
+import convert, { Unit } from 'convert-units';
+import { UnitVal } from "../../types/recipieTypes";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -17,10 +19,12 @@ function IngredientsField({ arrayHelpers }: Props) {
 
     const percentageFromVal = (ingredient: { name: string, quantity: string, percentage: string; }) => {
         const baseField = values.ingredients.list[anchor];
-        // assume all same unit for now
-        const base = parseUnitValInput(baseField.quantity).value;
-        const val = parseUnitValInput(ingredient.quantity).value;
-        return (val / base) * 100;
+        const base: UnitVal = parseUnitValInput(baseField.quantity);
+        const val: UnitVal = parseUnitValInput(ingredient.quantity);
+        const valNormlaised: number = convert(val.value)
+            .from(val.unit as Unit)
+            .to(base.unit as Unit);
+        return (valNormlaised / base.value) * 100;
     };
 
     const onIngredientBlur = (idx: number) => (e: any) => {
@@ -40,11 +44,15 @@ function IngredientsField({ arrayHelpers }: Props) {
 
     const onPercentageBlur = (idx: number) => (e: any) => {
         const baseField = values.ingredients.list[anchor];
-        const thisField = values.ingredients.list[idx];
-        // assume grams for now
-        const base = parseUnitValInput(baseField.quantity).value;
-        const percentage = parseFloat(thisField.percentage);
-        setFieldValue(`ingredients.list.${idx}.quantity`, `${base * (percentage / 100)}g`);
+        const subjectField = values.ingredients.list[idx];
+        const base = parseUnitValInput(baseField.quantity);
+        const subject = parseUnitValInput(subjectField.quantity);
+        const subjectPercentage = parseFloat(subjectField.percentage);
+        const newValRelativeToBase = base.value * (subjectPercentage / 100);
+        const newValOrigianlUnit = convert(newValRelativeToBase)
+            .from(base.unit as Unit)
+            .to(subject.unit as Unit)
+        setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOrigianlUnit} ${subject.unit}`);
     };
 
     useEffect(() => {
