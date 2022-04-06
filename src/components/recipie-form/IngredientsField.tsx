@@ -18,16 +18,16 @@ function IngredientsField({ arrayHelpers }: Props) {
     const [anchor, setAnchor] = useState(0);
 
     const percentageFromVal = (ingredient: { name: string, quantity: string, percentage: string; }) => {
-        const baseField = values.ingredients.list[anchor];
-        const base: UnitVal = parseUnitValInput(baseField.quantity);
+        const anchorField = values.ingredients.list[anchor];
+        const anchorQuantity: UnitVal = parseUnitValInput(anchorField.quantity);
         const val: UnitVal = parseUnitValInput(ingredient.quantity);
         const valNormlaised: number = convert(val.value)
             .from(val.unit as Unit)
-            .to(base.unit as Unit);
-        return (valNormlaised / base.value) * 100;
+            .to(anchorQuantity.unit as Unit);
+        return (valNormlaised / anchorQuantity.value) * 100;
     };
 
-    const onIngredientBlur = (idx: number) => (e: any) => {
+    const onQuantityBlur = (idx: number) => (e: any) => {
         if (idx === anchor) {
             for (let i = 0; i < values.ingredients.list.length; i++) {
                 const ingredient = values.ingredients.list[i];
@@ -45,14 +45,14 @@ function IngredientsField({ arrayHelpers }: Props) {
     const onPercentageBlur = (idx: number) => (e: any) => {
         const baseField = values.ingredients.list[anchor];
         const subjectField = values.ingredients.list[idx];
-        const base = parseUnitValInput(baseField.quantity);
-        const subject = parseUnitValInput(subjectField.quantity);
+        const anchorQuantity: UnitVal = parseUnitValInput(baseField.quantity);
+        const subjectQuantity: UnitVal = parseUnitValInput(subjectField.quantity);
         const subjectPercentage = parseFloat(subjectField.percentage);
-        const newValRelativeToBase = base.value * (subjectPercentage / 100);
-        const newValOrigianlUnit = convert(newValRelativeToBase)
-            .from(base.unit as Unit)
-            .to(subject.unit as Unit)
-        setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOrigianlUnit} ${subject.unit}`);
+        const newValRelativeToBase = anchorQuantity.value * (subjectPercentage / 100);
+        const newValOriginalUnit = convert(newValRelativeToBase)
+            .from(anchorQuantity.unit as Unit)
+            .to(subjectQuantity.unit as Unit);
+        setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOriginalUnit} ${subjectQuantity.unit}`);
     };
 
     useEffect(() => {
@@ -72,34 +72,36 @@ function IngredientsField({ arrayHelpers }: Props) {
             <p>Ingredients</p>
             <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
             {
-                values.ingredients.list.map((ingredient, index) => (
+                values.ingredients.list.map((ingredient, index) => {
+                    let percentageField = null;
+                    if (isPercentagesIncluded) {
+                        if (index == anchor) {
+                            percentageField = <>anchor</>;
+                        }
+                        else {
+                            percentageField = (<>
+                                <Field name={`ingredients.list.${index}.percentage`} type="text" onBlur={onPercentageBlur(index)} />%
+                                <button type="button" onClick={() => setAnchor(index)}>set to anchor</button>
+                            </>);
+                        }
+                    }
+
+                    return (
                     <div key={index}>
                         <button type="button" onClick={() => arrayHelpers.remove(index)}>
                             -
                         </button>
 
                         <Field name={`ingredients.list.${index}.name`} type="text" />
-                        <Field name={`ingredients.list.${index}.quantity`} type="text" onBlur={onIngredientBlur(index)} />
-                        {
-                            isPercentagesIncluded &&
-                            <>
-                                {index === anchor &&
-                                    <>anchor</>
-                                }
-                                {index !== anchor && <>
-                                    <Field name={`ingredients.list.${index}.percentage`} type="text" onBlur={onPercentageBlur(index)} />%
-                                    <button type="button" onClick={() => setAnchor(index)}>set to anchor</button>
-                                </>
-                                }
-                            </>
-                        }
-
+                            <Field name={`ingredients.list.${index}.quantity`} type="text" onBlur={onQuantityBlur(index)} />
+                            {percentageField}
                         <br />
                         <ErrorMessage name={`ingredients.list.${index}.name`} /><br />
                         <ErrorMessage name={`ingredients.list.${index}.quantity`} /><br />
                         <ErrorMessage name={`ingredients.list.${index}.percentage`} />
                     </div>
-                ))
+                    );
+                })
             }
             <button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', percentage: '' })}>
                 +
