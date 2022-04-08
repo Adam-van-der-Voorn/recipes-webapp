@@ -1,9 +1,10 @@
 import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps } from "formik";
 import { useEffect, useState } from "react";
-import parseUnitValInput from "./parseUnitValInput";
+import parseUnitValInputs from "./parseUnitValInputs";
 import { RecipieFormData } from "./RecipieForm";
 import convert, { Unit } from 'convert-units';
 import { UnitVal } from "../../types/recipieTypes";
+import { isConvertableUnit, isSameMeasure } from "../../util/units";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -13,58 +14,82 @@ function IngredientsField({ arrayHelpers }: Props) {
     const {
         values,
         setFieldValue,
+        handleBlur
     } = useFormikContext<RecipieFormData>();
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
     const [anchor, setAnchor] = useState(0);
 
-    const percentageFromVal = (ingredient: { name: string, quantity: string, percentage: string; }) => {
+    const percentageFromVal = (ingredient: { name: string, quantity: string, percentage: string; }): number | undefined => {
         const anchorField = values.ingredients.list[anchor];
-        const anchorQuantity: UnitVal = parseUnitValInput(anchorField.quantity);
-        const val: UnitVal = parseUnitValInput(ingredient.quantity);
-        const valNormlaised: number = convert(val.value)
-            .from(val.unit as Unit)
-            .to(anchorQuantity.unit as Unit);
-        return (valNormlaised / anchorQuantity.value) * 100;
+        const quantities: UnitVal[] = parseUnitValInputs(anchorField.quantity, ingredient.quantity);
+        if (quantities.length === 2 && isSameMeasure(quantities[0].unit, quantities[1].unit)) {
+            const [anchorQuantity, ingredientQuantity]: UnitVal[] = quantities;
+            if (isConvertableUnit(ingredientQuantity.unit)) {
+                const ingredientValNormalised: number = convert(ingredientQuantity.value)
+                    .from(ingredientQuantity.unit as Unit)
+                    .to(anchorQuantity.unit as Unit);
+                return (ingredientValNormalised / anchorQuantity.value) * 100;
+            }
+            else {
+                return (ingredientQuantity.value / anchorQuantity.value) * 100;
+            }
+
+        }
+        else {
+            return undefined;
+        }
+
+    };
+
+    const setPercentageAuto = (index: number): void => {
+        const ingredient = values.ingredients.list[index];
+        const percentage: string | number = percentageFromVal(ingredient) || '';
+        setFieldValue(`ingredients.list.${index}.percentage`, percentage);
     };
 
     const onQuantityBlur = (idx: number) => (e: any) => {
-        if (idx === anchor) {
-            for (let i = 0; i < values.ingredients.list.length; i++) {
-                const ingredient = values.ingredients.list[i];
-                const percentage = percentageFromVal(ingredient);
-                setFieldValue(`ingredients.list.${i}.percentage`, percentage);
+        handleBlur(e)
+        if (isPercentagesIncluded) {
+            if (idx === anchor) {
+                for (let i = 0; i < values.ingredients.list.length; i++) {
+                   setPercentageAuto(i);
+                }
             }
-        }
-        else {
-            const ingredient = values.ingredients.list[idx];
-            const percentage = percentageFromVal(ingredient);
-            setFieldValue(`ingredients.list.${idx}.percentage`, percentage);
+            else {
+                setPercentageAuto(idx);
+            }
         }
     };
 
     const onPercentageBlur = (idx: number) => (e: any) => {
-        const baseField = values.ingredients.list[anchor];
+        handleBlur(e);
+        const anchorField = values.ingredients.list[anchor];
         const subjectField = values.ingredients.list[idx];
-        const anchorQuantity: UnitVal = parseUnitValInput(baseField.quantity);
-        const subjectQuantity: UnitVal = parseUnitValInput(subjectField.quantity);
         const subjectPercentage = parseFloat(subjectField.percentage);
-        const newValRelativeToBase = anchorQuantity.value * (subjectPercentage / 100);
-        const newValOriginalUnit = convert(newValRelativeToBase)
-            .from(anchorQuantity.unit as Unit)
-            .to(subjectQuantity.unit as Unit);
-        setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOriginalUnit} ${subjectQuantity.unit}`);
+        const quantities: UnitVal[] = parseUnitValInputs(anchorField.quantity, subjectField.quantity);
+        if (quantities.length === 2 && !isNaN(subjectPercentage)) {
+            const [anchorQuantity, subjectQuantity] = quantities;
+            const newValRelativeToAnchor = anchorQuantity.value * (subjectPercentage / 100);
+            if (isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
+                const newValOriginalUnit = convert(newValRelativeToAnchor)
+                    .from(anchorQuantity.unit as Unit)
+                    .to(subjectQuantity.unit as Unit);
+                setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOriginalUnit} ${subjectQuantity.unit}`);
+            }
+            else {
+                setFieldValue(`ingredients.list.${idx}.quantity`, `${newValRelativeToAnchor} ${anchorQuantity.unit}`);
+            }
+
+        }
     };
 
     useEffect(() => {
         if (values.ingredients.list.length > 0) {
             for (let i = 0; i < values.ingredients.list.length; i++) {
-                const ingredient = values.ingredients.list[i];
-                const percentage = percentageFromVal(ingredient);
-                setFieldValue(`ingredients.list.${i}.percentage`, percentage);
+                setPercentageAuto(i);
             }
             setFieldValue('ingredients.anchor', values.ingredients.list[anchor].name);
         }
-
     }, [anchor]);
 
     return (
@@ -75,31 +100,31 @@ function IngredientsField({ arrayHelpers }: Props) {
                 values.ingredients.list.map((ingredient, index) => {
                     let percentageField = null;
                     if (isPercentagesIncluded) {
-                        if (index == anchor) {
+                        if (index === anchor) {
                             percentageField = <>anchor</>;
                         }
                         else {
                             percentageField = (<>
-                                <Field name={`ingredients.list.${index}.percentage`} type="text" onBlur={onPercentageBlur(index)} />%
+                                <Field name={`ingredients.list.${index}.percentage`} type="text" onBlur={onPercentageBlur(index)} placeholder="?" />%
                                 <button type="button" onClick={() => setAnchor(index)}>set to anchor</button>
                             </>);
                         }
                     }
 
                     return (
-                    <div key={index}>
-                        <button type="button" onClick={() => arrayHelpers.remove(index)}>
-                            -
-                        </button>
+                        <div key={index}>
+                            <button type="button" onClick={() => arrayHelpers.remove(index)}>
+                                -
+                            </button>
 
-                        <Field name={`ingredients.list.${index}.name`} type="text" />
+                            <Field name={`ingredients.list.${index}.name`} type="text" />
                             <Field name={`ingredients.list.${index}.quantity`} type="text" onBlur={onQuantityBlur(index)} />
                             {percentageField}
-                        <br />
-                        <ErrorMessage name={`ingredients.list.${index}.name`} /><br />
-                        <ErrorMessage name={`ingredients.list.${index}.quantity`} /><br />
-                        <ErrorMessage name={`ingredients.list.${index}.percentage`} />
-                    </div>
+                            <br />
+                            <ErrorMessage name={`ingredients.list.${index}.name`} /><br />
+                            <ErrorMessage name={`ingredients.list.${index}.quantity`} /><br />
+                            <ErrorMessage name={`ingredients.list.${index}.percentage`} />
+                        </div>
                     );
                 })
             }

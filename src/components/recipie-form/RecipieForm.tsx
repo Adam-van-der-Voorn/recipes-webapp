@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { UnitVal, Recipie } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
-import parseUnitValInput from "./parseUnitValInput";
+import parseUnitValInputs from "./parseUnitValInputs";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
@@ -33,9 +33,9 @@ type Props = {
 function RecipieForm({ doSubmit, initialValues }: Props) {
     const recipiesContext = useContext(RecipiesContext);
     const invalidRecipieNames = recipiesContext.recipies
-        .map(recipie => recipie.name)
+        .map(recipie => recipie.name.toLowerCase())
         // remove initial name from invalid names
-        .filter(name => name !== initialValues.name);
+        .filter(name => name !== initialValues.name.toLowerCase());
 
     return (
         <div className="RecipieForm">
@@ -62,6 +62,14 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                         .max(30, 'please make this shorter')
                                         .required('Ingredient quantity is required.'),
                                     percentage: Yup.string()
+                                        .trim()
+                                        .transform(old => {
+                                            if (old.trim() === '') {
+                                                return '0'
+                                            }
+                                            else return old;
+
+                                        })
                                         .matches(decimalValPattern, 'Must be a valid percentage'),
                                 })
                             ),
@@ -83,7 +91,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     };
 
                     if (values.servings !== '') {
-                        newRecipie.servings = parseUnitValInput(values.servings);
+                        newRecipie.servings = parseUnitValInputs(values.servings)[0];
                     }
 
                     if (values.timeframe !== '') {
@@ -91,7 +99,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     }
 
                     for (const ingredient of values.ingredients.list) {
-                        const parsedQuantity: UnitVal = parseUnitValInput(ingredient.quantity);
+                        const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
                         newRecipie.ingredients.list.push({
                             name: ingredient.name,
                             quantity: parsedQuantity
