@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext } from "react";
-import { UnitVal, Recipie } from "../../types/recipieTypes";
+import { UnitVal, Recipie, Ingredient } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
@@ -86,7 +86,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     const newRecipie: Recipie = {
                         name: values.name.trim(),
                         ingredients: {
-                            list: []
+                            lists: [{name: "Main", ingredients: new Array(0)}]
                         }
                     };
 
@@ -100,7 +100,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                     for (const ingredient of values.ingredients.list) {
                         const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
-                        newRecipie.ingredients.list.push({
+                        newRecipie.ingredients.lists[0].ingredients.push({
                             name: ingredient.name,
                             quantity: parsedQuantity
                         });
@@ -109,7 +109,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     newRecipie.ingredients.anchor = values.ingredients.anchor
 
                     if (values.instructions !== '') {
-                        newRecipie.instructions = values.instructions.trimEnd();
+                        newRecipie.instructions = [values.instructions.trimEnd()];
                     }
 
                     // do something with the data

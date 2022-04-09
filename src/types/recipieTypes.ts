@@ -21,7 +21,7 @@ export type Substitution = {
 };
 
 export type Ingredients = {
-    list: Ingredient[];
+    lists: { name: string, ingredients: Ingredient[]; }[];
     anchor?: string;
 };
 
@@ -29,62 +29,32 @@ export type Recipie = {
     name: string;
     timeframe?: string;
     servings?: UnitVal;
-    // makes?
-    // ingredient sections- icing and cake
+    notes?: string;
     ingredients: Ingredients;
-    instructions?: string;
+    instructions?: string[];
     substitutions?: Substitution[];
 };
 
 export const dummyData: Recipie[] = [
     {
-        name: "toast",
+        name: "Toast",
         ingredients: {
-            list: [
+            lists: [
                 {
-                    name: "bread",
-                    quantity: {
-                        value: 1,
-                        unit: 'slice'
-                    }
+                    name: "Main",
+                    ingredients: [
+                        {
+                            name: "bread",
+                            quantity: {
+                                value: 1,
+                                unit: 'slice'
+                            }
+                        }
+                    ]
                 }
             ]
+
         }
-    },
-    {
-        name: "Ham",
-        ingredients: {
-            list: []
-        }
-    },
-    {
-        name: "Bread",
-        ingredients: {
-            list: []
-        }
-    },
-    {
-        name: "Steak",
-        ingredients: {
-            list: []
-        }
-    },
-    {
-        name: "Lamb",
-        ingredients: {
-            list: []
-        }
-    },
-    {
-        name: "Hummus",
-        ingredients: {
-            list: []
-        }
-    },
-    {
-        name: "Gravy",
-        ingredients: {
-            list: []
-        }
-    },
+    }
 ];
+
