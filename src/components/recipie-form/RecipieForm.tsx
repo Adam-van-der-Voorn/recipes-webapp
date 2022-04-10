@@ -5,6 +5,7 @@ import { UnitVal, Recipie, IngredientsSubList } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
+import InstructionsField from "./InstructionsField";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
@@ -22,7 +23,7 @@ export type RecipieFormData = {
         anchor: string,
     },
     servings: string,
-    instructions: string;
+    instructions: string[];
 };
 
 type Props = {
@@ -72,8 +73,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     servings: Yup.string()
                         .matches(unitValPatternOptional, 'Must be a number, optionally followed by a unit.')
                         .max(30, 'please make this shorter'),
-                    instructions: Yup.string()
-                        .max(10000, 'Please make this shorter'),
+                    instructions: Yup.array()
                 })}
                 onSubmit={(values) => {
                     // parse form data
@@ -92,8 +92,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     if (values.ingredients.list.length > 0) {
                         newRecipie.ingredients = {
                             anchor: values.ingredients.anchor,
-                            lists: [{name: "Main", ingredients: []}]
-                        }
+                            lists: [{ name: "Main", ingredients: [] }]
+                        };
                         for (const ingredient of values.ingredients.list) {
                             const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
                             newRecipie.ingredients!.lists[0].ingredients.push({
@@ -102,10 +102,12 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             });
                         }
                     }
-                    
 
-                    if (values.instructions !== '') {
-                        newRecipie.instructions = [values.instructions.trimEnd()];
+
+                    if (values.instructions.length > 0) {
+                        newRecipie.instructions = values.instructions
+                            // remove empty instructions
+                            .flatMap(instruction => instruction.trim() !== '' ? [instruction] : []);
                     }
 
                     // do something with the data
@@ -133,10 +135,11 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <ErrorMessage name="servings" />
                         <br />
 
-                        <label htmlFor="instructions">Method</label>
-                        <Field name="instructions" as="textarea" />
-                        <ErrorMessage name="instructions" />
+                        <FieldArray name="instructions" render={arrayHelpers => (
+                            <InstructionsField arrayHelpers={arrayHelpers} />
+                        )} />
                         <br />
+                        
                         <input type="submit" name="submit" id="submit-recipie" />
                     </Form>
 

@@ -21,7 +21,7 @@ function AddRecipiePage() {
             anchor: ''
         },
         servings: '',
-        instructions: ''
+        instructions: Array<string>(0),
     }
 
     return (
