@@ -32,23 +32,36 @@ function EditRecipiePage() {
         return null;
     }
 
-    const parsedIngredientsList: { name: string, quantity: string, percentage: string; }[] = recipie.ingredients.lists
-        .find(el => el.name === "Main")!.ingredients
-        .map(ingredient => {
-            return {
-                name: ingredient.name,
-                quantity: unitValToString(ingredient.quantity),
-                percentage: ''
-            };
-        });
+    let ingredients: {list: any[], anchor: string};
+    if (recipie.ingredients) {
+        const anchor = recipie.ingredients.anchor || '';
+        const parsedIngredientsList = recipie.ingredients.lists
+        ? recipie.ingredients.lists
+            .find(el => el.name === "Main")!.ingredients
+            .map(ingredient => {
+                return {
+                    name: ingredient.name,
+                    quantity: unitValToString(ingredient.quantity),
+                    percentage: ''
+                };
+            })
+        : []
+        ingredients = {
+            list: parsedIngredientsList,
+            anchor: anchor,
+        }
+    }
+    else {
+        ingredients = {
+            list: [],
+            anchor: ''
+        }
+    }
 
     const initialValues = {
         name: originalRecipieName,
         timeframe: recipie.timeframe || '',
-        ingredients: {
-            list: parsedIngredientsList,
-            anchor: recipie.ingredients.anchor || '',
-        },
+        ingredients: ingredients,
         servings: unitValToString(recipie.servings),
         instructions: recipie.instructions?.at(0) || '',
     };

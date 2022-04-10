@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext } from "react";
-import { UnitVal, Recipie, Ingredient } from "../../types/recipieTypes";
+import { UnitVal, Recipie, IngredientsSubList } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
@@ -85,9 +85,6 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     // parse form data
                     const newRecipie: Recipie = {
                         name: values.name.trim(),
-                        ingredients: {
-                            lists: [{name: "Main", ingredients: new Array(0)}]
-                        }
                     };
 
                     if (values.servings !== '') {
@@ -98,15 +95,20 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         newRecipie.timeframe = values.timeframe.trim();
                     }
 
-                    for (const ingredient of values.ingredients.list) {
-                        const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
-                        newRecipie.ingredients.lists[0].ingredients.push({
-                            name: ingredient.name,
-                            quantity: parsedQuantity
-                        });
+                    if (values.ingredients.list.length > 0) {
+                        newRecipie.ingredients = {
+                            anchor: values.ingredients.anchor,
+                            lists: [{name: "Main", ingredients: []}]
+                        }
+                        for (const ingredient of values.ingredients.list) {
+                            const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
+                            newRecipie.ingredients!.lists[0].ingredients.push({
+                                name: ingredient.name,
+                                quantity: parsedQuantity
+                            });
+                        }
                     }
-
-                    newRecipie.ingredients.anchor = values.ingredients.anchor
+                    
 
                     if (values.instructions !== '') {
                         newRecipie.instructions = [values.instructions.trimEnd()];

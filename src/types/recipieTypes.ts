@@ -20,9 +20,14 @@ export type Substitution = {
     changes: SubstitutionPart[];
 };
 
-export type Ingredients = {
-    lists: { name: string, ingredients: Ingredient[]; }[];
+export type IngredientsList = {
+    lists: IngredientsSubList[];
     anchor?: string;
+};
+
+export type IngredientsSubList = {
+    name: string,
+    ingredients: Ingredient[],
 };
 
 export type Recipie = {
@@ -30,7 +35,7 @@ export type Recipie = {
     timeframe?: string;
     servings?: UnitVal;
     notes?: string;
-    ingredients: Ingredients;
+    ingredients?: IngredientsList;
     instructions?: string[];
     substitutions?: Substitution[];
 };
