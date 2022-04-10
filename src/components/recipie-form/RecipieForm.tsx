@@ -63,13 +63,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                         .required('Ingredient quantity is required.'),
                                     percentage: Yup.string()
                                         .trim()
-                                        .transform(old => {
-                                            if (old.trim() === '') {
-                                                return '0'
-                                            }
-                                            else return old;
-
-                                        })
+                                        .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
                                         .matches(decimalValPattern, 'Must be a valid percentage'),
                                 })
                             ),
