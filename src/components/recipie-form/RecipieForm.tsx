@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import * as Yup from 'yup';
 import { useContext } from "react";
-import { UnitVal, Recipie, IngredientsSubList } from "../../types/recipieTypes";
+import { UnitVal, Recipie } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
@@ -14,6 +14,7 @@ const decimalValPattern = /^\d+(\.\d+)?$/;
 export type RecipieFormData = {
     name: string,
     timeframe: string,
+    notes: string;
     ingredients: {
         list: {
             name: string,
@@ -51,6 +52,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         .notOneOf(invalidRecipieNames, 'A recipie with this name already exists'),
                     timeframe: Yup.string()
                         .max(150, 'Please make this shorter.'),
+                    notes: Yup.string()
+                        .max(10000, 'Please make this shorter.'),
                     ingredients: Yup.object().shape({
                         list: Yup.array()
                             .of(
@@ -74,6 +77,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         .matches(unitValPatternOptional, 'Must be a number, optionally followed by a unit.')
                         .max(30, 'please make this shorter'),
                     instructions: Yup.array()
+                        .max(1000, "Please make this step shorter")
                 })}
                 onSubmit={(values) => {
                     // parse form data
@@ -87,6 +91,10 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                     if (values.timeframe !== '') {
                         newRecipie.timeframe = values.timeframe.trim();
+                    }
+
+                    if (values.notes !== '') {
+                        newRecipie.notes = values.notes.trim();
                     }
 
                     if (values.ingredients.list.length > 0) {
@@ -126,6 +134,11 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <ErrorMessage name="timeframe" />
                         <br />
 
+                        <label htmlFor="notes">Extra notes</label>
+                        <Field name={`notes`} as="textarea" /><br />
+                        <ErrorMessage name="notes" />
+
+
                         <FieldArray name="ingredients.list" render={arrayHelpers => (
                             <IngredientsField arrayHelpers={arrayHelpers} />
                         )} />
@@ -139,7 +152,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             <InstructionsField arrayHelpers={arrayHelpers} />
                         )} />
                         <br />
-                        
+
                         <input type="submit" name="submit" id="submit-recipie" />
                     </Form>
 

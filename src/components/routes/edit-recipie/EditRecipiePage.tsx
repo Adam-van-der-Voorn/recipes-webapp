@@ -61,6 +61,7 @@ function EditRecipiePage() {
     const initialValues = {
         name: originalRecipieName,
         timeframe: recipie.timeframe || '',
+        notes: recipie.notes || '',
         ingredients: ingredients,
         servings: unitValToString(recipie.servings),
         instructions: recipie.instructions || [],
