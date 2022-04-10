@@ -43,6 +43,12 @@ export type Recipie = {
 export const dummyData: Recipie[] = [
     {
         name: "Toast",
+        notes: "Some notes :) \nnew line of notes!",
+        servings: {
+            unit: 'person',
+            value: 1,
+        },
+        timeframe: "6 minutes",
         ingredients: {
             lists: [
                 {
@@ -58,8 +64,12 @@ export const dummyData: Recipie[] = [
                     ]
                 }
             ]
-
-        }
+        },
+        instructions: [
+            "put the bread in",
+            "pull the lever",
+            "don't burn it"
+        ]
     }
 ];
 
