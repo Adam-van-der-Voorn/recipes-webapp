@@ -7,31 +7,27 @@ type Props = {
     arrayHelpers: FieldArrayRenderProps;
 };
 
-function SubstitutionField({ index, arrayHelpers }: Props) {
+function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
     const { values } = useFormikContext<RecipieFormData>();
-
-    useEffect(() => {
-        console.log(values);
-    }, [values]);
 
     return (
         <div>
+            <div>with...</div>
             {
-                values.substitutions[index].changes.map((change, idx) => (
+                values.substitutions[index].additions.map((addition, idx) => (
                     <div key={idx}>
                         <button type="button" onClick={() => arrayHelpers.remove(idx)}>
                             --
                         </button>
-                        <p>replace x with y...</p>
+                        y
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ action: '', amount: '', ingredientName: ''})}>
+            <button type="button" onClick={() => arrayHelpers.push({ amount: '', ingredientName: '' })}>
                 ++
             </button >
-            <hr />
         </div >
     );
 }
 
-export default SubstitutionField;
+export default SubstitutionAdditionsField;

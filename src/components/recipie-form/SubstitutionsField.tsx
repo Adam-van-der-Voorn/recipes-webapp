@@ -1,6 +1,7 @@
 import { useFormikContext, FieldArrayRenderProps, FieldArray } from "formik";
 import { RecipieFormData } from "./RecipieForm";
-import SubstitutionField from "./SubstitutionField";
+import SubstitutionAdditionsField from "./SubstitutionAdditionsField";
+import SubstitutionRemovalsField from "./SubstitutionRemovalsField";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -18,13 +19,17 @@ function SubstitutionsField({ arrayHelpers }: Props) {
                         <button type="button" onClick={() => arrayHelpers.remove(index)}>
                             -
                         </button>
-                        <FieldArray name={`substitutions.${index}.changes`} render={changesArrayHelpers => (
-                            <SubstitutionField index={index} arrayHelpers={changesArrayHelpers} />
+                        <FieldArray name={`substitutions.${index}.removals`} render={removalsArrayHelpers => (
+                            <SubstitutionRemovalsField index={index} arrayHelpers={removalsArrayHelpers} />
                         )} />
+                        <FieldArray name={`substitutions.${index}.additions`} render={additionsArrayHelpers => (
+                            <SubstitutionAdditionsField index={index} arrayHelpers={additionsArrayHelpers} />
+                        )} />
+                        <hr/>
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ changes: [] })}>
+            <button type="button" onClick={() => arrayHelpers.push({ additions: [], removals: [] })}>
                 +
             </button >
         </div >

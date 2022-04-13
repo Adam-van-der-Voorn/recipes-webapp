@@ -32,8 +32,11 @@ export type RecipieInputIngredients = {
 };
 
 export type RecipieInputSubstitutions = {
-    changes: {
-        action: string,
+    additions: {
+        amount: string,
+        ingredientName: string;
+    }[],
+    removals: {
         amount: string,
         ingredientName: string;
     }[];

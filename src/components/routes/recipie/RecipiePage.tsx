@@ -37,8 +37,13 @@ function RecipiePage() {
                     {substitutions.map((substitution, idx) => {
                         return (<div key={idx}>
                             <h4>substitution {idx + 1}</h4>
-                            {substitution.changes.map(subPart => {
-                                return <div key={subPart.action+subPart.ingredientName}>{subPart.action} {subPart.amount} {subPart.ingredientName}</div>;
+                            <div>add:</div>
+                            {substitution.additions.map(addition => {
+                                return <div key={addition.ingredientName}> {addition.amount.value} {addition.amount.unit} {addition.ingredientName}</div>;
+                            })}
+                            <div>remove:</div>
+                            {substitution.removals.map(removal => {
+                                return <div key={removal.ingredientName}> {removal.amount.value} {removal.amount.unit} {removal.ingredientName}</div>;
                             })}
                         </div>);
                     })}

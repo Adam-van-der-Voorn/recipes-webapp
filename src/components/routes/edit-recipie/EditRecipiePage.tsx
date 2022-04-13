@@ -55,11 +55,16 @@ function EditRecipiePage() {
         ? recipie.substitutions
             .map(substitution => {
                 return {
-                    changes: substitution.changes.map(change => {
+                    additions: substitution.additions.map(addition => {
                         return {
-                            action: change.action,
-                            amount: change.amount.toString(10),
-                            ingredientName: change.ingredientName
+                            amount: unitValToString(addition.amount),
+                            ingredientName: addition.ingredientName
+                        };
+                    }),
+                    removals: substitution.removals.map(removal => {
+                        return {
+                            amount: unitValToString(removal.amount),
+                            ingredientName: removal.ingredientName
                         };
                     })
                 };
