@@ -6,6 +6,7 @@ import { RecipiesContext } from "../App";
 import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
 import InstructionsField from "./InstructionsField";
+import SubstitutionsField from "./SubstitutionsField";
 
 const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
 const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
@@ -15,17 +16,28 @@ export type RecipieFormData = {
     name: string,
     timeframe: string,
     notes: string;
-    ingredients: {
-        list: {
-            name: string,
-            quantity: string,
-            percentage: string,
-        }[],
-        anchor: string,
-    },
+    ingredients: RecipieInputIngredients,
     servings: string,
-    instructions: string[];
+    instructions: string[],
+    substitutions: RecipieInputSubstitutions,
 };
+
+export type RecipieInputIngredients = {
+    list: {
+        name: string,
+        quantity: string,
+        percentage: string,
+    }[],
+    anchor: string,
+};
+
+export type RecipieInputSubstitutions = {
+    changes: {
+        action: string,
+        amount: string,
+        ingredientName: string;
+    }[];
+}[];
 
 type Props = {
     doSubmit: (recipie: Recipie) => void;
@@ -77,7 +89,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         .matches(unitValPatternOptional, 'Must be a number, optionally followed by a unit.')
                         .max(30, 'please make this shorter'),
                     instructions: Yup.array()
-                        .max(1000, "Please make this step shorter")
+                        .max(1000, "Please make this step shorter"),
+                    substitutions: Yup.array()
                 })}
                 onSubmit={(values) => {
                     // parse form data
@@ -150,6 +163,11 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <FieldArray name="instructions" render={arrayHelpers => (
                             <InstructionsField arrayHelpers={arrayHelpers} />
+                        )} />
+                        <br />
+
+                        <FieldArray name="substitutions" render={arrayHelpers => (
+                            <SubstitutionsField arrayHelpers={arrayHelpers} />
                         )} />
                         <br />
 

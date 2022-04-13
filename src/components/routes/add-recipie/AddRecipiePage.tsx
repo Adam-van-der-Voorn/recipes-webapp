@@ -18,11 +18,12 @@ function AddRecipiePage() {
         timeframe: '',
         notes: '',
         ingredients: {
-            list: Array<{name: string, quantity: string, percentage: string}>(0),
+            list: [],
             anchor: ''
         },
         servings: '',
-        instructions: Array<string>(0),
+        instructions: [],
+        substitutions: [],
     }
 
     return (

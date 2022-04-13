@@ -12,7 +12,7 @@ export type Ingredient = {
 
 export type SubstitutionPart = {
     ingredientName: string;
-    action: 'add' | 'remove';
+    action: '+' | '-';
     amount: number;
 };
 

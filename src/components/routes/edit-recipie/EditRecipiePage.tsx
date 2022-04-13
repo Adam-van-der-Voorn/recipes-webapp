@@ -2,7 +2,7 @@ import { Recipie, UnitVal } from "../../../types/recipieTypes";
 import { useContext } from "react";
 import { RecipiesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import RecipieForm from "../../recipie-form/RecipieForm";
+import RecipieForm, { RecipieInputIngredients, RecipieInputSubstitutions } from "../../recipie-form/RecipieForm";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
@@ -32,31 +32,39 @@ function EditRecipiePage() {
         return null;
     }
 
-    let ingredients: {list: any[], anchor: string};
-    if (recipie.ingredients) {
-        const anchor = recipie.ingredients.anchor || '';
-        const parsedIngredientsList = recipie.ingredients.lists
-        ? recipie.ingredients.lists
-            .find(el => el.name === "Main")!.ingredients
-            .map(ingredient => {
-                return {
-                    name: ingredient.name,
-                    quantity: unitValToString(ingredient.quantity),
-                    percentage: ''
-                };
-            })
-        : []
-        ingredients = {
-            list: parsedIngredientsList,
-            anchor: anchor,
+    const ingredients: RecipieInputIngredients = recipie.ingredients
+        ? {
+            list: recipie.ingredients.lists
+                .find(el => el.name === "Main")!.ingredients
+                .map(ingredient => {
+                    return {
+                        name: ingredient.name,
+                        quantity: unitValToString(ingredient.quantity),
+                        percentage: ''
+                    };
+                }),
+            anchor: recipie.ingredients.anchor!,
         }
-    }
-    else {
-        ingredients = {
+        : {
             list: [],
             anchor: ''
-        }
-    }
+        };
+
+
+    const substitutions: RecipieInputSubstitutions = recipie.substitutions
+        ? recipie.substitutions
+            .map(substitution => {
+                return {
+                    changes: substitution.changes.map(change => {
+                        return {
+                            action: change.action,
+                            amount: change.amount.toString(10),
+                            ingredientName: change.ingredientName
+                        };
+                    })
+                };
+            })
+        : [];
 
     const initialValues = {
         name: originalRecipieName,
@@ -65,6 +73,7 @@ function EditRecipiePage() {
         ingredients: ingredients,
         servings: unitValToString(recipie.servings),
         instructions: recipie.instructions || [],
+        substitutions: substitutions,
     };
 
     return (
