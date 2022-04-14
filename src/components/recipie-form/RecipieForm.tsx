@@ -47,6 +47,15 @@ type Props = {
     initialValues: RecipieFormData;
 };
 
+const yupQuantityValidation = Yup.string()
+    .matches(unitValPattern, 'Must be a number, followed by a unit')
+    .max(30, 'please make this shorter')
+    .required('Ingredient quantity is required.');
+
+const yupIngredientNameValidation = Yup.string()
+    .max(60, 'Please make this shorter.')
+    .required("Ingredient name is required.");
+
 function RecipieForm({ doSubmit, initialValues }: Props) {
     const recipiesContext = useContext(RecipiesContext);
     const invalidRecipieNames = recipiesContext.recipies
@@ -73,15 +82,9 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         list: Yup.array()
                             .of(
                                 Yup.object().shape({
-                                    name: Yup.string()
-                                        .max(60, 'Please make this shorter.')
-                                        .required("Ingredient name is required."),
-                                    quantity: Yup.string()
-                                        .matches(unitValPattern, 'Must be a number, followed by a unit')
-                                        .max(30, 'please make this shorter')
-                                        .required('Ingredient quantity is required.'),
+                                    name: yupIngredientNameValidation,
+                                    quantity: yupQuantityValidation,
                                     percentage: Yup.string()
-                                        .trim()
                                         .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
                                         .matches(decimalValPattern, 'Must be a valid percentage'),
                                 })
@@ -93,7 +96,22 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         .max(30, 'please make this shorter'),
                     instructions: Yup.array()
                         .max(1000, "Please make this step shorter"),
-                    substitutions: Yup.array()
+                    substitutions: Yup.array().of(
+                        Yup.object().shape({
+                            additions: Yup.array().of(
+                                Yup.object().shape({
+                                    quantity: yupQuantityValidation,
+                                    ingredientName: yupIngredientNameValidation,
+                                })
+                            ),
+                            removals: Yup.array().of(
+                                Yup.object().shape({
+                                    quantity: yupQuantityValidation,
+                                    ingredientName: Yup.string() // select field,
+                                })
+                            ),
+                        })
+                    )
                 })}
                 onSubmit={(values) => {
                     // parse form data
@@ -180,7 +198,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                 )}
             </Formik>
 
-        </div>
+        </div >
     );
 }
 

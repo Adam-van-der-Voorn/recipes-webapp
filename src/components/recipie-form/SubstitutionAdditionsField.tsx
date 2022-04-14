@@ -1,4 +1,4 @@
-import { Field, FieldArrayRenderProps, useFormikContext } from "formik";
+import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { RecipieFormData } from "./RecipieForm";
 
@@ -12,7 +12,7 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
 
     useEffect(() => {
         if (values.substitutions[index].additions.length === 0) {
-            arrayHelpers.push({ amount: '', ingredientName: '' });
+            arrayHelpers.push({ quantity: '', ingredientName: '' });
         }
     }, [])
 
@@ -28,11 +28,13 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
                             </button>
                         }
                         <Field name={`substitutions.${index}.additions.${idx}.quantity`} type="text" /> of
-                        <Field name={`substitutions.${index}.additions.${idx}.ingredientName`} type="text" />
+                        <Field name={`substitutions.${index}.additions.${idx}.ingredientName`} type="text" /> <br />
+                        <ErrorMessage name={`substitutions.${index}.additions.${idx}.quantity`} /><br />
+                        <ErrorMessage name={`substitutions.${index}.additions.${idx}.ingredientName`} />
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ amount: '', ingredientName: '' })}>
+            <button type="button" onClick={() => arrayHelpers.push({ quantity: '', ingredientName: '' })}>
                 ++
             </button >
         </div >

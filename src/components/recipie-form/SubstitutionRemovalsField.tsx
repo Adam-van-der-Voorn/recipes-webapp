@@ -1,4 +1,4 @@
-import { Field, FieldArrayRenderProps, useFormikContext } from "formik";
+import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { RecipieFormData } from "./RecipieForm";
 
@@ -12,7 +12,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
 
     useEffect(() => {
         if (values.substitutions[index].removals.length === 0) {
-            arrayHelpers.push({ amount: '', ingredientName: '' });
+            arrayHelpers.push({ quantity: '', ingredientName: '' });
         }
     }, []);
 
@@ -31,15 +31,17 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                         <Field as="select" name={`substitutions.${index}.removals.${idx}.ingredientName`} >
                             {
                                 values.ingredients.list.map(ingredient => {
-                                    return <option value={ingredient.name.toLowerCase()}>{ingredient.name}</option>;
+                                    const name = ingredient.name;
+                                    return <option key={name} value={name.toLowerCase()}>{name}</option>;
                                 })
                             }
-                        </Field>
-                        <br />
+                        </Field> <br />
+                        <ErrorMessage name={`substitutions.${index}.removals.${idx}.quantity`} /><br />
+                        <ErrorMessage name={`substitutions.${index}.removals.${idx}.ingredientName`} />
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ amount: '', ingredientName: '' })}>
+            <button type="button" onClick={() => arrayHelpers.push({ quantity: '', ingredientName: '' })}>
                 ++
             </button >
         </div >
