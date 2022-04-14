@@ -57,13 +57,13 @@ function EditRecipiePage() {
                 return {
                     additions: substitution.additions.map(addition => {
                         return {
-                            amount: unitValToString(addition.amount),
+                            quantity: unitValToString(addition.quantity),
                             ingredientName: addition.ingredientName
                         };
                     }),
                     removals: substitution.removals.map(removal => {
                         return {
-                            amount: unitValToString(removal.amount),
+                            quantity: unitValToString(removal.quantity),
                             ingredientName: removal.ingredientName
                         };
                     })
