@@ -1,13 +1,13 @@
 import * as Yup from 'yup';
 
-const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
+const unitValPattern = /^\d+(\.\d+)? *[aA-zZ]+[aA-zZ ]*$/;
 const decimalValPattern = /^\d+(\.\d+)?$/;
 
-const yupQuantitySchema = Yup.string()
+export const yupQuantitySchema = Yup.string()
     .matches(unitValPattern, 'Must be a number, followed by a unit')
     .max(30, 'please make this shorter');
 
-const yupIngredientNameSchema = Yup.string()
+export const yupIngredientNameSchema = Yup.string()
     .max(60, 'Please make this shorter.')
     .required("Ingredient name is required.");
 
