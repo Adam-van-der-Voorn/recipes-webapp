@@ -152,6 +152,21 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             .flatMap(instruction => instruction.trim() !== '' ? [instruction] : []);
                     }
 
+                    if (values.substitutions.length > 0) {
+                        const parseSubPart = (subPartInput: {quantity: string, ingredientName: string}) => {
+                            return {
+                                ingredientName: subPartInput.ingredientName.trim(),
+                                quantity: parseUnitValInputs(subPartInput.quantity)[0]
+                            }
+                        }
+                        newRecipie.substitutions = values.substitutions.map(substitution => {
+                            return {
+                                additions: substitution.additions.map(addition => parseSubPart(addition)),
+                                removals: substitution.removals.map(removal => parseSubPart(removal))
+                            }
+                        })
+                    }
+
                     // do something with the data
                     doSubmit(newRecipie);
                 }}
@@ -193,11 +208,13 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <br />
 
                         <input type="submit" name="submit" id="submit-recipie" />
+                        <br/><br/>
+                        <pre>{JSON.stringify(values, null, 2)}</pre>
+
                     </Form>
 
                 )}
             </Formik>
-
         </div >
     );
 }

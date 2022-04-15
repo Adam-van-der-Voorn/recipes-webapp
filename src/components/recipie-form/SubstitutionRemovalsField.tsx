@@ -29,6 +29,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                         }
                         <Field name={`substitutions.${index}.removals.${idx}.quantity`} type="text" /> of
                         <Field as="select" name={`substitutions.${index}.removals.${idx}.ingredientName`} >
+                            <option disabled value="">Select an ingredient</option>
                             {
                                 values.ingredients.list.map(ingredient => {
                                     const name = ingredient.name;
