@@ -1,5 +1,4 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import * as Yup from 'yup';
 import { useContext } from "react";
 import { UnitVal, Recipie } from "../../types/recipieTypes";
 import { RecipiesContext } from "../App";
@@ -7,10 +6,7 @@ import IngredientsField from "./IngredientsField";
 import parseUnitValInputs from "./parseUnitValInputs";
 import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./SubstitutionsField";
-
-const unitValPattern = /^\d+(\.\d+)?[aA-zZ ]+$/;
-const unitValPatternOptional = /^\d+(\.\d+)?.*$/;
-const decimalValPattern = /^\d+(\.\d+)?$/;
+import getFullSchema from "./recipieInputSchema";
 
 export type RecipieFormData = {
     name: string,
@@ -47,15 +43,6 @@ type Props = {
     initialValues: RecipieFormData;
 };
 
-const yupQuantityValidation = Yup.string()
-    .matches(unitValPattern, 'Must be a number, followed by a unit')
-    .max(30, 'please make this shorter')
-    .required('Ingredient quantity is required.');
-
-const yupIngredientNameValidation = Yup.string()
-    .max(60, 'Please make this shorter.')
-    .required("Ingredient name is required.");
-
 function RecipieForm({ doSubmit, initialValues }: Props) {
     const recipiesContext = useContext(RecipiesContext);
     const invalidRecipieNames = recipiesContext.recipies
@@ -67,52 +54,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
         <div className="RecipieForm">
             <Formik
                 initialValues={initialValues}
-                validationSchema={Yup.object({
-                    name: Yup.string()
-                        .required("Required")
-                        .trim()
-                        .max(150, 'Please make this shorter.')
-                        .lowercase()
-                        .notOneOf(invalidRecipieNames, 'A recipie with this name already exists'),
-                    timeframe: Yup.string()
-                        .max(150, 'Please make this shorter.'),
-                    notes: Yup.string()
-                        .max(10000, 'Please make this shorter.'),
-                    ingredients: Yup.object().shape({
-                        list: Yup.array()
-                            .of(
-                                Yup.object().shape({
-                                    name: yupIngredientNameValidation,
-                                    quantity: yupQuantityValidation,
-                                    percentage: Yup.string()
-                                        .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
-                                        .matches(decimalValPattern, 'Must be a valid percentage'),
-                                })
-                            ),
-                        anchor: Yup.string()
-                    }),
-                    servings: Yup.string()
-                        .matches(unitValPatternOptional, 'Must be a number, optionally followed by a unit.')
-                        .max(30, 'please make this shorter'),
-                    instructions: Yup.array()
-                        .max(1000, "Please make this step shorter"),
-                    substitutions: Yup.array().of(
-                        Yup.object().shape({
-                            additions: Yup.array().of(
-                                Yup.object().shape({
-                                    quantity: yupQuantityValidation,
-                                    ingredientName: yupIngredientNameValidation,
-                                })
-                            ),
-                            removals: Yup.array().of(
-                                Yup.object().shape({
-                                    quantity: yupQuantityValidation,
-                                    ingredientName: Yup.string() // select field,
-                                })
-                            ),
-                        })
-                    )
-                })}
+                validationSchema={getFullSchema(invalidRecipieNames)}
                 onSubmit={(values) => {
                     // parse form data
                     const newRecipie: Recipie = {
