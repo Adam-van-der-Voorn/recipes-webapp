@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
+import { concatIngredients } from "./concatIngredients";
 import { RecipieFormData } from "./RecipieForm";
 
 type Props = {
@@ -31,7 +32,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                         <Field as="select" name={`substitutions.${index}.removals.${idx}.ingredientName`} >
                             <option disabled value="">Select an ingredient</option>
                             {
-                                values.ingredients.list.map(ingredient => {
+                                concatIngredients(values).map(ingredient => {
                                     const name = ingredient.name;
                                     return <option key={name} value={name.toLowerCase()}>{name}</option>;
                                 })

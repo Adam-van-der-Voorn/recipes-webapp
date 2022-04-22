@@ -34,20 +34,24 @@ function EditRecipiePage() {
 
     const ingredients: RecipieInputIngredients = recipie.ingredients
         ? {
-            list: recipie.ingredients.lists
-                .find(el => el.name === "Main")!.ingredients
-                .map(ingredient => {
+            lists: recipie.ingredients.lists
+                .map(subIngredientList => {
                     return {
-                        name: ingredient.name,
-                        quantity: unitValToString(ingredient.quantity),
-                        percentage: ''
+                        name: subIngredientList.name,
+                        ingredients: subIngredientList.ingredients.map(ingredient => {
+                            return {
+                                name: ingredient.name,
+                                quantity: unitValToString(ingredient.quantity),
+                                percentage: ''
+                            };
+                        }),
                     };
                 }),
-            anchor: recipie.ingredients.anchor!,
+            anchor: recipie.ingredients.anchor || 0
         }
         : {
-            list: [],
-            anchor: ''
+            lists: [],
+            anchor: 0
         };
 
 

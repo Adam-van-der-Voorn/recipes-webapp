@@ -1,10 +1,12 @@
-import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps } from "formik";
-import { useEffect, useState } from "react";
+import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps, FieldArray } from "formik";
+import { useEffect, useMemo, useRef, useState } from "react";
 import parseUnitValInputs from "./parseUnitValInputs";
-import { RecipieFormData } from "./RecipieForm";
+import { RecipieFormData, RecipieInputIngredient } from "./RecipieForm";
 import convert, { Unit } from 'convert-units';
 import { UnitVal } from "../../types/recipieTypes";
 import { isConvertableUnit, isSameMeasure } from "../../util/units";
+import IngredientsSubField from "./IngredientsSubField";
+import { concatIngredients } from "./concatIngredients";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -17,10 +19,18 @@ function IngredientsField({ arrayHelpers }: Props) {
         handleBlur
     } = useFormikContext<RecipieFormData>();
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
-    const [anchor, setAnchor] = useState(0);
+    const allIngredients = useRef<RecipieInputIngredient[]>(concatIngredients(values));
 
-    const percentageFromVal = (ingredient: { name: string, quantity: string, percentage: string; }): number | undefined => {
-        const anchorField = values.ingredients.list[anchor];
+    const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => {
+        let numPrecedingIngredients = 0;
+        for (let i = 0; i < subListIdx; i++) {
+            numPrecedingIngredients += values.ingredients.lists[i].ingredients.length;
+        }
+        return numPrecedingIngredients + localIdx;
+    };
+
+    const percentageFromVal = (ingredient: RecipieInputIngredient): number | undefined => {
+        const anchorField = allIngredients.current[values.ingredients.anchor];
         const quantities: UnitVal[] = parseUnitValInputs(anchorField.quantity, ingredient.quantity);
         if (quantities.length === 2 && isSameMeasure(quantities[0].unit, quantities[1].unit)) {
             const [anchorQuantity, ingredientQuantity]: UnitVal[] = quantities;
@@ -38,97 +48,83 @@ function IngredientsField({ arrayHelpers }: Props) {
         else {
             return undefined;
         }
-
     };
 
-    const setPercentageAuto = (index: number): void => {
-        const ingredient = values.ingredients.list[index];
+    const setPercentageAuto = (subListIdx: number, localIdx: number): void => {
+        const ingredient = values.ingredients.lists[subListIdx].ingredients[localIdx];
         const percentage: string | number = percentageFromVal(ingredient) || '';
-        setFieldValue(`ingredients.list.${index}.percentage`, percentage);
+        setFieldValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`, percentage);
     };
 
-    const onQuantityBlur = (idx: number) => (e: any) => {
-        handleBlur(e)
+    const onQuantityBlur = (subListIdx: number, localIdx: number) => (e: any) => {
+        handleBlur(e);
+        const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
         if (isPercentagesIncluded) {
-            if (idx === anchor) {
-                for (let i = 0; i < values.ingredients.list.length; i++) {
-                   setPercentageAuto(i);
+            if (globalIdx === values.ingredients.anchor) {
+                for (let subListIdx = 0; subListIdx < values.ingredients.lists.length; subListIdx++) {
+                    const subList = values.ingredients.lists[subListIdx];
+                    for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
+                        setPercentageAuto(subListIdx, localIdx);
+                    }
                 }
             }
             else {
-                setPercentageAuto(idx);
+                setPercentageAuto(subListIdx, localIdx);
             }
         }
     };
 
-    const onPercentageBlur = (idx: number) => (e: any) => {
+    const onPercentageBlur = (subListIdx: number, localIdx: number) => (e: any) => {
         handleBlur(e);
-        const anchorField = values.ingredients.list[anchor];
-        const subjectField = values.ingredients.list[idx];
+        const anchorField = allIngredients.current[values.ingredients.anchor];
+        const subIngredientList = values.ingredients.lists[subListIdx];
+        const subjectField = subIngredientList.ingredients[localIdx];
         const subjectPercentage = parseFloat(subjectField.percentage);
         const quantities: UnitVal[] = parseUnitValInputs(anchorField.quantity, subjectField.quantity);
         if (quantities.length === 2 && !isNaN(subjectPercentage)) {
             const [anchorQuantity, subjectQuantity] = quantities;
             const newValRelativeToAnchor = anchorQuantity.value * (subjectPercentage / 100);
+            const fieldName = `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`;
             if (isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
                 const newValOriginalUnit = convert(newValRelativeToAnchor)
                     .from(anchorQuantity.unit as Unit)
                     .to(subjectQuantity.unit as Unit);
-                setFieldValue(`ingredients.list.${idx}.quantity`, `${newValOriginalUnit} ${subjectQuantity.unit}`);
+                setFieldValue(fieldName, `${newValOriginalUnit} ${subjectQuantity.unit}`);
             }
             else {
-                setFieldValue(`ingredients.list.${idx}.quantity`, `${newValRelativeToAnchor} ${anchorQuantity.unit}`);
+                setFieldValue(fieldName, `${newValRelativeToAnchor} ${anchorQuantity.unit}`);
             }
 
         }
     };
 
+    allIngredients.current = useMemo(() => concatIngredients(values), [values]);
+
     useEffect(() => {
-        if (values.ingredients.list.length > 0) {
-            for (let i = 0; i < values.ingredients.list.length; i++) {
-                setPercentageAuto(i);
+        for (let subListIdx = 0; subListIdx < values.ingredients.lists.length; subListIdx++) {
+            const subList = values.ingredients.lists[subListIdx];
+            for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
+                setPercentageAuto(subListIdx, localIdx);
             }
-            setFieldValue('ingredients.anchor', values.ingredients.list[anchor].name);
         }
-    }, [anchor]);
+    }, [values]);
 
     return (
         <div>
             <p>Ingredients</p>
             <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
             {
-                values.ingredients.list.map((ingredient, index) => {
-                    let percentageField = null;
-                    if (isPercentagesIncluded) {
-                        if (index === anchor) {
-                            percentageField = <>anchor</>;
-                        }
-                        else {
-                            percentageField = (<>
-                                <Field name={`ingredients.list.${index}.percentage`} type="text" onBlur={onPercentageBlur(index)} placeholder="?" />%
-                                <button type="button" onClick={() => setAnchor(index)}>set to anchor</button>
-                            </>);
-                        }
-                    }
-
-                    return (
-                        <div key={index}>
-                            <button type="button" onClick={() => arrayHelpers.remove(index)}>
-                                -
-                            </button>
-
-                            <Field name={`ingredients.list.${index}.name`} type="text" />
-                            <Field name={`ingredients.list.${index}.quantity`} type="text" onBlur={onQuantityBlur(index)} />
-                            {percentageField}
-                            <br />
-                            <ErrorMessage name={`ingredients.list.${index}.name`} /><br />
-                            <ErrorMessage name={`ingredients.list.${index}.quantity`} /><br />
-                            <ErrorMessage name={`ingredients.list.${index}.percentage`} />
-                        </div>
-                    );
-                })
+                values.ingredients.lists.map((sublist, idx) => (
+                    <IngredientsSubField key={idx}
+                        listIdx={idx}
+                        listPos={LocalToGlobalIdx(idx, 0)}
+                        isPercentagesIncluded={isPercentagesIncluded}
+                        onPercentageBlur={onPercentageBlur}
+                        onQuantityBlur={onQuantityBlur}
+                    />
+                ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', percentage: '' })}>
+            <button type="button" onClick={() => arrayHelpers.push({ name: '', ingredients: [] })}>
                 +
             </button >
         </div >

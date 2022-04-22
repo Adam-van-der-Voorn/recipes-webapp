@@ -18,8 +18,8 @@ function AddRecipiePage() {
         timeframe: '',
         notes: '',
         ingredients: {
-            list: [],
-            anchor: ''
+            lists: [],
+            anchor: 0
         },
         servings: '',
         instructions: [],

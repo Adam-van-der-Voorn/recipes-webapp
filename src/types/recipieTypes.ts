@@ -22,7 +22,7 @@ export type Substitution = {
 
 export type IngredientsList = {
     lists: IngredientsSubList[];
-    anchor?: string;
+    anchor?: number;
 };
 
 export type IngredientsSubList = {
@@ -52,7 +52,7 @@ export const dummyData: Recipie[] = [
         ingredients: {
             lists: [
                 {
-                    name: "Main",
+                    name: "",
                     ingredients: [
                         {
                             name: "bread",

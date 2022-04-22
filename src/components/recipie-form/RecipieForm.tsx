@@ -18,13 +18,18 @@ export type RecipieFormData = {
     substitutions: RecipieInputSubstitutions,
 };
 
+export type RecipieInputIngredient = {
+    name: string,
+    quantity: string,
+    percentage: string,
+};
+
 export type RecipieInputIngredients = {
-    list: {
-        name: string,
-        quantity: string,
-        percentage: string,
-    }[],
-    anchor: string,
+    lists: {
+        name: string;
+        ingredients: RecipieInputIngredient[];
+    }[];
+    anchor: number,
 };
 
 export type RecipieInputSubstitutions = {
@@ -73,17 +78,22 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         newRecipie.notes = values.notes.trim();
                     }
 
-                    if (values.ingredients.list.length > 0) {
+                    if (values.ingredients.lists.length > 0) {
                         newRecipie.ingredients = {
-                            anchor: values.ingredients.anchor,
-                            lists: [{ name: "Main", ingredients: [] }]
+                            lists: values.ingredients.lists.map(sublist => {
+                                return {
+                                    name: sublist.name,
+                                    ingredients: sublist.ingredients.map(ingredient => {
+                                        return {
+                                            name: ingredient.name,
+                                            quantity: parseUnitValInputs(ingredient.quantity)[0]
+                                        };
+                                    })
+                                };
+                            })
                         };
-                        for (const ingredient of values.ingredients.list) {
-                            const parsedQuantity: UnitVal = parseUnitValInputs(ingredient.quantity)[0];
-                            newRecipie.ingredients!.lists[0].ingredients.push({
-                                name: ingredient.name,
-                                quantity: parsedQuantity
-                            });
+                        if (values.ingredients.anchor) {
+                            newRecipie.ingredients.anchor = values.ingredients.anchor;
                         }
                     }
 
@@ -95,18 +105,18 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     }
 
                     if (values.substitutions.length > 0) {
-                        const parseSubPart = (subPartInput: {quantity: string, ingredientName: string}) => {
+                        const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
                             return {
                                 ingredientName: subPartInput.ingredientName.trim(),
                                 quantity: parseUnitValInputs(subPartInput.quantity)[0]
-                            }
-                        }
+                            };
+                        };
                         newRecipie.substitutions = values.substitutions.map(substitution => {
                             return {
                                 additions: substitution.additions.map(addition => parseSubPart(addition)),
                                 removals: substitution.removals.map(removal => parseSubPart(removal))
-                            }
-                        })
+                            };
+                        });
                     }
 
                     // do something with the data
@@ -130,7 +140,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <ErrorMessage name="notes" />
 
 
-                        <FieldArray name="ingredients.list" render={arrayHelpers => (
+                        <FieldArray name="ingredients.lists" render={arrayHelpers => (
                             <IngredientsField arrayHelpers={arrayHelpers} />
                         )} />
 
@@ -150,7 +160,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         <br />
 
                         <input type="submit" name="submit" id="submit-recipie" />
-                        <br/><br/>
+                        <br /><br />
                         <pre>{JSON.stringify(values, null, 2)}</pre>
 
                     </Form>

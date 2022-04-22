@@ -19,15 +19,22 @@ const yupRecipieNameSchema = (invalidRecipieNames: string[]) => Yup.string()
     .notOneOf(invalidRecipieNames, 'A recipie with this name already exists');
 
 const yupIngredientsSchema = Yup.object().shape({
-    list: Yup.array()
+    lists: Yup.array()
         .of(
             Yup.object().shape({
-                name: yupIngredientNameSchema,
-                quantity: yupQuantitySchema
-                    .required('Ingredient quantity is required.'),
-                percentage: Yup.string()
-                    .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
-                    .matches(decimalValPattern, 'Must be a valid percentage'),
+                name: Yup.string()
+                    .max(60, 'Please make this shorter.')
+                    .required("A name is required."),
+                ingredients: Yup.array().of(
+                    Yup.object().shape({
+                        name: yupIngredientNameSchema,
+                        quantity: yupQuantitySchema
+                            .required('Ingredient quantity is required.'),
+                        percentage: Yup.string()
+                            .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
+                            .matches(decimalValPattern, 'Must be a valid percentage'),
+                    })
+                )
             })
         ),
     anchor: Yup.string()
