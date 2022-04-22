@@ -51,6 +51,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
                                         type="text"
                                         onBlur={onQuantityBlur(listIdx, localIdx)}
                                     />
+                                    <label htmlFor={`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`}>Optional?</label>
+                                    <Field name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`} type="checkbox" />
                                     {percentageField}
                                     <br />
                                     <ErrorMessage name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`} /><br />

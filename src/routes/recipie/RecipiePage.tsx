@@ -26,7 +26,8 @@ function RecipiePage() {
                         return (<div key={sublist.name}>
                             <h3>{sublist.name}</h3>
                             {sublist.ingredients.map(ingredient => {
-                                return <div key={ingredient.name}>{ingredient.quantity.value} {ingredient.quantity.unit}{'\t'}{ingredient.name}</div>;
+                                const optional = ingredient.optional ? <>(optional)</> : <></>;
+                                return <div key={ingredient.name}>{ingredient.quantity.value} {ingredient.quantity.unit}{'\t'}{ingredient.name} {optional}</div>;
                             })}
                         </div>);
                     })}
