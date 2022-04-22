@@ -1,8 +1,8 @@
-import { Recipie, UnitVal } from "../../../types/recipieTypes";
 import { useContext } from "react";
 import { RecipiesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import RecipieForm, { RecipieInputIngredients, RecipieInputSubstitutions } from "../../recipie-form/RecipieForm";
+import RecipieForm, { RecipieInputIngredients, RecipieInputSubstitutions } from "../../recipie-form/components/RecipieForm";
+import { UnitVal, Recipie } from "../../types/recipieTypes";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
@@ -26,7 +26,7 @@ function EditRecipiePage() {
         navigate(`/${recipie.name}`, { replace: true });
     };
 
-    const recipie = recipies.find(recipie => recipie.name === originalRecipieName);
+    const recipie: Recipie | undefined = recipies.find(recipie => recipie.name === originalRecipieName);
     if (recipie === undefined) {
         console.error(`EditRecipiePage: recipie ${originalRecipieName} does not exist`);
         return null;

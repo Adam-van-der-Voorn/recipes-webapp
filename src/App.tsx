@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { dummyData, Recipie } from "../types/recipieTypes";
+import { Recipie, dummyData } from "./types/recipieTypes";
 
 type RecipiesContextType = {
     recipies: Recipie[];

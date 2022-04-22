@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
-import { concatIngredients } from "./concatIngredients";
+import { concatIngredients } from "../concatIngredients";
 import { RecipieFormData } from "./RecipieForm";
 
 type Props = {

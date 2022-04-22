@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RecipiesContext } from "../../App";
+import { Recipie } from "../../types/recipieTypes";
 
 function RecipiePage() {
     const recipieName = useParams().recipieName;
     const allRecipies = useContext(RecipiesContext).recipies;
-    const recipie = allRecipies.find(value => value.name === recipieName);
+    const recipie: Recipie | undefined = allRecipies.find(value => value.name === recipieName);
     let content;
     if (!recipie) {
         content = <>recipie {recipieName} does not exist :(</>;

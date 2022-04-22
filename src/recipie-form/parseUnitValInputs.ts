@@ -1,4 +1,4 @@
-import { UnitVal } from "../../types/recipieTypes";
+import { UnitVal } from "../types/recipieTypes";
 
 const parseUnitValInputs = (...inputs: string[]): UnitVal[] => {
     const unitValGroups = /^(?<value>\d+(\.\d+)?) *(?<unit>[aA-zZ ]*?) *$/;

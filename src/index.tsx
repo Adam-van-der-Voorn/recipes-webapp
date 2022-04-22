@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import './palette.css';
 import './style.css';
-import AddRecipiePage from './components/routes/add-recipie/AddRecipiePage';
-import RecipieSetPage from './components/routes/home/RecipieSetPage';
-import RecipiePage from './components/routes/recipie/RecipiePage';
-import EditRecipiePage from './components/routes/edit-recipie/EditRecipiePage';
 import * as ServiceWorkerRegistration from './serviceWorkerRegistration'
+import App from './App';
+import AddRecipiePage from './routes/add-recipie/AddRecipiePage';
+import EditRecipiePage from './routes/edit-recipie/EditRecipiePage';
+import RecipieSetPage from './routes/home/RecipieSetPage';
+import RecipiePage from './routes/recipie/RecipiePage';
 
 ReactDOM.render(
     <React.StrictMode>
