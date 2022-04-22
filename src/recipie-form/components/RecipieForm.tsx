@@ -21,6 +21,7 @@ export type RecipieFormData = {
 export type RecipieInputIngredient = {
     name: string,
     quantity: string,
+    optional: boolean,
     percentage: string,
 };
 
@@ -86,7 +87,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                     ingredients: sublist.ingredients.map(ingredient => {
                                         return {
                                             name: ingredient.name,
-                                            quantity: parseUnitValInputs(ingredient.quantity)[0]
+                                            quantity: parseUnitValInputs(ingredient.quantity)[0],
+                                            optional: ingredient.optional
                                         };
                                     })
                                 };
@@ -96,7 +98,6 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             newRecipie.ingredients.anchor = values.ingredients.anchor;
                         }
                     }
-
 
                     if (values.instructions.length > 0) {
                         newRecipie.instructions = values.instructions

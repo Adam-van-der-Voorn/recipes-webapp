@@ -42,6 +42,7 @@ function EditRecipiePage() {
                             return {
                                 name: ingredient.name,
                                 quantity: unitValToString(ingredient.quantity),
+                                optional: ingredient.optional,
                                 percentage: ''
                             };
                         }),

@@ -7,6 +7,7 @@ export type UnitVal = {
 export type Ingredient = {
     name: string; // no duplicates
     quantity: UnitVal;
+    optional: boolean;
     kjs?: number;
 };
 
@@ -59,7 +60,8 @@ export const dummyData: Recipie[] = [
                             quantity: {
                                 value: 1,
                                 unit: 'slice'
-                            }
+                            },
+                            optional: false
                         }
                     ]
                 }

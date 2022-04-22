@@ -60,7 +60,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
                             );
                         })
                     }
-                    < button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', percentage: '' })}>
+                    < button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', optional: false, percentage: '' })}>
                         ++
                     </button >
                 </>} />
