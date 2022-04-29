@@ -18,8 +18,8 @@ ReactDOM.render(
                 <Route path="/" element={<App />}>
                     <Route index element={<RecipieSetPage />} />
                     <Route path="add-recipie" element={<AddRecipiePage />} />
-                    <Route path=":recipieName" element={<RecipiePage />} />
-                    <Route path="edit-:recipieName" element={<EditRecipiePage />} />
+                    <Route path=":recipieId" element={<RecipiePage />} />
+                    <Route path="edit-:recipieId" element={<EditRecipiePage />} />
                 </Route>
                 <Route path="*" element={<div>BAD PATH !!!!</div>} />
             </Routes>

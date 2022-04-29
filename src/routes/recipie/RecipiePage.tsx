@@ -4,18 +4,25 @@ import { RecipiesContext } from "../../App";
 import { Recipie } from "../../types/recipieTypes";
 
 function RecipiePage() {
-    const recipieName = useParams().recipieName;
+    const recipieId = useParams().recipieId;
     const allRecipies = useContext(RecipiesContext).recipies;
-    const recipie: Recipie | undefined = allRecipies.find(value => value.name === recipieName);
+
+    if (recipieId === undefined) {
+        console.error(`RecipiePage: no recipie provided as param`);
+        return <p>check logs</p>;
+    }
+
+    const recipie: Recipie | undefined = allRecipies.get(recipieId);
+
     let content;
     if (!recipie) {
-        content = <>recipie {recipieName} does not exist :(</>;
+        content = <>recipie {recipieId} does not exist :(</>;
     }
     else {
         const { name, servings, timeframe, notes, ingredients, substitutions, instructions } = recipie;
         content = <>
             <h1>{name}</h1>
-            <Link to={`/edit-${recipieName}`}>Edit</Link>
+            <Link to={`/edit-${recipieId}`}>Edit</Link>
             {servings && <div>Servings: {servings.value} {servings.unit}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
             {notes && <pre>{notes}</pre>}

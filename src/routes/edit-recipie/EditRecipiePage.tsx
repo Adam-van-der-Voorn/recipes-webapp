@@ -12,24 +12,24 @@ const unitValToString = (unitVal: UnitVal | undefined) => {
 };
 
 function EditRecipiePage() {
-    const originalRecipieName = useParams().recipieName;
+    const recipieId = useParams().recipieId;
     const { editRecipie, recipies } = useContext(RecipiesContext);
     const navigate = useNavigate();
 
-    if (originalRecipieName === undefined) {
+    if (recipieId === undefined) {
         console.error(`EditRecipiePage: no recipie provided as param`);
-        return null;
+        return <p>check logs</p>;
     }
 
     const doSubmit = (recipie: Recipie) => {
-        editRecipie(recipie, originalRecipieName);
-        navigate(`/${recipie.name}`, { replace: true });
+        editRecipie(recipie, recipieId);
+        navigate(`/${recipieId}`, { replace: true });
     };
 
-    const recipie: Recipie | undefined = recipies.find(recipie => recipie.name === originalRecipieName);
+    const recipie: Recipie | undefined = recipies.get(recipieId);
     if (recipie === undefined) {
-        console.error(`EditRecipiePage: recipie ${originalRecipieName} does not exist`);
-        return null;
+        console.error(`EditRecipiePage: recipie ${recipieId} does not exist`);
+        return <p>check logs</p>;
     }
 
     const ingredients: RecipieInputIngredients = recipie.ingredients
@@ -77,7 +77,7 @@ function EditRecipiePage() {
         : [];
 
     const initialValues = {
-        name: originalRecipieName,
+        name: recipie.name,
         timeframe: recipie.timeframe || '',
         notes: recipie.notes || '',
         ingredients: ingredients,

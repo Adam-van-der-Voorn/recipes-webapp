@@ -9,8 +9,8 @@ function AddRecipiePage() {
     const navigate = useNavigate();
 
     const doSubmit = (recipie: Recipie) => {
-        addRecipie(recipie);
-        navigate(`/${recipie.name}`, { replace: true });
+        const recipieId = addRecipie(recipie);
+        navigate(`/${recipieId}`, { replace: true });
     }
 
     const initialValues = {

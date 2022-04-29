@@ -11,12 +11,10 @@ export const yupIngredientNameSchema = Yup.string()
     .max(60, 'Please make this shorter.')
     .required("Ingredient name is required.");
 
-const yupRecipieNameSchema = (invalidRecipieNames: string[]) => Yup.string()
+const yupRecipieNameSchema = Yup.string()
     .required("Required")
     .trim()
     .max(150, 'Please make this shorter.')
-    .lowercase()
-    .notOneOf(invalidRecipieNames, 'A recipie with this name already exists');
 
 const yupIngredientsSchema = Yup.object().shape({
     lists: Yup.array()
@@ -60,9 +58,9 @@ const yupSubstitutionsSchema = Yup.array().of(
     })
 );
 
-export default function getFullSchema(invalidRecipieNames: string[]) {
+export default function getFullSchema() {
     return Yup.object({
-        name: yupRecipieNameSchema(invalidRecipieNames),
+        name: yupRecipieNameSchema,
         timeframe: Yup.string()
             .max(150, 'Please make this shorter.'),
         notes: Yup.string()

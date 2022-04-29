@@ -6,11 +6,11 @@ import { RecipiesContext } from '../../App';
 
 function RecipieCardContainer() {
 
-    const {recipies, setRecipies} = useContext(RecipiesContext);
+    const { recipies } = useContext(RecipiesContext);
 
-    const cards: JSX.Element[] = recipies.map(recipie => {
-        return <RecipieCard key={recipie.name} recipieName={recipie.name} />
-    })
+    const cards: JSX.Element[] = Array.from(recipies).map(([id, recipie]) => {
+        return <RecipieCard key={id} recipieId={id} recipieName={recipie.name} />;
+    });
 
     return (
         <div className="RecipieCardContainer">

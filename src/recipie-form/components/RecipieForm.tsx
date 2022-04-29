@@ -50,17 +50,11 @@ type Props = {
 };
 
 function RecipieForm({ doSubmit, initialValues }: Props) {
-    const recipiesContext = useContext(RecipiesContext);
-    const invalidRecipieNames = recipiesContext.recipies
-        .map(recipie => recipie.name.toLowerCase())
-        // remove initial name from invalid names
-        .filter(name => name !== initialValues.name.toLowerCase());
-
     return (
         <div className="RecipieForm">
             <Formik
                 initialValues={initialValues}
-                validationSchema={getFullSchema(invalidRecipieNames)}
+                validationSchema={getFullSchema()}
                 onSubmit={(values) => {
                     // parse form data
                     const newRecipie: Recipie = {
