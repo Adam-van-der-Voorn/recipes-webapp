@@ -11,25 +11,27 @@ type Props = {
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercentageBlur, onQuantityBlur }: Props) {
     const { values, setFieldValue } = useFormikContext<RecipieFormData>();
+    const namePrefix = `ingredients.lists.${listIdx}`;
 
     return (
         <div>
-            <label htmlFor={`ingredients.lists.${listIdx}.name`}>SubFieldName</label>
-            <Field name={`ingredients.lists.${listIdx}.name`} type="text" />
-            <ErrorMessage name={`ingredients.lists.${listIdx}.name`} />
-            <FieldArray name={`ingredients.lists.${listIdx}.ingredients`} render={arrayHelpers =>
+            <label htmlFor={`${namePrefix}.name`}>SubFieldName</label>
+            <Field name={`${namePrefix}.name`} type="text" />
+            <ErrorMessage name={`${namePrefix}.name`} />
+            <FieldArray name={`${namePrefix}.ingredients`} render={arrayHelpers =>
                 <>
                     {
                         values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
                             let percentageField = null;
                             const globalIdx = listPos + localIdx;
+                            const ingredientNamePrefix = `${namePrefix}.ingredients.${localIdx}`;
                             if (isPercentagesIncluded) {
                                 if (globalIdx === values.ingredients.anchor) {
                                     percentageField = <>anchor</>;
                                 }
                                 else {
                                     percentageField = (<>
-                                        <Field name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`}
+                                        <Field name={`${ingredientNamePrefix}.percentage`}
                                             type="text"
                                             onBlur={onPercentageBlur(listIdx, localIdx)}
                                             placeholder="?"
@@ -46,18 +48,18 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
                                         --
                                     </button>
 
-                                    <Field name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`} type="text" />
-                                    <Field name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`}
+                                    <Field name={`${ingredientNamePrefix}.name`} type="text" />
+                                    <Field name={`${ingredientNamePrefix}.quantity`}
                                         type="text"
                                         onBlur={onQuantityBlur(listIdx, localIdx)}
                                     />
-                                    <label htmlFor={`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`}>Optional?</label>
-                                    <Field name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`} type="checkbox" />
+                                    <label htmlFor={`${ingredientNamePrefix}.optional`}>Optional?</label>
+                                    <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
                                     {percentageField}
                                     <br />
-                                    <ErrorMessage name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`} /><br />
-                                    <ErrorMessage name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`} /><br />
-                                    <ErrorMessage name={`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`} />
+                                    <ErrorMessage name={`${ingredientNamePrefix}.name`} /><br />
+                                    <ErrorMessage name={`${ingredientNamePrefix}.quantity`} /><br />
+                                    <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
                                 </div>
                             );
                         })
