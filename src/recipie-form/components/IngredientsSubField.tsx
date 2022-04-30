@@ -41,7 +41,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
                             }
 
                             return (
-                                <div key={ingredient.name + localIdx}>
+                                <div key={localIdx}>
                                     <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
                                         --
                                     </button>
