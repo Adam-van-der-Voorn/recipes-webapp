@@ -1,8 +1,6 @@
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import { useContext } from "react";
-import { RecipiesContext } from "../../App";
 import { Recipie } from "../../types/recipieTypes";
-import parseUnitValInputs from "../parseUnitValInputs";
+import { parseUnitValInput } from "../parseUnitValInputs";
 import getFullSchema from "../recipieInputSchema";
 import IngredientsField from "./IngredientsField";
 import InstructionsField from "./InstructionsField";
@@ -62,7 +60,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     };
 
                     if (values.servings !== '') {
-                        newRecipie.servings = parseUnitValInputs(values.servings)[0];
+                        newRecipie.servings = parseUnitValInput(values.servings);
                     }
 
                     if (values.timeframe !== '') {
@@ -81,7 +79,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                     ingredients: sublist.ingredients.map(ingredient => {
                                         return {
                                             name: ingredient.name,
-                                            quantity: parseUnitValInputs(ingredient.quantity)[0],
+                                            quantity: parseUnitValInput(ingredient.quantity),
                                             optional: ingredient.optional
                                         };
                                     })
@@ -103,7 +101,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
                             return {
                                 ingredientName: subPartInput.ingredientName.trim(),
-                                quantity: parseUnitValInputs(subPartInput.quantity)[0]
+                                quantity: parseUnitValInput(subPartInput.quantity)
                             };
                         };
                         newRecipie.substitutions = values.substitutions.map(substitution => {

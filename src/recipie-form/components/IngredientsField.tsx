@@ -1,6 +1,6 @@
 import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps, FieldArray } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
-import parseUnitValInputs from "../parseUnitValInputs";
+import { parseUnitValInputs } from "../parseUnitValInputs";
 import { RecipieFormData, RecipieInputIngredient } from "./RecipieForm";
 import convert, { Unit } from 'convert-units';
 import { UnitVal } from "../../types/recipieTypes";
