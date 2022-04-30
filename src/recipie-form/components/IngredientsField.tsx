@@ -107,7 +107,7 @@ function IngredientsField({ arrayHelpers }: Props) {
                 setPercentageAuto(subListIdx, localIdx);
             }
         }
-    }, [values]);
+    }, [values.ingredients.anchor]);
 
     return (
         <div>
