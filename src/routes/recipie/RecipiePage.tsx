@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RecipiesContext } from "../../App";
+import MyError from "../../components-misc/MyError";
 import { Recipie } from "../../types/recipieTypes";
 
 function RecipiePage() {
@@ -9,14 +10,15 @@ function RecipiePage() {
 
     if (recipieId === undefined) {
         console.error(`RecipiePage: no recipie provided as param`);
-        return <p>check logs</p>;
+        return <MyError message="Oops! Something went wrong." />;
     }
 
     const recipie: Recipie | undefined = allRecipies.get(recipieId);
 
     let content;
-    if (!recipie) {
-        content = <>recipie {recipieId} does not exist :(</>;
+    if (recipie === undefined) {
+        console.error(`EditRecipiePage: recipie ${recipieId} does not exist`);
+        content = <MyError message={`Recipie with ID ${recipieId} does not exist`} />;
     }
     else {
         const { name, servings, timeframe, notes, ingredients, substitutions, instructions } = recipie;

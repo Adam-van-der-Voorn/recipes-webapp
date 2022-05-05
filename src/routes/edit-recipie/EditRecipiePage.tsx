@@ -3,6 +3,7 @@ import { RecipiesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import RecipieForm, { RecipieInputIngredients, RecipieInputSubstitutions } from "../../recipie-form/components/RecipieForm";
 import { UnitVal, Recipie } from "../../types/recipieTypes";
+import MyError from "../../components-misc/MyError";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
@@ -18,7 +19,7 @@ function EditRecipiePage() {
 
     if (recipieId === undefined) {
         console.error(`EditRecipiePage: no recipie provided as param`);
-        return <p>check logs</p>;
+        return <MyError message="Oops! Something went wrong." />;
     }
 
     const doSubmit = (recipie: Recipie) => {
@@ -29,7 +30,7 @@ function EditRecipiePage() {
     const recipie: Recipie | undefined = recipies.get(recipieId);
     if (recipie === undefined) {
         console.error(`EditRecipiePage: recipie ${recipieId} does not exist`);
-        return <p>check logs</p>;
+        return <MyError message={`Recipie with ID ${recipieId} does not exist`} />;
     }
 
     const ingredients: RecipieInputIngredients = recipie.ingredients
