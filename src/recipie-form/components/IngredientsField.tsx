@@ -110,9 +110,14 @@ function IngredientsField({ arrayHelpers }: Props) {
     }, [values.ingredients.anchor]);
 
     return (
-        <div>
-            <p>Ingredients</p>
-            <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
+        <>
+            <h2>Ingredients</h2>
+            <div>
+                <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
+                <button type="button" onClick={() => arrayHelpers.push({ name: '', ingredients: [] })}>
+                    Add ingredient list
+                </button >
+            </div>
             {
                 values.ingredients.lists.map((sublist, idx) => (
                     <IngredientsSubField key={idx}
@@ -124,10 +129,7 @@ function IngredientsField({ arrayHelpers }: Props) {
                     />
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ name: '', ingredients: [] })}>
-                +
-            </button >
-        </div >
+        </>
     );
 };
 

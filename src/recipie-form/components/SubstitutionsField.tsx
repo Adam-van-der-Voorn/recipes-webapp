@@ -12,7 +12,7 @@ function SubstitutionsField({ arrayHelpers }: Props) {
 
     return (
         <div>
-            <p>Substitutions</p>
+            <h2>Substitutions</h2>
             {
                 values.substitutions.map((substitution, index) => (
                     <div key={index}>

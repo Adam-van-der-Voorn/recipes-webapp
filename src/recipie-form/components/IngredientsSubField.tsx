@@ -1,4 +1,5 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
+import React from "react";
 import { RecipieFormData } from "./RecipieForm";
 
 type Props = {
@@ -15,59 +16,80 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
 
     return (
         <div>
-            <label htmlFor={`${namePrefix}.name`}>SubFieldName</label>
-            <Field name={`${namePrefix}.name`} type="text" />
-            <ErrorMessage name={`${namePrefix}.name`} />
+            <div>
+                <Field name={`${namePrefix}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
+                <ErrorMessage name={`${namePrefix}.name`} />
+            </div>   
             <FieldArray name={`${namePrefix}.ingredients`} render={arrayHelpers =>
                 <>
-                    {
-                        values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
-                            let percentageField = null;
-                            const globalIdx = listPos + localIdx;
-                            const ingredientNamePrefix = `${namePrefix}.ingredients.${localIdx}`;
-                            if (isPercentagesIncluded) {
-                                if (globalIdx === values.ingredients.anchor) {
-                                    percentageField = <>anchor</>;
-                                }
-                                else {
-                                    percentageField = (<>
+                    <div className="ingredient-list">
+                        <div></div> {/* grid filler */}
+                        <div>Ingredient</div>
+                        <div>Quantity</div>
+                        <div></div>
+                        <div></div>
+
+                        {
+                            values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
+                                const globalIdx = listPos + localIdx;
+                                const ingredientNamePrefix = `${namePrefix}.ingredients.${localIdx}`;
+
+                                const percentageInput = (
+                                    <div className="percentage">
                                         <Field name={`${ingredientNamePrefix}.percentage`}
                                             type="text"
                                             onBlur={onPercentageBlur(listIdx, localIdx)}
                                             placeholder="?"
+                                            autoComplete="off"
                                         />
                                         %
                                         <button type="button" onClick={() => setFieldValue('ingredients.anchor', globalIdx)}>set to anchor</button>
-                                    </>);
-                                }
-                            }
+                                    </div>
+                                )
 
-                            return (
-                                <div key={localIdx}>
-                                    <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
-                                        --
-                                    </button>
+                                const percentageField = isPercentagesIncluded
+                                    ? globalIdx === values.ingredients.anchor
+                                        ? <div className="percentage">anchor</div>
+                                        : percentageInput
+                                    : <div className="percentage"></div>;
 
-                                    <Field name={`${ingredientNamePrefix}.name`} type="text" />
-                                    <Field name={`${ingredientNamePrefix}.quantity`}
-                                        type="text"
-                                        onBlur={onQuantityBlur(listIdx, localIdx)}
-                                    />
-                                    <label htmlFor={`${ingredientNamePrefix}.optional`}>Optional?</label>
-                                    <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
-                                    {percentageField}
-                                    <br />
-                                    <ErrorMessage name={`${ingredientNamePrefix}.name`} /><br />
-                                    <ErrorMessage name={`${ingredientNamePrefix}.quantity`} /><br />
-                                    <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
-                                </div>
-                            );
-                        })
-                    }
-                    < button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', optional: false, percentage: '' })}>
+                                return (
+                                    <React.Fragment key={localIdx}>
+                                        <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
+                                            --
+                                        </button>
+
+                                        <Field name={`${ingredientNamePrefix}.name`}
+                                            type="text"
+                                            className="name"
+                                            autoComplete="off"
+                                        />
+                                        <Field name={`${ingredientNamePrefix}.quantity`}
+                                            type="text"
+                                            className="quantity"
+                                            onBlur={onQuantityBlur(listIdx, localIdx)}
+                                            autoComplete="off"
+                                        />
+                                        <div className="optional">
+                                            <label htmlFor={`${ingredientNamePrefix}.optional`}>Optional?</label>
+                                            <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
+                                        </div>
+                                        {percentageField}
+
+                                        <ErrorMessage name={`${ingredientNamePrefix}.name`} />
+                                        <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+                                        <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                    </React.Fragment>
+                                );
+                            })
+                        }
+                    </div>
+
+                    <br /><button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', optional: false, percentage: '' })}>
                         ++
                     </button >
-                </>} />
+                </>
+            } />
         </div>
     );
 };

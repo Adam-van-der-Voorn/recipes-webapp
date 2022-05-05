@@ -5,6 +5,7 @@ import getFullSchema from "../recipieInputSchema";
 import IngredientsField from "./IngredientsField";
 import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./SubstitutionsField";
+import './RecipieForm.css';
 
 export type RecipieFormData = {
     name: string,
@@ -118,39 +119,53 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
             >
                 {({ values }) => (
                     <Form>
-                        <label htmlFor="name">Name</label>
-                        <Field name="name" type="text" />
+                        <Field name="name"
+                            type="text"
+                            className="title"
+                            placeholder="Untitled"
+                            autoComplete="off"
+                        />
                         <ErrorMessage name="name" />
-                        <br />
 
-                        <label htmlFor="timeframe">About how long will this take to cook?</label>
-                        <Field name="timeframe" type="text" />
-                        <ErrorMessage name="timeframe" />
-                        <br />
+                        <div className="field-container inline">
+                            <label htmlFor="timeframe">Timeframe:</label>
+                            <Field name="timeframe"
+                                type="text"
+                                placeholder="-"
+                                autoComplete="off"
+                            />
+                            <ErrorMessage name="timeframe" className="error" />
+                        </div>
 
-                        <label htmlFor="notes">Extra notes</label>
-                        <Field name={`notes`} as="textarea" /><br />
-                        <ErrorMessage name="notes" />
+                        <div className="field-container stacked">
+                            <label htmlFor="notes">Extra notes</label>
+                            <Field name={`notes`} as="textarea" />
+                        </div>
+                        <ErrorMessage name="notes" className="error" />
 
 
                         <FieldArray name="ingredients.lists" render={arrayHelpers => (
                             <IngredientsField arrayHelpers={arrayHelpers} />
                         )} />
 
-                        <label htmlFor='servings'>Serves</label>
-                        <Field name="servings" type="text" />
-                        <ErrorMessage name="servings" />
-                        <br />
+                        <div className="field-container inline">
+                            <label htmlFor='servings'>Serves:</label>
+                            <Field name="servings"
+                                type="text"
+                                placeholder="-"
+                                autoComplete="off"
+                            />
+                            <div className="error"><ErrorMessage name="servings"/></div>
+                        </div>
+
 
                         <FieldArray name="instructions" render={arrayHelpers => (
                             <InstructionsField arrayHelpers={arrayHelpers} />
                         )} />
-                        <br />
 
                         <FieldArray name="substitutions" render={arrayHelpers => (
                             <SubstitutionsField arrayHelpers={arrayHelpers} />
                         )} />
-                        <br />
 
                         <input type="submit" name="submit" id="submit-recipie" />
                         <br /><br />

@@ -1,0 +1,88 @@
+.RecipieForm {
+    padding: 2.4rem;
+}
+
+p,
+span {
+    font-size: 1.6rem;
+}
+
+form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+}
+
+.field-container {
+    flex: 0 0 auto;
+    display: inline-grid;
+    justify-content: start;
+    margin-bottom: 1.2rem;
+}
+
+.field-container.inline {
+    width: fit-content;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "label input"
+        "error error";
+    column-gap: 1ch;
+}
+
+.field-container.stacked {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "label"
+        "input"
+        "error";
+}
+
+.field-container > input[type=text] {
+    grid-area: input;
+}
+
+.field-container > label {
+    grid-area: label;
+}
+
+.field-container > .error {
+    grid-area: error;
+}
+
+input[type=text] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    padding: 0rem;
+    font-size: 1.6rem;
+    border: none;
+    border-bottom: 1px solid var(--neutral-3);
+}
+
+input:focus {
+    outline: none;
+}
+
+input.title {
+    flex: 0 0 auto;
+    font-size: 3.2rem;
+    font-weight: bolder;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-top: 0rem;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+}
+
+input.title:focus {
+    border-bottom: 2px solid var(--neutral-3);
+}
+
+.ingredient-list {
+    display: inline-grid;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(5, auto);
+    column-gap: 1ch;
+}

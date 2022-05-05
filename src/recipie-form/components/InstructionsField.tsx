@@ -10,7 +10,7 @@ function InstructionsField({ arrayHelpers }: Props) {
 
     return (
         <div>
-            <p>Method</p>
+            <h2>Method</h2>
             {
                 values.instructions.map((instruction, index) => (
                     <div key={index}>

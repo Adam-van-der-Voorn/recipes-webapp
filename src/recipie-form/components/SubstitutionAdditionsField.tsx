@@ -14,21 +14,29 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
         if (values.substitutions[index].additions.length === 0) {
             arrayHelpers.push({ quantity: '', ingredientName: '' });
         }
-    }, [])
+    }, []);
 
     return (
         <div>
-            <div>with...</div>
+            <p>with...</p>
             {
                 values.substitutions[index].additions.map((addition, idx) => (
                     <div key={idx}>
-                        {   idx !== 0 && 
+                        {idx !== 0 &&
                             <button type="button" onClick={() => arrayHelpers.remove(idx)}>
                                 --
                             </button>
                         }
-                        <Field name={`substitutions.${index}.additions.${idx}.quantity`} type="text" /> of
-                        <Field name={`substitutions.${index}.additions.${idx}.ingredientName`} type="text" /> <br />
+                        <Field name={`substitutions.${index}.additions.${idx}.quantity`}
+                            type="text"
+                            autoComplete="off"
+                        />
+                        <span>of</span>
+                        <Field name={`substitutions.${index}.additions.${idx}.ingredientName`}
+                            type="text"
+                            autoComplete="off"
+                        />
+                        <br />
                         <ErrorMessage name={`substitutions.${index}.additions.${idx}.quantity`} /><br />
                         <ErrorMessage name={`substitutions.${index}.additions.${idx}.ingredientName`} />
                     </div>

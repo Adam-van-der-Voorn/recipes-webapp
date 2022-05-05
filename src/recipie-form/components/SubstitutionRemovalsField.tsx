@@ -19,7 +19,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
 
     return (
         <div>
-            <div>replace...</div>
+            <label>You may substitute</label>
             {
                 values.substitutions[index].removals.map((removal, idx) => (
                     <div key={idx}>
@@ -28,8 +28,12 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                                 --
                             </button>
                         }
-                        <Field name={`substitutions.${index}.removals.${idx}.quantity`} type="text" /> of
-                        <Field as="select" name={`substitutions.${index}.removals.${idx}.ingredientName`} >
+                        <Field name={`substitutions.${index}.removals.${idx}.quantity`}
+                            type="text"
+                            autoComplete="off"
+                        />
+                        <span>of</span>
+                        <Field name={`substitutions.${index}.removals.${idx}.ingredientName`} as="select">
                             <option disabled value="">Select an ingredient</option>
                             {
                                 concatIngredients(values).map(ingredient => {
