@@ -41,31 +41,38 @@ export default function useRecipieStorage(db: Firestore) {
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, 'recipies'), { includeMetadataChanges: true },
             (querySnapshot) => {
-                // extract recipies
-                const recipies: Map<string, Recipie> = new Map(querySnapshot.docs.map(doc => {
-                    const recipie = doc.data() as Recipie;
-                    console.assert(recipie.name !== undefined, `Recipie ${doc.id} pulled from DB has no name field`);
-                    return [doc.id, recipie];
-                }));
 
                 // extract change data
                 const changeData = querySnapshot.docChanges().map(change => {
                     const doc = change.doc;
-                    return {type: change.type, data: doc.data(), id: doc.id}
-                })
-
-                // confirm data has been written
-                changeData.forEach(change => {
-                    const writeCallback = pendingWrites.current.get(change.id + '-' + change.type);
-                    if (writeCallback) {
-                        console.log("Callback on", change)
-                        writeCallback(change.id, change.data as Recipie);
-                    }
+                    return { type: change.type, recipie: doc.data() as Recipie, id: doc.id };
                 });
                 
+                const newRecipies = new Map(recipies);
+                changeData.forEach(change => {
+                    // confirm data has been written
+                    const writeCallback = pendingWrites.current.get(change.id + '-' + change.type);
+                    if (writeCallback) {
+                        console.log("Callback on", change);
+                        writeCallback(change.id, change.recipie);
+                    }
+                    
+                    // add to memory
+                    if (change.type === 'added' || change.type === 'modified') {
+                        newRecipies.set(change.id, change.recipie);
+                    }
+                    else if (change.type === 'removed') {
+                        newRecipies.delete(change.id);
+                    }
+                    else {
+                        console.error('recipies snapshot: unkown change type:', change.type)
+                    }
+                });
+                setRecipies(newRecipies);
+
+
                 const source = querySnapshot.metadata.fromCache ? "local cache" : "server";
-                console.log(`Recipies snapshot (from ${source}):`, { recipies: recipies, changes: changeData});
-                setRecipies(recipies);
+                console.log(`Recipies snapshot (from ${source}):`, { changes: changeData });
             },
             (error) => {
                 console.error("Recipies snapshot failed:", error);
