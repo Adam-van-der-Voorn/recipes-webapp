@@ -19,6 +19,8 @@ function IngredientsField({ arrayHelpers }: Props) {
         handleBlur
     } = useFormikContext<RecipieFormData>();
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
+    const [hasMultipleLists, setHasMultipleLists] = useState(false);
+
     const allIngredients = useRef<RecipieInputIngredient[]>(concatIngredients(values));
 
     const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => {
@@ -109,14 +111,16 @@ function IngredientsField({ arrayHelpers }: Props) {
         }
     }, [values.ingredients.anchor]);
 
+    useEffect(() => {
+        // todo processing
+    }, [hasMultipleLists]);
+
     return (
         <>
             <h2>Ingredients</h2>
             <div>
                 <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
-                <button type="button" onClick={() => arrayHelpers.push({ name: '', ingredients: [] })}>
-                    Add ingredient list
-                </button >
+                <button type="button" onClick={() => setHasMultipleLists(oldVal => !oldVal)}>toggle multiple lists</button>
             </div>
             {
                 values.ingredients.lists.map((sublist, idx) => (
@@ -124,11 +128,18 @@ function IngredientsField({ arrayHelpers }: Props) {
                         listIdx={idx}
                         listPos={LocalToGlobalIdx(idx, 0)}
                         isPercentagesIncluded={isPercentagesIncluded}
+                        isOnlyList={!hasMultipleLists}
                         onPercentageBlur={onPercentageBlur}
                         onQuantityBlur={onQuantityBlur}
                     />
                 ))
             }
+            {hasMultipleLists &&
+                <button type="button" onClick={() => arrayHelpers.push({ name: '', ingredients: [] })}>
+                    Add ingredient list
+                </button >
+            }
+
         </>
     );
 };

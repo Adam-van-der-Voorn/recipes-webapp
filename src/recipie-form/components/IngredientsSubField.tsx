@@ -6,20 +6,23 @@ type Props = {
     listIdx: number;
     listPos: number;
     isPercentagesIncluded: boolean;
+    isOnlyList: boolean;
     onPercentageBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
     onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
 };
 
-function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercentageBlur, onQuantityBlur }: Props) {
+function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur }: Props) {
     const { values, setFieldValue } = useFormikContext<RecipieFormData>();
     const namePrefix = `ingredients.lists.${listIdx}`;
 
     return (
         <div>
-            <div>
-                <Field name={`${namePrefix}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
-                <ErrorMessage name={`${namePrefix}.name`} />
-            </div>   
+            {!isOnlyList &&
+                <div>
+                    <Field name={`${namePrefix}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
+                    <ErrorMessage name={`${namePrefix}.name`} />
+                </div>
+            }
             <FieldArray name={`${namePrefix}.ingredients`} render={arrayHelpers =>
                 <>
                     <div className="ingredient-list">
@@ -45,7 +48,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, onPercen
                                         %
                                         <button type="button" onClick={() => setFieldValue('ingredients.anchor', globalIdx)}>set to anchor</button>
                                     </div>
-                                )
+                                );
 
                                 const percentageField = isPercentagesIncluded
                                     ? globalIdx === values.ingredients.anchor

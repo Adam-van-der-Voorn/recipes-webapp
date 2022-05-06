@@ -12,7 +12,7 @@ function AddRecipiePage() {
         addRecipie(recipie, (id) => {
             navigate(`/view-${id}`, { replace: true });
         });
-    }
+    };
 
     const initialValues = {
         name: '',
@@ -20,17 +20,20 @@ function AddRecipiePage() {
         makes: '',
         notes: '',
         ingredients: {
-            lists: [],
+            lists: [{
+                name: 'Main',
+                ingredients: []
+            }],
             anchor: 0
         },
         servings: '',
         instructions: [],
         substitutions: [],
-    }
+    };
 
     return (
         <div className="AddRecipiePage">
-           <RecipieForm doSubmit={doSubmit} initialValues={initialValues} />
+            <RecipieForm doSubmit={doSubmit} initialValues={initialValues} />
         </div>
     );
 }
