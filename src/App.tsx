@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Recipie } from "./types/recipieTypes";
 import { initializeApp } from "firebase/app";
 import { collection, deleteDoc, doc, enableIndexedDbPersistence, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
-import { v4 as uuid4 } from 'uuid';
+import useRecipieStorage from "./util/hooks/useRecipieStorage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -40,7 +40,6 @@ const del = (collectionName: string, docName: string) => {
         });
 };
 
-
 type RecipiesContextType = {
     recipies: Map<string, Recipie>;
     addRecipie: (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => void;
@@ -51,75 +50,10 @@ export const RecipiesContext = createContext<RecipiesContextType>({} as Recipies
 
 function App() {
 
-    const [recipies, setRecipies] = useState<Map<string, Recipie>>(new Map());
-    const pendingWrites = useRef(new Map<string, (id: string, recipie: Recipie) => void>());
-
-    const addRecipie = (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => {
-        const id: string = uuid4();
-        if (onAvalible) {
-            pendingWrites.current.set(id + '-added', onAvalible)
-        }
-        return setDoc(doc(db, `recipies/${id}`), recipie)
-            .then(() => {
-                console.log("Recipie written to server with ID", id);
-            })
-    };
-
-    const editRecipie = (editedRecipie: Recipie, id: string, onAvalible?: (id: string, recipie: Recipie) => void) => {
-        if (onAvalible) {
-            pendingWrites.current.set(id + '-modified', onAvalible)
-        }
-        return setDoc(doc(db, `recipies/${id}`), editedRecipie)
-            .then(() => {
-                console.log('Recipie edited on server with ID', id);
-            })
-    };
-
-    useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, 'recipies'), { includeMetadataChanges: true },
-            (querySnapshot) => {
-                // extract recipies
-                const recipies: Map<string, Recipie> = new Map(querySnapshot.docs.map(doc => {
-                    const recipie = doc.data() as Recipie;
-                    console.assert(recipie.name !== undefined, `Recipie ${doc.id} pulled from DB has no name field`);
-                    return [doc.id, recipie];
-                }));
-
-                // extract change data
-                const changeData = querySnapshot.docChanges().map(change => {
-                    const doc = change.doc;
-                    return {type: change.type, data: doc.data(), id: doc.id}
-                })
-
-                // confirm data has been written
-                changeData.forEach(change => {
-                    const writeCallback = pendingWrites.current.get(change.id + '-' + change.type);
-                    if (writeCallback) {
-                        console.log("Callback on", change)
-                        writeCallback(change.id, change.data as Recipie);
-                    }
-                });
-                
-                const source = querySnapshot.metadata.fromCache ? "local cache" : "server";
-                console.log(`Recipies snapshot (from ${source}):`, { recipies: recipies, changes: changeData});
-                setRecipies(recipies);
-            },
-            (error) => {
-                console.error("Recipies snapshot failed:", error);
-            });
-        console.log('Subscribed to recipie snapshots');
-        return function cleanup() {
-            console.log('Unsubscribed from recipie snapshots');
-            unsubscribe();
-        };
-    }, []);
+    const recipieStorageInterface: RecipiesContextType = useRecipieStorage(db); 
 
     return (
-        <RecipiesContext.Provider value={{
-            "recipies": recipies,
-            "addRecipie": addRecipie,
-            "editRecipie": editRecipie,
-        }}>
+        <RecipiesContext.Provider value={recipieStorageInterface}>
             <div className="App">
                 <Outlet />
             </div>
