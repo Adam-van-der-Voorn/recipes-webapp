@@ -13,6 +13,7 @@ export type RecipieFormData = {
     notes: string;
     ingredients: RecipieInputIngredients,
     servings: string,
+    makes: string;
     instructions: string[],
     substitutions: RecipieInputSubstitutions,
 };
@@ -66,6 +67,10 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                     if (values.timeframe !== '') {
                         newRecipie.timeframe = values.timeframe.trim();
+                    }
+
+                    if (values.makes !== '') {
+                        newRecipie.makes = parseUnitValInput(values.makes)!;
                     }
 
                     if (values.notes !== '') {
@@ -134,15 +139,24 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                 placeholder="-"
                                 autoComplete="off"
                             />
-                            <ErrorMessage name="timeframe" className="error" />
+                            <div className="error"><ErrorMessage name="timeframe" /></div>
+                        </div>
+
+                        <div className="field-container inline">
+                            <label htmlFor="makes">Makes:</label>
+                            <Field name="makes"
+                                type="text"
+                                placeholder="-"
+                                autoComplete="off"
+                            />
+                            <div className="error"><ErrorMessage name="makes" /></div>
                         </div>
 
                         <div className="field-container stacked">
                             <label htmlFor="notes">Extra notes</label>
                             <Field name={`notes`} as="textarea" />
+                            <div className="error"><ErrorMessage name="notes" /></div>
                         </div>
-                        <ErrorMessage name="notes" className="error" />
-
 
                         <FieldArray name="ingredients.lists" render={arrayHelpers => (
                             <IngredientsField arrayHelpers={arrayHelpers} />

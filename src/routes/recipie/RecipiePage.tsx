@@ -28,12 +28,13 @@ function RecipiePage() {
         content = null;
     }
     else {
-        const { name, servings, timeframe, notes, ingredients, substitutions, instructions } = recipie;
+        const { name, servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipie;
         content = <>
             <h1>{name}</h1>
             <Link to={`/edit-${recipieId}`}>Edit</Link>
             <button onClick={deleteAndNavigate}>del</button>
             {servings && <div>Serves {servings}</div>}
+            {makes && <div>Makes {makes.value} {makes.unit}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
             {notes && <pre>{notes}</pre>}
             {ingredients &&

@@ -17,6 +17,7 @@ function AddRecipiePage() {
     const initialValues = {
         name: '',
         timeframe: '',
+        makes: '',
         notes: '',
         ingredients: {
             lists: [],

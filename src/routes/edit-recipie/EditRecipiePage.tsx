@@ -80,6 +80,7 @@ function EditRecipiePage() {
     const initialValues = {
         name: recipie.name,
         timeframe: recipie.timeframe || '',
+        makes: unitValToString(recipie.makes),
         notes: recipie.notes || '',
         ingredients: ingredients,
         servings: recipie.servings?.toString(10) || '',

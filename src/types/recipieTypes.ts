@@ -35,6 +35,7 @@ export type Recipie = {
     name: string;
     timeframe?: string;
     servings?: number;
+    makes?: UnitVal;
     notes?: string;
     ingredients?: IngredientsList;
     instructions?: string[];

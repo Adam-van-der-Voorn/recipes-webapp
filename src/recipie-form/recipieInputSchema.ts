@@ -63,6 +63,7 @@ export default function getFullSchema() {
         name: yupRecipieNameSchema,
         timeframe: Yup.string()
             .max(150, 'Please make this shorter.'),
+        makes: yupQuantitySchema,
         notes: Yup.string()
             .max(10000, 'Please make this shorter.'),
         ingredients: yupIngredientsSchema,
