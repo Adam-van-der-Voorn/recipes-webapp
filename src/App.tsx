@@ -4,7 +4,7 @@ import { Recipie } from "./types/recipieTypes";
 import useRecipieStorage from "./util/hooks/useRecipieStorage";
 import setupFirebase from "./util/setupFirestore";
 
-const { db } = setupFirebase()
+const { db } = setupFirebase();
 
 type RecipiesContextType = {
     recipies: Map<string, Recipie>;
@@ -17,7 +17,7 @@ export const RecipiesContext = createContext<RecipiesContextType>({} as Recipies
 
 function App() {
 
-    const recipieStorageInterface: RecipiesContextType = useRecipieStorage(db); 
+    const recipieStorageInterface: RecipiesContextType = useRecipieStorage(db);
 
     return (
         <RecipiesContext.Provider value={recipieStorageInterface}>
