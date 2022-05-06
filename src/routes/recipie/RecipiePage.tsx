@@ -15,12 +15,6 @@ function RecipiePage() {
         return <MyError message="Oops! Something went wrong." />;
     }
 
-    const deleteAndNavigate = () => {
-        deleteRecipie(recipieId, () => {
-            navigate(`/`);
-        })                                                                                                                                       
-    }
-
     const recipie: Recipie | undefined = recipies.get(recipieId);
 
     let content;
@@ -28,6 +22,14 @@ function RecipiePage() {
         content = null;
     }
     else {
+
+        const deleteAndNavigate = () => {
+            let confirmation = window.confirm(`Are you sure you want to delete recipie '${recipie.name}'`);
+            deleteRecipie(recipieId, () => {
+                navigate(`/`);
+            })                                                                                                                                       
+        }
+
         const { name, servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipie;
         content = <>
             <h1>{name}</h1>
