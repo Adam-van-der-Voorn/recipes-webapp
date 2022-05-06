@@ -17,8 +17,7 @@ function RecipiePage() {
 
     let content;
     if (recipie === undefined) {
-        console.error(`EditRecipiePage: recipie ${recipieId} does not exist`);
-        content = <MyError message={`Recipie with ID ${recipieId} does not exist`} />;
+        content = null;
     }
     else {
         const { name, servings, timeframe, notes, ingredients, substitutions, instructions } = recipie;

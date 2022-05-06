@@ -23,14 +23,14 @@ function EditRecipiePage() {
     }
 
     const doSubmit = (recipie: Recipie) => {
-        editRecipie(recipie, recipieId);
-        navigate(`/${recipieId}`, { replace: true });
+        editRecipie(recipie, recipieId, (id) => {
+            navigate(`/${id}`, { replace: true });
+        });
     };
 
     const recipie: Recipie | undefined = recipies.get(recipieId);
     if (recipie === undefined) {
-        console.error(`EditRecipiePage: recipie ${recipieId} does not exist`);
-        return <MyError message={`Recipie with ID ${recipieId} does not exist`} />;
+        return null;
     }
 
     const ingredients: RecipieInputIngredients = recipie.ingredients

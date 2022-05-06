@@ -1,8 +1,8 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Recipie, dummyData } from "./types/recipieTypes";
+import { Recipie } from "./types/recipieTypes";
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, enableIndexedDbPersistence, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 import { v4 as uuid4 } from 'uuid';
 
 // Your web app's Firebase configuration
@@ -20,6 +20,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+enableIndexedDbPersistence(db)
+    .catch((err) => {
+        if (err.code === 'failed-precondition') {
+            console.error("FireStore IndexedDB - failed precondition: Multiple tabs open, persistence can only be enabled in one tab at a a time.");
+        }
+        else if (err.code === 'unimplemented') {
+            console.error("FireStore IndexedDB: The current browser does not support all of the features required to enable persistence");
+        }
+    });
 
 const del = (collectionName: string, docName: string) => {
     deleteDoc(doc(db, collectionName, docName))
@@ -34,9 +43,8 @@ const del = (collectionName: string, docName: string) => {
 
 type RecipiesContextType = {
     recipies: Map<string, Recipie>;
-    setRecipies: (recipies: Map<string, Recipie>) => void;
-    addRecipie: (recipie: Recipie) => void;
-    editRecipie: (editedRecipie: Recipie, id: string) => void;
+    addRecipie: (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => void;
+    editRecipie: (editedRecipie: Recipie, id: string, onAvalible?: (id: string, recipie: Recipie) => void) => void;
 };
 
 export const RecipiesContext = createContext<RecipiesContextType>({} as RecipiesContextType);
@@ -44,39 +52,56 @@ export const RecipiesContext = createContext<RecipiesContextType>({} as Recipies
 function App() {
 
     const [recipies, setRecipies] = useState<Map<string, Recipie>>(new Map());
+    const pendingWrites = useRef(new Map<string, (id: string, recipie: Recipie) => void>());
 
-    const addRecipie = (recipie: Recipie) => {
-        const id = uuid4();
-        setDoc(doc(db, `recipies/${id}`), recipie)
+    const addRecipie = (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => {
+        const id: string = uuid4();
+        if (onAvalible) {
+            pendingWrites.current.set(id + '-added', onAvalible)
+        }
+        return setDoc(doc(db, `recipies/${id}`), recipie)
             .then(() => {
-                console.log("Recipie written with ID", id);
+                console.log("Recipie written to server with ID", id);
             })
-            .catch(err => {
-                console.error("Recipie not added to db", err);
-            });
-        return id;
     };
 
-    const editRecipie = (editedRecipie: Recipie, id: string) => {
-        setDoc(doc(db, `recipies/${id}`), editedRecipie)
+    const editRecipie = (editedRecipie: Recipie, id: string, onAvalible?: (id: string, recipie: Recipie) => void) => {
+        if (onAvalible) {
+            pendingWrites.current.set(id + '-modified', onAvalible)
+        }
+        return setDoc(doc(db, `recipies/${id}`), editedRecipie)
             .then(() => {
-                console.log('Recipie edited with ID', id);
+                console.log('Recipie edited on server with ID', id);
             })
-            .catch(err => {
-                console.error(`Recipie ${id} not edited`, err);
-            });
     };
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, 'recipies'),
+        const unsubscribe = onSnapshot(collection(db, 'recipies'), { includeMetadataChanges: true },
             (querySnapshot) => {
-                // TODO - dont update whole arr by using querySnapshot.docChanges()
+                // extract recipies
                 const recipies: Map<string, Recipie> = new Map(querySnapshot.docs.map(doc => {
                     const recipie = doc.data() as Recipie;
-                    console.assert(recipie.name != undefined, `Recipie ${doc.id} pulled from DB has no name field`);
+                    console.assert(recipie.name !== undefined, `Recipie ${doc.id} pulled from DB has no name field`);
                     return [doc.id, recipie];
                 }));
-                console.log("Recipies snapshot:", recipies);
+
+                // extract change data
+                const changeData = querySnapshot.docChanges().map(change => {
+                    const doc = change.doc;
+                    return {type: change.type, data: doc.data(), id: doc.id}
+                })
+
+                // confirm data has been written
+                changeData.forEach(change => {
+                    const writeCallback = pendingWrites.current.get(change.id + '-' + change.type);
+                    if (writeCallback) {
+                        console.log("Callback on", change)
+                        writeCallback(change.id, change.data as Recipie);
+                    }
+                });
+                
+                const source = querySnapshot.metadata.fromCache ? "local cache" : "server";
+                console.log(`Recipies snapshot (from ${source}):`, { recipies: recipies, changes: changeData});
                 setRecipies(recipies);
             },
             (error) => {
@@ -92,7 +117,6 @@ function App() {
     return (
         <RecipiesContext.Provider value={{
             "recipies": recipies,
-            "setRecipies": setRecipies,
             "addRecipie": addRecipie,
             "editRecipie": editRecipie,
         }}>
