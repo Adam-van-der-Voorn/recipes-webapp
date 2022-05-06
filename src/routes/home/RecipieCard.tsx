@@ -10,7 +10,7 @@ function RecipieCard({ recipieId, recipieName }: Props) {
     const navigate = useNavigate();
 
     return (
-        <div className="RecipieCard" onClick={() => navigate(`/${recipieId}`)}>
+        <div className="RecipieCard" onClick={() => navigate(`/view-${recipieId}`)}>
             {recipieName}
         </div>
     );

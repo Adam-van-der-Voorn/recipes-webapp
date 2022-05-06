@@ -24,7 +24,7 @@ function EditRecipiePage() {
 
     const doSubmit = (recipie: Recipie) => {
         editRecipie(recipie, recipieId, (id) => {
-            navigate(`/${id}`, { replace: true });
+            navigate(`/view-${id}`, { replace: true });
         });
     };
 

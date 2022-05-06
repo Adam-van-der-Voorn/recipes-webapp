@@ -10,7 +10,7 @@ function AddRecipiePage() {
 
     const doSubmit = (recipie: Recipie) => {
         const recipieId = addRecipie(recipie, (id) => {
-            navigate(`/${id}`, { replace: true });
+            navigate(`/view-${id}`, { replace: true });
         });
     }
 
