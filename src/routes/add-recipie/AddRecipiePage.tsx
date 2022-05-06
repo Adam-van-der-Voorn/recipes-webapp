@@ -9,7 +9,7 @@ function AddRecipiePage() {
     const navigate = useNavigate();
 
     const doSubmit = (recipie: Recipie) => {
-        const recipieId = addRecipie(recipie, (id) => {
+        addRecipie(recipie, (id) => {
             navigate(`/view-${id}`, { replace: true });
         });
     }

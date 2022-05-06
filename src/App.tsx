@@ -1,7 +1,6 @@
 import React, { createContext } from "react";
 import { Outlet } from "react-router-dom";
 import { Recipie } from "./types/recipieTypes";
-import { deleteDoc, doc } from "firebase/firestore";
 import useRecipieStorage from "./util/hooks/useRecipieStorage";
 import setupFirebase from "./util/setupFirestore";
 

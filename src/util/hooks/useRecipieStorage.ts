@@ -75,7 +75,7 @@ export default function useRecipieStorage(db: Firestore) {
             console.log('Unsubscribed from recipie snapshots');
             unsubscribe();
         };
-    }, []);
+    }, [db]);
 
     return {
         "recipies": recipies,
