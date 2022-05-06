@@ -34,7 +34,7 @@ export type IngredientsSubList = {
 export type Recipie = {
     name: string;
     timeframe?: string;
-    servings?: UnitVal;
+    servings?: number;
     notes?: string;
     ingredients?: IngredientsList;
     instructions?: string[];

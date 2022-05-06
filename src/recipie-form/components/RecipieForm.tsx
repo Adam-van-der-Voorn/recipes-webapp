@@ -61,7 +61,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                     };
 
                     if (values.servings !== '') {
-                        newRecipie.servings = parseUnitValInput(values.servings);
+                        newRecipie.servings = parseFloat(values.servings);
                     }
 
                     if (values.timeframe !== '') {

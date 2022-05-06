@@ -33,7 +33,7 @@ function RecipiePage() {
             <h1>{name}</h1>
             <Link to={`/edit-${recipieId}`}>Edit</Link>
             <button onClick={deleteAndNavigate}>del</button>
-            {servings && <div>Servings: {servings.value} {servings.unit}</div>}
+            {servings && <div>Serves {servings}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
             {notes && <pre>{notes}</pre>}
             {ingredients &&

@@ -82,7 +82,7 @@ function EditRecipiePage() {
         timeframe: recipie.timeframe || '',
         notes: recipie.notes || '',
         ingredients: ingredients,
-        servings: unitValToString(recipie.servings),
+        servings: recipie.servings?.toString(10) || '',
         instructions: recipie.instructions || [],
         substitutions: substitutions,
     };

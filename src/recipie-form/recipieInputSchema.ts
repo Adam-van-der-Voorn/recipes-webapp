@@ -14,7 +14,7 @@ export const yupIngredientNameSchema = Yup.string()
 const yupRecipieNameSchema = Yup.string()
     .required("Required")
     .trim()
-    .max(150, 'Please make this shorter.')
+    .max(150, 'Please make this shorter.');
 
 const yupIngredientsSchema = Yup.object().shape({
     lists: Yup.array()
@@ -66,7 +66,9 @@ export default function getFullSchema() {
         notes: Yup.string()
             .max(10000, 'Please make this shorter.'),
         ingredients: yupIngredientsSchema,
-        servings: yupQuantitySchema,
+        servings: Yup.string()
+            .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
+            .matches(decimalValPattern, 'Must be a number'),
         instructions: Yup.array()
             .max(1000, "Please make this step shorter"),
         substitutions: yupSubstitutionsSchema,
