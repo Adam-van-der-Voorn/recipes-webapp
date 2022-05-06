@@ -21,10 +21,10 @@ export const parseUnitValInputs = (...inputs: string[]): UnitVal[] => {
 };
 
 /**
- * @param input a valid unitval input
- * @returns the parsed input
+ * @param input a string input
+ * @returns the parsed input, or undefined if it cannot be parsed 
  */
-export const parseUnitValInput = (input: string): UnitVal => {
+export const parseUnitValInput = (input: string, ): UnitVal | undefined => {
     const match: RegExpMatchArray | null = input.match(unitValGroups);
     if (match) {
         const { value, unit }: any = match.groups;
@@ -33,5 +33,5 @@ export const parseUnitValInput = (input: string): UnitVal => {
             unit: unit
         };
     }
-    else throw new Error("ParseUnitValInput: Valid input needs to be provided.")
+    else return undefined;
 };

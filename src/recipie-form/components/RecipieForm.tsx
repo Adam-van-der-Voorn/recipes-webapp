@@ -80,7 +80,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                     ingredients: sublist.ingredients.map(ingredient => {
                                         return {
                                             name: ingredient.name,
-                                            quantity: parseUnitValInput(ingredient.quantity),
+                                            quantity: parseUnitValInput(ingredient.quantity)!,
                                             optional: ingredient.optional
                                         };
                                     })
@@ -102,7 +102,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                         const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
                             return {
                                 ingredientName: subPartInput.ingredientName.trim(),
-                                quantity: parseUnitValInput(subPartInput.quantity)
+                                quantity: parseUnitValInput(subPartInput.quantity)!
                             };
                         };
                         newRecipie.substitutions = values.substitutions.map(substitution => {

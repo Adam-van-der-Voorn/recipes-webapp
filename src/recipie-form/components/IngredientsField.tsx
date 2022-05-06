@@ -1,6 +1,6 @@
 import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps, FieldArray } from "formik";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { parseUnitValInputs } from "../parseUnitValInputs";
+import { parseUnitValInput, parseUnitValInputs } from "../parseUnitValInputs";
 import { RecipieFormData, RecipieInputIngredient } from "./RecipieForm";
 import convert, { Unit } from 'convert-units';
 import { UnitVal } from "../../types/recipieTypes";
@@ -80,12 +80,12 @@ function IngredientsField({ arrayHelpers }: Props) {
         const subIngredientList = values.ingredients.lists[subListIdx];
         const subjectField = subIngredientList.ingredients[localIdx];
         const subjectPercentage = parseFloat(subjectField.percentage);
-        const quantities: UnitVal[] = parseUnitValInputs(anchorField.quantity, subjectField.quantity);
-        if (quantities.length === 2 && !isNaN(subjectPercentage)) {
-            const [anchorQuantity, subjectQuantity] = quantities;
+        const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
+        if (anchorQuantity && !isNaN(subjectPercentage)) {
             const newValRelativeToAnchor = anchorQuantity.value * (subjectPercentage / 100);
             const fieldName = `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`;
-            if (isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
+            const subjectQuantity: UnitVal | undefined = parseUnitValInput(subjectField.quantity);
+            if (subjectQuantity && isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
                 const newValOriginalUnit = convert(newValRelativeToAnchor)
                     .from(anchorQuantity.unit as Unit)
                     .to(subjectQuantity.unit as Unit);
