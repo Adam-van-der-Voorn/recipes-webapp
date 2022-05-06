@@ -7,20 +7,11 @@ import setupFirebase from "./util/setupFirestore";
 
 const { db } = setupFirebase()
 
-const del = (collectionName: string, docName: string) => {
-    deleteDoc(doc(db, collectionName, docName))
-        .then(() => {
-            console.log("deleted from DB");
-        })
-        .catch(err => {
-            console.error('del error', err);
-        });
-};
-
 type RecipiesContextType = {
     recipies: Map<string, Recipie>;
     addRecipie: (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => void;
     editRecipie: (editedRecipie: Recipie, id: string, onAvalible?: (id: string, recipie: Recipie) => void) => void;
+    deleteRecipie: (id: string, onAvalible?: (id: string, recipie: Recipie) => void) => void;
 };
 
 export const RecipiesContext = createContext<RecipiesContextType>({} as RecipiesContextType);

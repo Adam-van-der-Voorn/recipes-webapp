@@ -1,19 +1,27 @@
 import { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RecipiesContext } from "../../App";
 import MyError from "../../components-misc/MyError";
 import { Recipie } from "../../types/recipieTypes";
 
 function RecipiePage() {
     const recipieId = useParams().recipieId;
-    const allRecipies = useContext(RecipiesContext).recipies;
+    const { recipies, deleteRecipie }  = useContext(RecipiesContext);
+
+    const navigate = useNavigate();
 
     if (recipieId === undefined) {
         console.error(`RecipiePage: no recipie provided as param`);
         return <MyError message="Oops! Something went wrong." />;
     }
 
-    const recipie: Recipie | undefined = allRecipies.get(recipieId);
+    const deleteAndNavigate = () => {
+        deleteRecipie(recipieId, () => {
+            navigate(`/`);
+        })                                                                                                                                       
+    }
+
+    const recipie: Recipie | undefined = recipies.get(recipieId);
 
     let content;
     if (recipie === undefined) {
@@ -24,6 +32,7 @@ function RecipiePage() {
         content = <>
             <h1>{name}</h1>
             <Link to={`/edit-${recipieId}`}>Edit</Link>
+            <button onClick={deleteAndNavigate}>del</button>
             {servings && <div>Servings: {servings.value} {servings.unit}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
             {notes && <pre>{notes}</pre>}

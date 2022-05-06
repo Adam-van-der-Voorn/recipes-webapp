@@ -1,4 +1,4 @@
-import { setDoc, doc, onSnapshot, collection, Firestore } from "firebase/firestore";
+import { setDoc, doc, onSnapshot, collection, Firestore, deleteDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import { Recipie } from "../../types/recipieTypes";
 import { v4 as uuid4 } from 'uuid';
@@ -25,6 +25,16 @@ export default function useRecipieStorage(db: Firestore) {
         return setDoc(doc(db, `recipies/${id}`), editedRecipie)
             .then(() => {
                 console.log('Recipie edited on server with ID', id);
+            })
+    };
+
+    const deleteRecipie = (id: string, onAvalible?: (id: string, recipie: Recipie) => void) => {
+        if (onAvalible) {
+            pendingWrites.current.set(id + '-removed', onAvalible)
+        }
+        return deleteDoc(doc(db, `recipies/${id}`))
+            .then(() => {
+                console.log('Recipie deleted on server with ID', id);
             })
     };
 
@@ -71,5 +81,6 @@ export default function useRecipieStorage(db: Firestore) {
         "recipies": recipies,
         "addRecipie": addRecipie,
         "editRecipie": editRecipie,
+        "deleteRecipie": deleteRecipie
     }
 }
