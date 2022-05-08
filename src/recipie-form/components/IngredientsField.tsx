@@ -22,7 +22,7 @@ function IngredientsField({ arrayHelpers }: Props) {
         handleBlur
     } = useFormikContext<RecipieFormData>();
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
-    const [hasMultipleLists, setHasMultipleLists] = useState(false);
+    const [hasMultipleLists, setHasMultipleLists] = useState(values.ingredients.lists.length > 1);
 
     const allIngredients = useRef<RecipieInputIngredient[]>(concatIngredients(values));
 
@@ -103,6 +103,14 @@ function IngredientsField({ arrayHelpers }: Props) {
         }
     };
 
+    const handleMultipleListsChange = (newVal: boolean) => {
+        const confirmation = window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.")
+        if (newVal && !confirmation) {
+            return;
+        }
+        setHasMultipleLists(newVal)
+    }
+
     allIngredients.current = useMemo(() => concatIngredients(values), [values]);
 
     useEffect(() => {
@@ -115,7 +123,10 @@ function IngredientsField({ arrayHelpers }: Props) {
     }, [values.ingredients.anchor]);
 
     useEffect(() => {
-        // todo processing
+        if (!hasMultipleLists) {
+            const allIngredients = values.ingredients.lists.flatMap(list => list.ingredients);
+            setFieldValue('ingredients.lists', [{name: "Main", ingredients: allIngredients}]);
+        }
     }, [hasMultipleLists]);
 
     return (
@@ -129,7 +140,7 @@ function IngredientsField({ arrayHelpers }: Props) {
                         Toggle %
                     </div>
                     <div className="menu-button"
-                        onClick={() => setHasMultipleLists(oldVal => !oldVal)}
+                        onClick={() => handleMultipleListsChange(!hasMultipleLists)}
                     >
                         Toggle multiple lists
                     </div>
