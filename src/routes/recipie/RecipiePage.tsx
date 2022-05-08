@@ -6,7 +6,7 @@ import { Recipie } from "../../types/recipieTypes";
 
 function RecipiePage() {
     const recipieId = useParams().recipieId;
-    const { recipies, deleteRecipie }  = useContext(RecipiesContext);
+    const { recipies, deleteRecipie } = useContext(RecipiesContext);
 
     const navigate = useNavigate();
 
@@ -25,10 +25,12 @@ function RecipiePage() {
 
         const deleteAndNavigate = () => {
             let confirmation = window.confirm(`Are you sure you want to delete recipie '${recipie.name}'`);
-            deleteRecipie(recipieId, () => {
-                navigate(`/`);
-            })                                                                                                                                       
-        }
+            if (confirmation) {
+                deleteRecipie(recipieId, () => {
+                    navigate(`/`);
+                });
+            }
+        };
 
         const { name, servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipie;
         content = <>
@@ -79,7 +81,7 @@ function RecipiePage() {
                     })}
                 </>
             }
-            <br/><br/><br/><br/>
+            <br /><br /><br /><br />
             <pre>{JSON.stringify(recipie, null, 2)}</pre>;
         </>;
     }
