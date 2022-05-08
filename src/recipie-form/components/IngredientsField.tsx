@@ -7,6 +7,9 @@ import { UnitVal } from "../../types/recipieTypes";
 import { isConvertableUnit, isSameMeasure } from "../../util/units";
 import IngredientsSubField from "./IngredientsSubField";
 import { concatIngredients } from "../concatIngredients";
+import { MdMoreVert } from 'react-icons/md';
+import DropdownMenu from "../../components-misc/DropdownMenu";
+import IconButton from "../../components-misc/IconButton";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -117,11 +120,21 @@ function IngredientsField({ arrayHelpers }: Props) {
 
     return (
         <>
-            <h2>Ingredients</h2>
-            <div>
-                <button type="button" onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}>toggle %</button>
-                <button type="button" onClick={() => setHasMultipleLists(oldVal => !oldVal)}>toggle multiple lists</button>
-            </div>
+            <h2>
+                Ingredients
+                <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={28} />} position={'right top'} offset={['0.8rem', '0rem']}>
+                    <div className="menu-button"
+                        onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}
+                    >
+                        Toggle %
+                    </div>
+                    <div className="menu-button"
+                        onClick={() => setHasMultipleLists(oldVal => !oldVal)}
+                    >
+                        Toggle multiple lists
+                    </div>
+                </DropdownMenu>
+            </h2>
             {
                 values.ingredients.lists.map((sublist, idx) => (
                     <IngredientsSubField key={idx}

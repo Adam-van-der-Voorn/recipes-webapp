@@ -1,0 +1,22 @@
+.icon-button {
+    -webkit-mask-image: url('../svg/circle.svg');
+    mask-image: url('../svg/circle.svg');
+}
+
+.icon-button:hover {
+    background-color: var(--neutral-8);
+}
+
+.icon-button:active {
+    background-color: var(--neutral-5);
+}
+
+.icon-button-container {
+    display: inline-block;
+}
+
+h2 > .icon-button-container {
+    position: relative;
+    left: 1ch;
+    top: 0.4em;
+}
