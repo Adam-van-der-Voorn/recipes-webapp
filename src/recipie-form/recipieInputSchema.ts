@@ -3,13 +3,19 @@ import * as Yup from 'yup';
 const unitValPattern = /^\d+(\.\d+)? *[aA-zZ]+[aA-zZ ]*$/;
 const decimalValPattern = /^\d+(\.\d+)?$/;
 
+const isLastIngredient = (context: any) => {
+    // They're there, I promise
+    const listLength = context.from[1].value.ingredients.length;
+    const index = context.options.index;
+    return index === listLength - 1;
+};
+
 export const yupQuantitySchema = Yup.string()
     .matches(unitValPattern, 'Must be a number, followed by a unit')
     .max(30, 'please make this shorter');
 
 export const yupIngredientNameSchema = Yup.string()
-    .max(60, 'Please make this shorter.')
-    .required("Ingredient name is required.");
+    .max(60, 'Please make this shorter.');
 
 const yupRecipieNameSchema = Yup.string()
     .required("Required")
@@ -25,9 +31,14 @@ const yupIngredientsSchema = Yup.object().shape({
                     .required("A name is required."),
                 ingredients: Yup.array().of(
                     Yup.object().shape({
-                        name: yupIngredientNameSchema,
+                        name: yupIngredientNameSchema
+                            .test('is-required', 'Ingredient name is required.', (el, context) => {
+                                return (el !== undefined || isLastIngredient(context));
+                            }),
                         quantity: yupQuantitySchema
-                            .required('Ingredient quantity is required.'),
+                            .test('is-required', 'Ingredient quantity is required.', (el, context) => {
+                                return (el !== undefined || isLastIngredient(context));
+                            }),
                         percentage: Yup.string()
                             .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
                             .matches(decimalValPattern, 'Must be a valid percentage'),
@@ -45,7 +56,8 @@ const yupSubstitutionsSchema = Yup.array().of(
             Yup.object().shape({
                 quantity: yupQuantitySchema
                     .required('Ingredient quantity is required.'),
-                ingredientName: yupIngredientNameSchema,
+                ingredientName: yupIngredientNameSchema
+                    .required('Ingredient name is required.'),
             })
         ),
         removals: Yup.array().of(

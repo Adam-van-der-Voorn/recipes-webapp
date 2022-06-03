@@ -1,6 +1,6 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
-import React from "react";
-import { RecipieFormData } from "./RecipieForm";
+import React, { useEffect, useRef } from "react";
+import { RecipieFormData, RecipieInputIngredient } from "./RecipieForm";
 
 type Props = {
     listIdx: number;
@@ -13,17 +13,29 @@ type Props = {
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur }: Props) {
     const { values, setFieldValue } = useFormikContext<RecipieFormData>();
-    const namePrefix = `ingredients.lists.${listIdx}`;
+    const thisListName = `ingredients.lists.${listIdx}`;
+    const thisList = values.ingredients.lists[listIdx];
+    const  ingredients = thisList.ingredients;
+    const lastField = useRef(ingredients[ingredients.length - 1]);
+    
+    useEffect(() => {
+        lastField.current = ingredients[ingredients.length - 1];
+        if (!lastField.current || (lastField.current.name !== '' || lastField.current.quantity !== '')) {
+            // last field is not 'empty'
+            const emptyField = { name: '', quantity: '', optional: false, percentage: '' };
+            setFieldValue(`${thisListName}.ingredients`, [...thisList.ingredients, emptyField]);
+        }
+    }, [values.ingredients.lists[listIdx].ingredients]);
 
     return (
         <div>
             {!isOnlyList &&
                 <div>
-                    <Field name={`${namePrefix}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
-                    <ErrorMessage name={`${namePrefix}.name`} />
+                    <Field name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
+                    <ErrorMessage name={`${thisListName}.name`} />
                 </div>
             }
-            <FieldArray name={`${namePrefix}.ingredients`} render={arrayHelpers =>
+            <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
                 <>
                     <div className="ingredient-list">
                         <div></div> {/* grid filler */}
@@ -35,7 +47,19 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                         {
                             values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
                                 const globalIdx = listPos + localIdx;
-                                const ingredientNamePrefix = `${namePrefix}.ingredients.${localIdx}`;
+                                const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
+                                const isLastField = localIdx === ingredients.length - 1;
+
+                                const removeButton = !isLastField
+                                    ? (
+                                        <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
+                                            -
+                                        </button>
+                                    )
+                                    : <div></div>;
+
+                                const namePlaceholder = isLastField ? 'New ingredient name' : '';
+                                const quantityPlaceholder = isLastField ? 'Quantity' : '';
 
                                 const percentageInput = (
                                     <div className="percentage">
@@ -58,26 +82,31 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                                 return (
                                     <React.Fragment key={localIdx}>
-                                        <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
-                                            --
-                                        </button>
+
+                                        {removeButton}
 
                                         <Field name={`${ingredientNamePrefix}.name`}
                                             type="text"
                                             className="name"
                                             autoComplete="off"
+                                            placeholder={namePlaceholder}
                                         />
+
                                         <Field name={`${ingredientNamePrefix}.quantity`}
                                             type="text"
                                             className="quantity"
                                             onBlur={onQuantityBlur(listIdx, localIdx)}
                                             autoComplete="off"
+                                            placeholder={quantityPlaceholder}
                                         />
+
                                         <div className="optional">
                                             <label htmlFor={`${ingredientNamePrefix}.optional`}>Optional?</label>
                                             <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
                                         </div>
+
                                         {percentageField}
+
 
                                         <ErrorMessage name={`${ingredientNamePrefix}.name`} />
                                         <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
@@ -87,10 +116,6 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                             })
                         }
                     </div>
-
-                    <br /><button type="button" onClick={() => arrayHelpers.push({ name: '', quantity: '', optional: false, percentage: '' })}>
-                        ++
-                    </button >
                 </>
             } />
         </div>
