@@ -1,4 +1,5 @@
 import { off } from 'process';
+import { useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
 import './DropdownMenu.css';
@@ -12,6 +13,7 @@ type Props = {
 export default function DropdownMenu({ trigger, position, offset, children }: Props) {
     console.assert(!offset || offset.length == 2, 'DropdownMenu: Offset should be an array [x, y]');
     const offsetStyle = offset ? { top: offset[1], left: offset[0] } : undefined;
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <Popup
             trigger={trigger}
@@ -21,8 +23,11 @@ export default function DropdownMenu({ trigger, position, offset, children }: Pr
             mouseLeaveDelay={300}
             mouseEnterDelay={0}
             arrow={false}
+            open={isOpen}
+            onOpen={() => setIsOpen(true)}
+            onClose={() => setIsOpen(false)}
         >
-            <div className="dropdown-menu" style={offsetStyle}>
+            <div className="dropdown-menu" style={offsetStyle} onClick={() => setIsOpen(false)}>
                 {children}
             </div>
         </Popup>
