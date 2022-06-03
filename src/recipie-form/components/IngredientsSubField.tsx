@@ -41,7 +41,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                         <div></div> {/* grid filler */}
                         <div>Ingredient</div>
                         <div>Quantity</div>
-                        <div></div>
+                        <div>Optional?</div>
                         <div></div>
 
                         {
@@ -101,7 +101,6 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                         />
 
                                         <div className="optional">
-                                            <label htmlFor={`${ingredientNamePrefix}.optional`}>Optional?</label>
                                             <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
                                         </div>
 

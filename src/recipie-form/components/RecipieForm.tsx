@@ -152,16 +152,6 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             <div className="error"><ErrorMessage name="makes" /></div>
                         </div>
 
-                        <div className="field-container stacked">
-                            <label htmlFor="notes">Extra notes</label>
-                            <Field name={`notes`} as="textarea" />
-                            <div className="error"><ErrorMessage name="notes" /></div>
-                        </div>
-
-                        <FieldArray name="ingredients.lists" render={arrayHelpers => (
-                            <IngredientsField arrayHelpers={arrayHelpers} />
-                        )} />
-
                         <div className="field-container inline">
                             <label htmlFor='servings'>Serves:</label>
                             <Field name="servings"
@@ -172,6 +162,15 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             <div className="error"><ErrorMessage name="servings"/></div>
                         </div>
 
+                        <div className="field-container stacked">
+                            <label htmlFor="notes">Extra notes</label>
+                            <Field name={`notes`} as="textarea" />
+                            <div className="error"><ErrorMessage name="notes" /></div>
+                        </div>
+
+                        <FieldArray name="ingredients.lists" render={arrayHelpers => (
+                            <IngredientsField arrayHelpers={arrayHelpers} />
+                        )} />
 
                         <FieldArray name="instructions" render={arrayHelpers => (
                             <InstructionsField arrayHelpers={arrayHelpers} />
