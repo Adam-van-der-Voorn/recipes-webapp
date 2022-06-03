@@ -104,8 +104,8 @@ function IngredientsField({ arrayHelpers }: Props) {
     };
 
     const handleMultipleListsChange = (newVal: boolean) => {
-        const confirmation = window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.")
-        if (newVal && !confirmation) {
+        const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.")
+        if (!newVal && !confirmation()) {
             return;
         }
         setHasMultipleLists(newVal)
