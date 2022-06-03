@@ -107,10 +107,12 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                                         {percentageField}
 
-
-                                        <ErrorMessage name={`${ingredientNamePrefix}.name`} />
-                                        <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-                                        <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                        <div className="ingredient-error">
+                                            <ErrorMessage name={`${ingredientNamePrefix}.name`} />
+                                            <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+                                            <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                        </div>
+                                        
                                     </React.Fragment>
                                 );
                             })

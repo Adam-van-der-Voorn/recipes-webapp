@@ -81,8 +81,13 @@ input.title:focus {
 }
 
 .ingredient-list {
+    --num-ingredient-columns: 5;
     display: inline-grid;
-    grid-auto-rows: auto;
-    grid-template-columns: repeat(5, auto);
+    grid-auto-rows: repeat(auto-fill, 100px 50px);
+    grid-template-columns: repeat(var(--num-ingredient-columns), auto);
     column-gap: 1ch;
+}
+
+.ingredient-error {
+    grid-column: 2 / span calc(var(--num-ingredient-columns) - 1);
 }
