@@ -28,6 +28,7 @@ form {
         "label input"
         "error error";
     column-gap: 1ch;
+    align-items: baseline;
 }
 
 .field-container.stacked {
@@ -54,11 +55,16 @@ form {
 input[type=text] {
     -webkit-appearance: none;
     appearance: none;
+    height: 3ch;
     background-color: transparent;
     padding: 0rem;
     font-size: 1.6rem;
     border: none;
-    border-bottom: 1px solid var(--neutral-3);
+    border-bottom: 1px solid var(--neutral-5);
+}
+.percentage > input {
+    width: 3ch;
+    text-align: right;
 }
 
 input:focus {
@@ -101,6 +107,7 @@ input.title {
     flex: 0 0 auto;
     font-size: 3.2rem;
     font-weight: bolder;
+    height: 2.5ch;
     border: none;
     border-bottom: 2px solid transparent;
     margin-top: 0rem;
@@ -116,9 +123,9 @@ input.title:focus {
     --num-ingredient-columns: 5;
     display: inline-grid;
     grid-auto-rows: repeat(auto-fill, 100px 50px);
-    grid-template-columns: repeat(var(--num-ingredient-columns), auto);
-    column-gap: 1ch;
-    row-gap: 0.5rem;
+    grid-template-columns:  auto [start-name] auto [end-name] 12ch auto auto;
+    column-gap: 1.6rem;
+    row-gap: 0.8rem;
 }
 
 .ingredient-error {
