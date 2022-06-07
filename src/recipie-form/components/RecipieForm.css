@@ -1,5 +1,8 @@
 .RecipieForm {
-    padding: 2.4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
 }
 
 p,
@@ -11,6 +14,8 @@ form {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
+    width: min(90rem, 100%);
+    margin: auto;
 }
 
 .field-container {

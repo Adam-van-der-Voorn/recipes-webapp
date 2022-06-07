@@ -13,7 +13,7 @@
 }
 
 .ingredient-error {
-    grid-column: 2 / span calc(var(--num-ingredient-columns) - 1);
+    grid-column: 1 / span calc(var(--num-ingredient-columns));
 }
 
 input[type="text"].new-ingredient {
