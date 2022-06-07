@@ -1,8 +1,9 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
 import React, { useEffect, useRef } from "react";
 import { RecipieFormData } from "../RecipieForm";
-import { MdClose } from 'react-icons/md';
+import { MdMoreVert } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
+import DropdownMenu from "../../../components-misc/DropdownMenu";
 
 
 type Props = {
@@ -39,11 +40,11 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 </div>
             }
             <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
-                <div className="ingredient-list">
+                <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
                     <div>Ingredient</div>
                     <div>Quantity</div>
-                    <div>Optional?</div>
-                    <div></div><div></div> {/* grid filler */}
+                    { isPercentagesIncluded && <div>Proportion</div>}
+                    <div></div> {/* grid filler for inline button menu */}
 
                     {
                         values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
@@ -68,8 +69,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                 ? globalIdx === values.ingredients.anchor
                                     ? <div className="percentage">anchor</div>
                                     : percentageInput
-                                : <div className="percentage"></div>;
-
+                                : null;
 
                             return (
                                 <React.Fragment key={localIdx}>
@@ -89,13 +89,16 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                                 autoComplete="off"
                                             />
 
-                                            <div className="optional">
-                                                <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
-                                            </div>
-
                                             {percentageField}
 
-                                            <IconButton icon={MdClose} className="close" size={20} onClick={() => arrayHelpers.remove(localIdx)} tabIndex={0} />
+                                            <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
+                                                <div className="menu-button" onClick={() => arrayHelpers.remove(localIdx)}>
+                                                    Delete
+                                                </div>
+                                                <div className="menu-button" onClick={() => setFieldValue(`${ingredientNamePrefix}.optional`, !ingredients[localIdx].optional)}>
+                                                    Toggle optional
+                                                </div>
+                                            </DropdownMenu>
 
                                             <div className="ingredient-error">
                                                 <ErrorMessage name={`${ingredientNamePrefix}.name`} />

@@ -4,12 +4,20 @@
 }
 
 .ingredient-list {
-    --num-ingredient-columns: 5;
     display: inline-grid;
-    grid-auto-rows: repeat(auto-fill, 100px 50px);
-    grid-template-columns:  auto [start-name] auto [end-name] 12ch auto auto;
+    grid-auto-rows: repeat(auto-fill, auto auto);
     column-gap: 1.6rem;
     row-gap: 0.8rem;
+}
+
+.ingredient-list.hide-percentages {
+    --num-ingredient-columns: 3;
+    grid-template-columns: repeat(3, auto);
+}
+
+.ingredient-list.show-percentages {
+    --num-ingredient-columns: 4;
+    grid-template-columns: repeat(4, auto);
 }
 
 .ingredient-error {
