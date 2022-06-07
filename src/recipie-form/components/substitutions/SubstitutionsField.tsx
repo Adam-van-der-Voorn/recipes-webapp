@@ -1,5 +1,5 @@
 import { useFormikContext, FieldArrayRenderProps, FieldArray } from "formik";
-import { RecipieFormData } from "./RecipieForm";
+import { RecipieFormData } from "../RecipieForm";
 import SubstitutionAdditionsField from "./SubstitutionAdditionsField";
 import SubstitutionRemovalsField from "./SubstitutionRemovalsField";
 

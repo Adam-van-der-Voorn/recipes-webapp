@@ -1,6 +1,6 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
 import React, { useEffect, useRef } from "react";
-import { RecipieFormData, RecipieInputIngredient } from "./RecipieForm";
+import { RecipieFormData, RecipieInputIngredient } from "../RecipieForm";
 
 type Props = {
     listIdx: number;

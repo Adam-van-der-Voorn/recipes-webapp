@@ -1,6 +1,6 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
-import { RecipieFormData } from "./RecipieForm";
+import { RecipieFormData } from "../RecipieForm";
 
 type Props = {
     index: number;

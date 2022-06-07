@@ -2,9 +2,9 @@ import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { Recipie } from "../../types/recipieTypes";
 import { parseUnitValInput } from "../parseUnitValInputs";
 import getFullSchema from "../recipieInputSchema";
-import IngredientsField from "./IngredientsField";
+import IngredientsField from "./ingredients/IngredientsField";
 import InstructionsField from "./InstructionsField";
-import SubstitutionsField from "./SubstitutionsField";
+import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipieForm.css';
 
 export type RecipieFormData = {
