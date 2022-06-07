@@ -3,8 +3,9 @@
     mask-image: url('../svg/circle.svg');
 }
 
-.icon-button:hover {
+.icon-button:hover, .icon-button:focus {
     background-color: var(--neutral-8);
+    outline: none;
 }
 
 .icon-button:active {

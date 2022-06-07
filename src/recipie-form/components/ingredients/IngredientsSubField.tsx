@@ -1,6 +1,9 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
 import React, { useEffect, useRef } from "react";
-import { RecipieFormData, RecipieInputIngredient } from "../RecipieForm";
+import { RecipieFormData } from "../RecipieForm";
+import { MdClose } from 'react-icons/md';
+import IconButton from "../../../components-misc/IconButton";
+
 
 type Props = {
     listIdx: number;
@@ -36,84 +39,76 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 </div>
             }
             <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
-                <>
-                    <div className="ingredient-list">
-                        <div></div> {/* grid filler */}
-                        <div>Ingredient</div>
-                        <div>Quantity</div>
-                        <div>Optional?</div>
-                        <div></div>
+                <div className="ingredient-list">
+                    <div>Ingredient</div>
+                    <div>Quantity</div>
+                    <div>Optional?</div>
+                    <div></div><div></div> {/* grid filler */}
 
-                        {
-                            values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
-                                const globalIdx = listPos + localIdx;
-                                const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
-                                const isLastField = localIdx === ingredients.length - 1;
+                    {
+                        values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
+                            const globalIdx = listPos + localIdx;
+                            const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
+                            const isLastField = localIdx === ingredients.length - 1;
 
-                                const percentageInput = (
-                                    <div className="percentage">
-                                        <Field name={`${ingredientNamePrefix}.percentage`}
-                                            type="text"
-                                            onBlur={onPercentageBlur(listIdx, localIdx)}
-                                            placeholder="?"
-                                            autoComplete="off"
-                                        />
-                                        %
-                                        <button type="button" onClick={() => setFieldValue('ingredients.anchor', globalIdx)}>set to anchor</button>
-                                    </div>
-                                );
+                            const percentageInput = (
+                                <div className="percentage">
+                                    <Field name={`${ingredientNamePrefix}.percentage`}
+                                        type="text"
+                                        onBlur={onPercentageBlur(listIdx, localIdx)}
+                                        placeholder="?"
+                                        autoComplete="off"
+                                    />
+                                    %
+                                    <button type="button" onClick={() => setFieldValue('ingredients.anchor', globalIdx)}>set to anchor</button>
+                                </div>
+                            );
 
-                                const percentageField = isPercentagesIncluded
-                                    ? globalIdx === values.ingredients.anchor
-                                        ? <div className="percentage">anchor</div>
-                                        : percentageInput
-                                    : <div className="percentage"></div>;
+                            const percentageField = isPercentagesIncluded
+                                ? globalIdx === values.ingredients.anchor
+                                    ? <div className="percentage">anchor</div>
+                                    : percentageInput
+                                : <div className="percentage"></div>;
 
 
-                                return (
-                                    <React.Fragment key={localIdx}>
+                            return (
+                                <React.Fragment key={localIdx}>
+                                    <Field name={`${ingredientNamePrefix}.name`}
+                                        type="text"
+                                        className={isLastField ? "name new-ingredient" : "name"}
+                                        autoComplete="off"
+                                        placeholder={isLastField ? "Add new ingredient" : ""}
+                                    />
 
-                                        { !isLastField && 
-                                            <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
-                                                -
-                                            </button>
-                                        }
+                                    {!isLastField &&
+                                        <>
+                                            <Field name={`${ingredientNamePrefix}.quantity`}
+                                                type="text"
+                                                className="quantity"
+                                                onBlur={onQuantityBlur(listIdx, localIdx)}
+                                                autoComplete="off"
+                                            />
 
-                                        <Field name={`${ingredientNamePrefix}.name`}
-                                            type="text"
-                                            className={isLastField ? "name new-ingredient" : "name"}
-                                            autoComplete="off"
-                                            placeholder={isLastField ? "Add new ingredient" : ""}
-                                        />
+                                            <div className="optional">
+                                                <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
+                                            </div>
 
-                                        { !isLastField &&
-                                            <>
-                                                <Field name={`${ingredientNamePrefix}.quantity`}
-                                                    type="text"
-                                                    className="quantity"
-                                                    onBlur={onQuantityBlur(listIdx, localIdx)}
-                                                    autoComplete="off"
-                                                />
+                                            {percentageField}
 
-                                                <div className="optional">
-                                                    <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
-                                                </div>
+                                            <IconButton icon={MdClose} className="close" size={20} onClick={() => arrayHelpers.remove(localIdx)} tabIndex={0} />
 
-                                                {percentageField}
-
-                                                <div className="ingredient-error">
-                                                    <ErrorMessage name={`${ingredientNamePrefix}.name`} />
-                                                    <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-                                                    <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
-                                                </div>
-                                            </>
-                                        }
-                                    </React.Fragment>
-                                );
-                            })
-                        }
-                    </div>
-                </>
+                                            <div className="ingredient-error">
+                                                <ErrorMessage name={`${ingredientNamePrefix}.name`} />
+                                                <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+                                                <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                            </div>
+                                        </>
+                                    }
+                                </React.Fragment>
+                            );
+                        })
+                    }
+                </div>
             } />
         </div>
     );
