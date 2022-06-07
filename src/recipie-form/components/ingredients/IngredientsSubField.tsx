@@ -15,9 +15,9 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
     const { values, setFieldValue } = useFormikContext<RecipieFormData>();
     const thisListName = `ingredients.lists.${listIdx}`;
     const thisList = values.ingredients.lists[listIdx];
-    const  ingredients = thisList.ingredients;
+    const ingredients = thisList.ingredients;
     const lastField = useRef(ingredients[ingredients.length - 1]);
-    
+
     useEffect(() => {
         lastField.current = ingredients[ingredients.length - 1];
         if (!lastField.current || (lastField.current.name !== '' || lastField.current.quantity !== '')) {
@@ -50,17 +50,6 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                 const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
                                 const isLastField = localIdx === ingredients.length - 1;
 
-                                const removeButton = !isLastField
-                                    ? (
-                                        <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
-                                            -
-                                        </button>
-                                    )
-                                    : <div></div>;
-
-                                const namePlaceholder = isLastField ? 'New ingredient name' : '';
-                                const quantityPlaceholder = isLastField ? 'Quantity' : '';
-
                                 const percentageInput = (
                                     <div className="percentage">
                                         <Field name={`${ingredientNamePrefix}.percentage`}
@@ -80,38 +69,45 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                         : percentageInput
                                     : <div className="percentage"></div>;
 
+
                                 return (
                                     <React.Fragment key={localIdx}>
 
-                                        {removeButton}
+                                        { !isLastField && 
+                                            <button type="button" onClick={() => arrayHelpers.remove(localIdx)}>
+                                                -
+                                            </button>
+                                        }
 
                                         <Field name={`${ingredientNamePrefix}.name`}
                                             type="text"
-                                            className="name"
+                                            className={isLastField ? "name new-ingredient" : "name"}
                                             autoComplete="off"
-                                            placeholder={namePlaceholder}
+                                            placeholder={isLastField ? "Add new ingredient" : ""}
                                         />
 
-                                        <Field name={`${ingredientNamePrefix}.quantity`}
-                                            type="text"
-                                            className="quantity"
-                                            onBlur={onQuantityBlur(listIdx, localIdx)}
-                                            autoComplete="off"
-                                            placeholder={quantityPlaceholder}
-                                        />
+                                        { !isLastField &&
+                                            <>
+                                                <Field name={`${ingredientNamePrefix}.quantity`}
+                                                    type="text"
+                                                    className="quantity"
+                                                    onBlur={onQuantityBlur(listIdx, localIdx)}
+                                                    autoComplete="off"
+                                                />
 
-                                        <div className="optional">
-                                            <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
-                                        </div>
+                                                <div className="optional">
+                                                    <Field name={`${ingredientNamePrefix}.optional`} type="checkbox" />
+                                                </div>
 
-                                        {percentageField}
+                                                {percentageField}
 
-                                        <div className="ingredient-error">
-                                            <ErrorMessage name={`${ingredientNamePrefix}.name`} />
-                                            <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-                                            <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
-                                        </div>
-                                        
+                                                <div className="ingredient-error">
+                                                    <ErrorMessage name={`${ingredientNamePrefix}.name`} />
+                                                    <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+                                                    <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                                </div>
+                                            </>
+                                        }
                                     </React.Fragment>
                                 );
                             })

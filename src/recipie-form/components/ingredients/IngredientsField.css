@@ -15,3 +15,10 @@
 .ingredient-error {
     grid-column: 2 / span calc(var(--num-ingredient-columns) - 1);
 }
+
+input[type="text"].new-ingredient {
+    border-radius: 0.5rem;
+    border-style: solid;
+    border-width: 1px;
+    grid-column: 2;
+}
