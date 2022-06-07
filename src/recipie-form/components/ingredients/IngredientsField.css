@@ -1,0 +1,17 @@
+.percentage > input {
+    width: 3ch;
+    text-align: right;
+}
+
+.ingredient-list {
+    --num-ingredient-columns: 5;
+    display: inline-grid;
+    grid-auto-rows: repeat(auto-fill, 100px 50px);
+    grid-template-columns:  auto [start-name] auto [end-name] 12ch auto auto;
+    column-gap: 1.6rem;
+    row-gap: 0.8rem;
+}
+
+.ingredient-error {
+    grid-column: 2 / span calc(var(--num-ingredient-columns) - 1);
+}

@@ -10,6 +10,7 @@ import { concatIngredients } from "../../concatIngredients";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/DropdownMenu";
 import IconButton from "../../../components-misc/IconButton";
+import './IngredientsField.css'
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;

@@ -62,10 +62,6 @@ input[type=text] {
     border: none;
     border-bottom: 1px solid var(--neutral-5);
 }
-.percentage > input {
-    width: 3ch;
-    text-align: right;
-}
 
 input:focus {
     outline: none;
@@ -117,17 +113,4 @@ input.title {
 
 input.title:focus {
     border-bottom: 2px solid var(--neutral-3);
-}
-
-.ingredient-list {
-    --num-ingredient-columns: 5;
-    display: inline-grid;
-    grid-auto-rows: repeat(auto-fill, 100px 50px);
-    grid-template-columns:  auto [start-name] auto [end-name] 12ch auto auto;
-    column-gap: 1.6rem;
-    row-gap: 0.8rem;
-}
-
-.ingredient-error {
-    grid-column: 2 / span calc(var(--num-ingredient-columns) - 1);
 }
