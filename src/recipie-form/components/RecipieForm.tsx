@@ -6,6 +6,7 @@ import IngredientsField from "./IngredientsField";
 import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./SubstitutionsField";
 import './RecipieForm.css';
+import AdjustableTextInput from "../../components-misc/adjustable-text-input/AdjustableTextInput";
 
 export type RecipieFormData = {
     name: string,
@@ -134,8 +135,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor="timeframe">Timeframe:</label>
-                            <Field name="timeframe"
-                                type="text"
+                            <AdjustableTextInput name="timeframe"
+                                defaultWidth="16ch"
                                 placeholder="-"
                                 autoComplete="off"
                             />
@@ -144,8 +145,8 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor="makes">Makes:</label>
-                            <Field name="makes"
-                                type="text"
+                            <AdjustableTextInput name="makes"
+                                defaultWidth="16ch"
                                 placeholder="-"
                                 autoComplete="off"
                             />
@@ -154,12 +155,12 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor='servings'>Serves:</label>
-                            <Field name="servings"
-                                type="text"
+                            <AdjustableTextInput name="servings"
+                                defaultWidth="2ch"
                                 placeholder="-"
                                 autoComplete="off"
                             />
-                            <div className="error"><ErrorMessage name="servings"/></div>
+                            <div className="error"><ErrorMessage name="servings" /></div>
                         </div>
 
                         <div className="field-container stacked">
@@ -182,10 +183,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <input type="submit" name="submit" id="submit-recipie" />
                         <br /><br />
-                        <pre>{JSON.stringify(values, null, 2)}</pre>
-
                     </Form>
-
                 )}
             </Formik>
         </div >
