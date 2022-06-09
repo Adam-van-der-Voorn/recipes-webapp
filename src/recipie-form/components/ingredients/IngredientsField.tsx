@@ -11,6 +11,7 @@ import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import IconButton from "../../../components-misc/IconButton";
 import './IngredientsField.css'
+import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -135,16 +136,8 @@ function IngredientsField({ arrayHelpers }: Props) {
             <h2>
                 Ingredients
                 <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={28} />} position={'right top'} offset={['0.8rem', '0rem']}>
-                    <div className="menu-button"
-                        onClick={() => setIsPercentagesIncluded(oldVal => !oldVal)}
-                    >
-                        Toggle %
-                    </div>
-                    <div className="menu-button"
-                        onClick={() => handleMultipleListsChange(!hasMultipleLists)}
-                    >
-                        Toggle multiple lists
-                    </div>
+                    <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
+                    <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>
             </h2>
             {
