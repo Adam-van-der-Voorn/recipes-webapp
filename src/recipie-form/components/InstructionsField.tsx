@@ -1,4 +1,5 @@
 import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps } from "formik";
+import FormErrorMessage from "./FormErrorMessage";
 import { RecipieFormData } from "./RecipieForm";
 
 type Props = {
@@ -19,7 +20,7 @@ function InstructionsField({ arrayHelpers }: Props) {
                         </button>
                         {`${index + 1}. `}
                         <Field name={`instructions.${index}`} as="textarea" /><br />
-                        <ErrorMessage name={`instructions.${index}`} /><br />
+                        <FormErrorMessage name={`instructions.${index}`} />
                     </div>
                 ))
             }

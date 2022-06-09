@@ -7,6 +7,7 @@ import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipieForm.css';
 import parseFormData from "./parseFormData";
+import FormErrorMessage from "./FormErrorMessage";
 
 export type RecipieFormData = {
     name: string,
@@ -71,7 +72,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                             placeholder="Untitled"
                             autoComplete="off"
                         />
-                        <ErrorMessage name="name" />
+                        <FormErrorMessage name="name" />
 
                         <div className="field-container inline">
                             <label htmlFor="timeframe">Timeframe:</label>
@@ -80,7 +81,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                 placeholder="-"
                                 autoComplete="off"
                             />
-                            <div className="error"><ErrorMessage name="timeframe" /></div>
+                            <FormErrorMessage name="timeframe" />
                         </div>
 
                         <div className="field-container inline">
@@ -90,7 +91,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                 placeholder="-"
                                 autoComplete="off"
                             />
-                            <div className="error"><ErrorMessage name="makes" /></div>
+                            <FormErrorMessage name="makes" />
                         </div>
 
                         <div className="field-container inline">
@@ -100,13 +101,13 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                                 placeholder="-"
                                 autoComplete="off"
                             />
-                            <div className="error"><ErrorMessage name="servings"/></div>
+                            <FormErrorMessage name="servings"/>
                         </div>
 
                         <div className="field-container stacked">
                             <label htmlFor="notes">Extra notes</label>
                             <Field name={`notes`} as="textarea" />
-                            <div className="error"><ErrorMessage name="notes" /></div>
+                            <FormErrorMessage name="notes" />
                         </div>
 
                         <FieldArray name="ingredients.lists" render={arrayHelpers => (

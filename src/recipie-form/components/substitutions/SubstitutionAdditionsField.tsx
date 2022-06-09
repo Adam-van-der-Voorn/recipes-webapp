@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
+import FormErrorMessage from "../FormErrorMessage";
 import { RecipieFormData } from "../RecipieForm";
 
 type Props = {
@@ -37,8 +38,8 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
                             autoComplete="off"
                         />
                         <br />
-                        <ErrorMessage name={`substitutions.${index}.additions.${idx}.quantity`} /><br />
-                        <ErrorMessage name={`substitutions.${index}.additions.${idx}.ingredientName`} />
+                        <FormErrorMessage name={`substitutions.${index}.additions.${idx}.quantity`} /><br />
+                        <FormErrorMessage name={`substitutions.${index}.additions.${idx}.ingredientName`} />
                     </div>
                 ))
             }

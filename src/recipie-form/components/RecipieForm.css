@@ -126,3 +126,9 @@ input.title {
 input.title:focus {
     border-bottom: 2px solid var(--neutral-3);
 }
+
+.error {
+    font-size: 1.4rem;
+    color: var(--error-red);
+    margin-bottom: 1rem;
+}

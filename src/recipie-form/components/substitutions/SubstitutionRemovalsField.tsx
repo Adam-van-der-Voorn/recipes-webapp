@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
 import { concatIngredients } from "../../concatIngredients";
+import FormErrorMessage from "../FormErrorMessage";
 import { RecipieFormData } from "../RecipieForm";
 
 type Props = {
@@ -42,8 +43,8 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                                 })
                             }
                         </Field> <br />
-                        <ErrorMessage name={`substitutions.${index}.removals.${idx}.quantity`} /><br />
-                        <ErrorMessage name={`substitutions.${index}.removals.${idx}.ingredientName`} />
+                        <FormErrorMessage name={`substitutions.${index}.removals.${idx}.quantity`} /><br />
+                        <FormErrorMessage name={`substitutions.${index}.removals.${idx}.ingredientName`} />
                     </div>
                 ))
             }

@@ -6,6 +6,7 @@ import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
+import FormErrorMessage from "../FormErrorMessage";
 
 
 type Props = {
@@ -38,7 +39,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
             {!isOnlyList &&
                 <div>
                     <Field name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
-                    <ErrorMessage name={`${thisListName}.name`} />
+                    <FormErrorMessage name={`${thisListName}.name`} />
                 </div>
             }
             <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
@@ -101,10 +102,10 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                                 <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
                                             </DropdownMenu>
 
-                                            <div className="ingredient-error">
-                                                <ErrorMessage name={`${ingredientNamePrefix}.name`} />
-                                                <ErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-                                                <ErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+                                            <div className="ingredient-errors">
+                                                <FormErrorMessage name={`${ingredientNamePrefix}.name`} />
+                                                <FormErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+                                                <FormErrorMessage name={`${ingredientNamePrefix}.percentage`} />
                                             </div>
                                         </>
                                     }
