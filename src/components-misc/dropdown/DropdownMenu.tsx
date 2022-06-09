@@ -3,12 +3,13 @@ import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
 import './DropdownMenu.css';
+type Child = JSX.Element | null | false;
 
 type Props = {
     trigger: any;
     position?: PopupPosition | PopupPosition[];
     offset?: string[];
-    children?: JSX.Element | JSX.Element[];
+    children?: Child | Child[];
 };
 
 type Context = {

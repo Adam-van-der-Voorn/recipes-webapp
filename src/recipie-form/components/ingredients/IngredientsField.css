@@ -1,12 +1,18 @@
 .ingredient-list {
+    --percent-symbol-width: 1.3ch;
     display: inline-grid;
     grid-auto-rows: auto;
     column-gap: 1.6rem;
     row-gap: 0.8rem;
+
 }
 
 .ingredient-list > input[type="text"] {
     width: 100%;
+}
+
+.ingredient-list > .percentage > input[type="text"] {
+    width: calc(100% - var(--percent-symbol-width));
 }
 
 .ingredient-list > .grid-header {
@@ -22,7 +28,7 @@
 
 .ingredient-list.show-percentages {
     --num-ingredient-columns: 4;
-    grid-template-columns: 1fr 12ch 7ch auto;
+    grid-template-columns: 1fr 12ch calc(7ch + var(--percent-symbol-width)) auto;
 }
 
 .ingredient-error {

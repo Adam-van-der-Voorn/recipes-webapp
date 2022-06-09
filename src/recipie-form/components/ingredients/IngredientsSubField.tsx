@@ -1,7 +1,7 @@
 import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
 import React, { useEffect, useRef } from "react";
 import { RecipieFormData } from "../RecipieForm";
-import { MdMoreVert } from 'react-icons/md';
+import { MdMoreVert, MdAnchor } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
@@ -34,7 +34,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
     }, [values.ingredients.lists[listIdx].ingredients]);
 
     return (
-        <div>
+        <>
             {!isOnlyList &&
                 <div>
                     <Field name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
@@ -45,7 +45,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
                     <div className="grid-header">Ingredient</div>
                     <div className="grid-header">Quantity</div>
-                    { isPercentagesIncluded && <div className="grid-header">Proportion</div>}
+                    {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
                     <div></div> {/* grid filler for inline button menu */}
 
                     {
@@ -53,6 +53,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                             const globalIdx = listPos + localIdx;
                             const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
                             const isLastField = localIdx === ingredients.length - 1;
+                            const isAnchor = globalIdx === values.ingredients.anchor;
 
                             const percentageInput = (
                                 <div className="percentage">
@@ -63,13 +64,12 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                         autoComplete="off"
                                     />
                                     %
-                                    <button type="button" onClick={() => setFieldValue('ingredients.anchor', globalIdx)}>set to anchor</button>
                                 </div>
                             );
 
                             const percentageField = isPercentagesIncluded
-                                ? globalIdx === values.ingredients.anchor
-                                    ? <div className="percentage">anchor</div>
+                                ? isAnchor
+                                    ? <div className="anchor"><MdAnchor /></div>
                                     : percentageInput
                                 : null;
 
@@ -94,8 +94,11 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                             {percentageField}
 
                                             <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                                <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
                                                 <MenuItemToggleable text="Optional" value={ingredients[localIdx].optional} toggle={b => setFieldValue(`${ingredientNamePrefix}.optional`, b)} />
+                                                {!isAnchor && isPercentagesIncluded &&
+                                                    <MenuItemAction text="Set to anchor" action={() => setFieldValue('ingredients.anchor', globalIdx)} />
+                                                }
+                                                <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
                                             </DropdownMenu>
 
                                             <div className="ingredient-error">
@@ -111,7 +114,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                     }
                 </div>
             } />
-        </div>
+        </>
     );
 };
 
