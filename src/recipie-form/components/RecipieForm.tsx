@@ -6,6 +6,7 @@ import IngredientsField from "./ingredients/IngredientsField";
 import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipieForm.css';
+import parseFormData from "./parseFormData";
 
 export type RecipieFormData = {
     name: string,
@@ -56,67 +57,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
                 initialValues={initialValues}
                 validationSchema={getFullSchema()}
                 onSubmit={(values) => {
-                    // parse form data
-                    const newRecipie: Recipie = {
-                        name: values.name.trim(),
-                    };
-
-                    if (values.servings !== '') {
-                        newRecipie.servings = parseFloat(values.servings);
-                    }
-
-                    if (values.timeframe !== '') {
-                        newRecipie.timeframe = values.timeframe.trim();
-                    }
-
-                    if (values.makes !== '') {
-                        newRecipie.makes = parseUnitValInput(values.makes)!;
-                    }
-
-                    if (values.notes !== '') {
-                        newRecipie.notes = values.notes.trim();
-                    }
-
-                    if (values.ingredients.lists.length > 0) {
-                        newRecipie.ingredients = {
-                            lists: values.ingredients.lists.map(sublist => {
-                                return {
-                                    name: sublist.name,
-                                    ingredients: sublist.ingredients.map(ingredient => {
-                                        return {
-                                            name: ingredient.name,
-                                            quantity: parseUnitValInput(ingredient.quantity)!,
-                                            optional: ingredient.optional
-                                        };
-                                    })
-                                };
-                            })
-                        };
-                        if (values.ingredients.anchor) {
-                            newRecipie.ingredients.anchor = values.ingredients.anchor;
-                        }
-                    }
-
-                    if (values.instructions.length > 0) {
-                        newRecipie.instructions = values.instructions
-                            // remove empty instructions
-                            .flatMap(instruction => instruction.trim() !== '' ? [instruction] : []);
-                    }
-
-                    if (values.substitutions.length > 0) {
-                        const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
-                            return {
-                                ingredientName: subPartInput.ingredientName.trim(),
-                                quantity: parseUnitValInput(subPartInput.quantity)!
-                            };
-                        };
-                        newRecipie.substitutions = values.substitutions.map(substitution => {
-                            return {
-                                additions: substitution.additions.map(addition => parseSubPart(addition)),
-                                removals: substitution.removals.map(removal => parseSubPart(removal))
-                            };
-                        });
-                    }
+                    const newRecipie = parseFormData(values);
 
                     // do something with the data
                     doSubmit(newRecipie);
