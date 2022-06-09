@@ -29,12 +29,16 @@ export default function parseFormData(formData: RecipieFormData): Recipie {
             lists: formData.ingredients.lists.map(sublist => {
                 return {
                     name: sublist.name,
-                    ingredients: sublist.ingredients.map(ingredient => {
-                        return {
+                    ingredients: sublist.ingredients.flatMap((ingredient, idx) => {
+                        // do not include dummy field in ingredients
+                        if (idx === sublist.ingredients.length - 1) {
+                            return [];
+                        }
+                        return [{
                             name: ingredient.name,
                             quantity: parseUnitValInput(ingredient.quantity)!,
                             optional: ingredient.optional
-                        };
+                        }];
                     })
                 };
             })
