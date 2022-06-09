@@ -14,7 +14,7 @@ form {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
-    width: min(90rem, 100%);
+    width: min(80rem, 100%);
     margin: auto;
 }
 
@@ -71,6 +71,7 @@ input[type=text] {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     box-sizing: border-box;
+    font-family: 'Karla', Helvetica, Arial, sans-serif;
 }
 
 input:focus {

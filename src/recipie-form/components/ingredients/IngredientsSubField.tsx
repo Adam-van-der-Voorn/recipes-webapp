@@ -43,9 +43,9 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
             }
             <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
                 <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
-                    <div>Ingredient</div>
-                    <div>Quantity</div>
-                    { isPercentagesIncluded && <div>Proportion</div>}
+                    <div className="grid-header">Ingredient</div>
+                    <div className="grid-header">Quantity</div>
+                    { isPercentagesIncluded && <div className="grid-header">Proportion</div>}
                     <div></div> {/* grid filler for inline button menu */}
 
                     {

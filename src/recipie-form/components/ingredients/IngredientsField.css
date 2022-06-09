@@ -1,27 +1,32 @@
-.percentage > input {
-    width: 3ch;
-    text-align: right;
-}
-
 .ingredient-list {
     display: inline-grid;
-    grid-auto-rows: repeat(auto-fill, auto auto);
+    grid-auto-rows: auto;
     column-gap: 1.6rem;
     row-gap: 0.8rem;
 }
 
+.ingredient-list > input[type="text"] {
+    width: 100%;
+}
+
+.ingredient-list > .grid-header {
+    font-size: 1.4rem;
+    padding-left: 0.5rem;
+    color: var(--neutral-2);
+}
+
 .ingredient-list.hide-percentages {
     --num-ingredient-columns: 3;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: 1fr 12ch auto;
 }
 
 .ingredient-list.show-percentages {
     --num-ingredient-columns: 4;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: 1fr 12ch 7ch auto;
 }
 
 .ingredient-error {
-    grid-column: 1 / span calc(var(--num-ingredient-columns));
+    grid-column: 1 / span var(--num-ingredient-columns);
 }
 
 input[type="text"].new-ingredient {

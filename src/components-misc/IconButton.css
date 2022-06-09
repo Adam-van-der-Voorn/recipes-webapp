@@ -6,6 +6,7 @@
 .icon-button:hover, .icon-button:focus {
     background-color: var(--neutral-8);
     outline: none;
+    cursor: pointer;
 }
 
 .icon-button:active {
