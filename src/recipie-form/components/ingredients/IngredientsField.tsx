@@ -8,7 +8,7 @@ import { isConvertableUnit, isSameMeasure } from "../../../util/units";
 import IngredientsSubField from "./IngredientsSubField";
 import { concatIngredients } from "../../concatIngredients";
 import { MdMoreVert } from 'react-icons/md';
-import DropdownMenu from "../../../components-misc/DropdownMenu";
+import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import IconButton from "../../../components-misc/IconButton";
 import './IngredientsField.css'
 

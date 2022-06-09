@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { RecipieFormData } from "../RecipieForm";
 import { MdMoreVert } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
-import DropdownMenu from "../../../components-misc/DropdownMenu";
+import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 
 
 type Props = {
