@@ -8,6 +8,7 @@ import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipieForm.css';
 import parseFormData from "./parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
+import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
 
 export type RecipieFormData = {
     name: string,
@@ -106,7 +107,7 @@ function RecipieForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container stacked">
                             <label htmlFor="notes">Extra notes</label>
-                            <Field name={`notes`} as="textarea" />
+                            <TextAreaAutoHeight name={`notes`} defaultHeight={'112px'} />
                             <FormErrorMessage name="notes" />
                         </div>
 

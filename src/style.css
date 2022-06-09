@@ -9,6 +9,11 @@ html {
     font-family: 'Karla', Helvetica, Arial, sans-serif;
 }
 
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: 1.6rem;
+}
+
 p, span, a, div, label {
     font-size: 1.6rem;
 }
