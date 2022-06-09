@@ -1,5 +1,5 @@
-import { off } from 'process';
-import { useState } from 'react';
+import React from 'react';
+import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
 import './DropdownMenu.css';
@@ -10,10 +10,18 @@ type Props = {
     offset?: string[];
     children?: JSX.Element | JSX.Element[];
 };
+
+type Context = {
+    setDropdownOpen: (value: boolean) => void;
+}
+
+export const DropdownContext = createContext<Context>({setDropdownOpen: (b) => {}});
+
 export default function DropdownMenu({ trigger, position, offset, children }: Props) {
     console.assert(!offset || offset.length == 2, 'DropdownMenu: Offset should be an array [x, y]');
     const offsetStyle = offset ? { top: offset[1], left: offset[0] } : undefined;
     const [isOpen, setIsOpen] = useState(false);
+
     return (
         <Popup
             trigger={trigger}
@@ -27,9 +35,11 @@ export default function DropdownMenu({ trigger, position, offset, children }: Pr
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
         >
-            <div className="dropdown-menu" style={offsetStyle} onClick={() => setIsOpen(false)}>
-                {children}
-            </div>
+            <DropdownContext.Provider value={{setDropdownOpen: setIsOpen}}>
+                <div className="dropdown-menu" style={offsetStyle}>
+                    {children}
+                </div>
+            </DropdownContext.Provider>
         </Popup>
     );
 

@@ -3,7 +3,9 @@ import React, { useEffect, useRef } from "react";
 import { RecipieFormData } from "../RecipieForm";
 import { MdMoreVert } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
+import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
+import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 
 
 type Props = {
@@ -92,12 +94,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                             {percentageField}
 
                                             <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                                <div className="menu-button" onClick={() => arrayHelpers.remove(localIdx)}>
-                                                    Delete
-                                                </div>
-                                                <div className="menu-button" onClick={() => setFieldValue(`${ingredientNamePrefix}.optional`, !ingredients[localIdx].optional)}>
-                                                    Toggle optional
-                                                </div>
+                                                <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
+                                                <MenuItemToggleable text="Optional" value={ingredients[localIdx].optional} toggle={b => setFieldValue(`${ingredientNamePrefix}.optional`, b)} />
                                             </DropdownMenu>
 
                                             <div className="ingredient-error">
