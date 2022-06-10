@@ -1,1 +1,1 @@
-# Recipies!
+# Recipes!

@@ -1,0 +1,7 @@
+.RecipeCard {
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 15rem;
+    padding: 1rem;
+    flex: 1 1 auto;
+}

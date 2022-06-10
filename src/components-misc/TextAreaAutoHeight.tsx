@@ -1,6 +1,6 @@
 import { useField } from "formik";
 import { useEffect, useRef } from "react";
-import { RecipieFormData } from "../recipie-form/components/RecipieForm";
+import { RecipeFormData } from "../recipe-form/components/RecipeForm";
 
 type Props = {
     defaultHeight: string;

@@ -1,4 +1,4 @@
-import { yupQuantitySchema } from "../recipie-form/recipieInputSchema";
+import { yupQuantitySchema } from "../recipe-form/recipeInputSchema";
 
 describe('valid input quantity', () => {
     it.each([

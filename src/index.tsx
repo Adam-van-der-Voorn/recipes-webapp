@@ -6,20 +6,20 @@ import './palette.css';
 import './style.css';
 import * as ServiceWorkerRegistration from './serviceWorkerRegistration'
 import App from './App';
-import AddRecipiePage from './routes/add-recipie/AddRecipiePage';
-import EditRecipiePage from './routes/edit-recipie/EditRecipiePage';
-import RecipieSetPage from './routes/home/RecipieSetPage';
-import RecipiePage from './routes/recipie/RecipiePage';
+import AddRecipePage from './routes/add-recipe/AddRecipePage';
+import EditRecipePage from './routes/edit-recipe/EditRecipePage';
+import RecipeSetPage from './routes/home/RecipeSetPage';
+import RecipePage from './routes/recipe/RecipePage';
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />}>
-                    <Route index element={<RecipieSetPage />} />
-                    <Route path="add-recipie" element={<AddRecipiePage />} />
-                    <Route path="view-:recipieId" element={<RecipiePage />} />
-                    <Route path="edit-:recipieId" element={<EditRecipiePage />} />
+                    <Route index element={<RecipeSetPage />} />
+                    <Route path="add-recipe" element={<AddRecipePage />} />
+                    <Route path="view-:recipeId" element={<RecipePage />} />
+                    <Route path="edit-:recipeId" element={<EditRecipePage />} />
                 </Route>
                 <Route path="*" element={<div>BAD PATH !!!!</div>} />
             </Routes>

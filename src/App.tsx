@@ -1,30 +1,30 @@
 import React, { createContext } from "react";
 import { Outlet } from "react-router-dom";
-import { Recipie } from "./types/recipieTypes";
-import useRecipieStorage from "./util/hooks/useRecipieStorage";
+import { Recipe } from "./types/recipeTypes";
+import useRecipeStorage from "./util/hooks/useRecipeStorage";
 import setupFirebase from "./util/setupFirestore";
 
 const { db } = setupFirebase();
 
-type RecipiesContextType = {
-    recipies: Map<string, Recipie>;
-    addRecipie: (recipie: Recipie, onAvalible?: (id: string, recipie: Recipie) => void) => void;
-    editRecipie: (editedRecipie: Recipie, id: string, onAvalible?: (id: string, recipie: Recipie) => void) => void;
-    deleteRecipie: (id: string, onAvalible?: (id: string, recipie: Recipie) => void) => void;
+type RecipesContextType = {
+    recipes: Map<string, Recipe>;
+    addRecipe: (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => void;
+    editRecipe: (editedRecipe: Recipe, id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
+    deleteRecipe: (id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
 };
 
-export const RecipiesContext = createContext<RecipiesContextType>({} as RecipiesContextType);
+export const RecipesContext = createContext<RecipesContextType>({} as RecipesContextType);
 
 function App() {
 
-    const recipieStorageInterface: RecipiesContextType = useRecipieStorage(db);
+    const recipeStorageInterface: RecipesContextType = useRecipeStorage(db);
 
     return (
-        <RecipiesContext.Provider value={recipieStorageInterface}>
+        <RecipesContext.Provider value={recipeStorageInterface}>
             <div className="App">
                 <Outlet />
             </div>
-        </RecipiesContext.Provider>
+        </RecipesContext.Provider>
     );
 }
 
