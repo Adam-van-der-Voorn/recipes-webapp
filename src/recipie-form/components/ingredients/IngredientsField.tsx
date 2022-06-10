@@ -10,7 +10,7 @@ import { concatIngredients } from "../../concatIngredients";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import IconButton from "../../../components-misc/IconButton";
-import './IngredientsField.css'
+import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 
 type Props = {
@@ -89,29 +89,19 @@ function IngredientsField({ arrayHelpers }: Props) {
         const subjectPercentage = parseFloat(subjectField.percentage);
         const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
         if (anchorQuantity && !isNaN(subjectPercentage)) {
-            const newValRelativeToAnchor = anchorQuantity.value * (subjectPercentage / 100);
-            const fieldName = `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`;
-            const subjectQuantity: UnitVal | undefined = parseUnitValInput(subjectField.quantity);
-            if (subjectQuantity && isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
-                const newValOriginalUnit = convert(newValRelativeToAnchor)
-                    .from(anchorQuantity.unit as Unit)
-                    .to(subjectQuantity.unit as Unit);
-                setFieldValue(fieldName, `${newValOriginalUnit} ${subjectQuantity.unit}`);
-            }
-            else {
-                setFieldValue(fieldName, `${newValRelativeToAnchor} ${anchorQuantity.unit}`);
-            }
-
+            const subjectQuantity = parseUnitValInput(subjectField.quantity)
+            const newFieldValue = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectQuantity)
+            setFieldValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`, newFieldValue)
         }
     };
 
     const handleMultipleListsChange = (newVal: boolean) => {
-        const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.")
+        const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.");
         if (!newVal && !confirmation()) {
             return;
         }
-        setHasMultipleLists(newVal)
-    }
+        setHasMultipleLists(newVal);
+    };
 
     allIngredients.current = useMemo(() => concatIngredients(values), [values]);
 
@@ -127,7 +117,7 @@ function IngredientsField({ arrayHelpers }: Props) {
     useEffect(() => {
         if (!hasMultipleLists) {
             const allIngredients = values.ingredients.lists.flatMap(list => list.ingredients);
-            setFieldValue('ingredients.lists', [{name: "Main", ingredients: allIngredients}]);
+            setFieldValue('ingredients.lists', [{ name: "Main", ingredients: allIngredients }]);
         }
     }, [hasMultipleLists]);
 
