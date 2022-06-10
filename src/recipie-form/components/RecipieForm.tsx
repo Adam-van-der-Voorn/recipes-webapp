@@ -6,7 +6,7 @@ import IngredientsField from "./ingredients/IngredientsField";
 import InstructionsField from "./InstructionsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipieForm.css';
-import parseFormData from "./parseFormData";
+import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
 

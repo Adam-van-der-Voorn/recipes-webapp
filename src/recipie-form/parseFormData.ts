@@ -1,6 +1,6 @@
-import { Recipie } from "../../types/recipieTypes";
-import { parseUnitValInput } from "../parseUnitValInputs";
-import { RecipieFormData } from "./RecipieForm";
+import { Recipie } from "../types/recipieTypes";
+import { parseUnitValInput } from "./parseUnitValInputs";
+import { RecipieFormData } from "./components/RecipieForm";
 
 export default function parseFormData(formData: RecipieFormData): Recipie {
     // parse form data
