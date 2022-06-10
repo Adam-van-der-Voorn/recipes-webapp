@@ -62,8 +62,7 @@ const yupSubstitutionsSchema = Yup.array().of(
         ),
         removals: Yup.array().of(
             Yup.object().shape({
-                quantity: yupQuantitySchema
-                    .required('Ingredient quantity is required.'),
+                quantity: yupQuantitySchema,
                 ingredientName: Yup.string() // select field,
             })
         ),

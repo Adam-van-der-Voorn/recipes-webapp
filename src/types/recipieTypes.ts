@@ -13,7 +13,7 @@ export type Ingredient = {
 
 export type SubstitutionPart = {
     ingredientName: string;
-    quantity: UnitVal;
+    quantity?: UnitVal;
 };
 
 export type Substitution = {

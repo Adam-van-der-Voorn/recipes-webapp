@@ -58,7 +58,7 @@ export default function parseFormData(formData: RecipieFormData): Recipie {
         const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
             return {
                 ingredientName: subPartInput.ingredientName.trim(),
-                quantity: parseUnitValInput(subPartInput.quantity)!
+                ...(subPartInput.quantity !== '' && {quantity: parseUnitValInput(subPartInput.quantity)!}) 
             };
         };
         recipie.substitutions = formData.substitutions.map(substitution => {

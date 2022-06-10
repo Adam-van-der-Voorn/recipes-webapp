@@ -32,6 +32,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
                         <Field name={`substitutions.${index}.removals.${idx}.quantity`}
                             type="text"
                             autoComplete="off"
+                            placeholder="all"
                         />
                         <span>of</span>
                         <Field name={`substitutions.${index}.removals.${idx}.ingredientName`} as="select">

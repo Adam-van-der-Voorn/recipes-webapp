@@ -63,11 +63,11 @@ function RecipiePage() {
                             <h4>substitution {idx + 1}</h4>
                             <div>add:</div>
                             {substitution.additions.map(addition => {
-                                return <div key={addition.ingredientName}> {addition.quantity.value} {addition.quantity.unit} {addition.ingredientName}</div>;
+                                return <div key={addition.ingredientName}> {addition.quantity?.value} {addition.quantity?.unit} {addition.ingredientName}</div>;
                             })}
                             <div>remove:</div>
                             {substitution.removals.map(removal => {
-                                return <div key={removal.ingredientName}> {removal.quantity.value} {removal.quantity.unit} {removal.ingredientName}</div>;
+                                return <div key={removal.ingredientName}> {removal.quantity?.value} {removal.quantity?.unit} {removal.ingredientName}</div>;
                             })}
                         </div>);
                     })}
