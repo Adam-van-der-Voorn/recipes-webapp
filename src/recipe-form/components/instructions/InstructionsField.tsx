@@ -1,6 +1,6 @@
-import { useFormikContext, ErrorMessage, Field, FieldArrayRenderProps } from "formik";
-import FormErrorMessage from "./FormErrorMessage";
-import { RecipeFormData } from "./RecipeForm";
+import { useFormikContext, Field, FieldArrayRenderProps } from "formik";
+import FormErrorMessage from "../FormErrorMessage";
+import { RecipeFormData } from "../RecipeForm";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
