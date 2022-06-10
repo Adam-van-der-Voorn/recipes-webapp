@@ -12,6 +12,7 @@ import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import IconButton from "../../../components-misc/IconButton";
 import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
+import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
@@ -59,14 +60,23 @@ function IngredientsField({ arrayHelpers }: Props) {
 
     const setPercentageAuto = (subListIdx: number, localIdx: number): void => {
         const ingredient = values.ingredients.lists[subListIdx].ingredients[localIdx];
-        const percentage: string | number = percentageFromVal(ingredient) || '';
-        setFieldValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`, percentage);
+        const percentage: number | undefined = percentageFromVal(ingredient);
+        if (percentage) {
+            setPercentage(percentage, subListIdx, localIdx);
+        }
+        else {
+            setFieldValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`, '');
+        }
     };
 
     const onQuantityBlur = (subListIdx: number, localIdx: number) => (e: any) => {
         handleBlur(e);
-        const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
+        const quantity = parseUnitValInput(e.target.value);
+        if (quantity) {
+            setQuantity(quantity, subListIdx, localIdx);
+        }
         if (isPercentagesIncluded) {
+            const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
             if (globalIdx === values.ingredients.anchor) {
                 for (let subListIdx = 0; subListIdx < values.ingredients.lists.length; subListIdx++) {
                     const subList = values.ingredients.lists[subListIdx];
@@ -83,15 +93,22 @@ function IngredientsField({ arrayHelpers }: Props) {
 
     const onPercentageBlur = (subListIdx: number, localIdx: number) => (e: any) => {
         handleBlur(e);
-        const anchorField = allIngredients.current[values.ingredients.anchor];
         const subIngredientList = values.ingredients.lists[subListIdx];
         const subjectField = subIngredientList.ingredients[localIdx];
         const subjectPercentage = parseFloat(subjectField.percentage);
+        if (isNaN(subjectPercentage)) {
+            return;
+        }
+        setPercentage(subjectPercentage, subListIdx, localIdx);
+
+        const anchorField = allIngredients.current[values.ingredients.anchor];
         const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
-        if (anchorQuantity && !isNaN(subjectPercentage)) {
-            const subjectQuantity = parseUnitValInput(subjectField.quantity)
-            const newFieldValue = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectQuantity)
-            setFieldValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`, newFieldValue)
+        if (anchorQuantity) {
+            const subjectQuantity = parseUnitValInput(subjectField.quantity);
+            const newQuantity = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectQuantity);
+            if (newQuantity) {
+                setQuantity(newQuantity, subListIdx, localIdx);
+            }
         }
     };
 
@@ -102,6 +119,22 @@ function IngredientsField({ arrayHelpers }: Props) {
         }
         setHasMultipleLists(newVal);
     };
+
+    const setQuantity = (quantity: UnitVal, subListIdx: number, localIdx: number) => {
+        const rounded = +(quantity.value).toFixed(2);
+        setFieldValue(
+            `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`,
+            `${rounded} ${quantity.unit}`
+        )
+    }
+
+    const setPercentage = (percentage: number, subListIdx: number, localIdx: number) => {
+        const rounded = +(percentage).toFixed(2);
+        setFieldValue(
+            `ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`,
+            rounded
+        )
+    }
 
     allIngredients.current = useMemo(() => concatIngredients(values), [values]);
 
@@ -147,7 +180,6 @@ function IngredientsField({ arrayHelpers }: Props) {
                     Add ingredient list
                 </button >
             }
-
         </>
     );
 };
