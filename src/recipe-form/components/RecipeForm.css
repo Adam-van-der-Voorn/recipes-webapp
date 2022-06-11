@@ -26,8 +26,8 @@ form {
 }
 
 .field-container.inline {
-    width: fit-content;
-    grid-template-columns: auto auto;
+    width: auto;
+    grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     grid-template-areas:
         "label input"

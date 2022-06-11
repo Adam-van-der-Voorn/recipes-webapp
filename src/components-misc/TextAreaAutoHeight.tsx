@@ -1,16 +1,16 @@
 import { useField } from "formik";
 import { useEffect, useRef } from "react";
-import { RecipeFormData } from "../recipe-form/components/RecipeForm";
+import extractField from "../util/extractField";
 
 type Props = {
-    defaultHeight: string;
+    defaultHeight?: string;
+    onEnter?: (ev: any) => void;
     name: string;
     [key: string]: any;
 };
 
-
 // works with border-box only
-export default function TextAreaAutoHeight({ defaultHeight, ...props }: Props) {
+export default function TextAreaAutoHeight({ defaultHeight = '0', onEnter = undefined, ...props }: Props) {
     const [field] = useField(props);
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -19,20 +19,18 @@ export default function TextAreaAutoHeight({ defaultHeight, ...props }: Props) {
             console.error("TextAreaAutoHeight: ref is null");
             return;
         }
-
         domRef.current.style.height = defaultHeight;
         domRef.current.style.height = (domRef.current.scrollHeight + 3) + "px"; // why the 3? border adjustment I think
-
     };
 
-    // messy - rip out the onChange function from the props and formik methods
-    const formikOnChange = field.onChange;
-    const formikField: any = field as any;
-    delete formikField.onChange;
-    const propsOnChange = props.onChange;
-    delete props.onChange;
+    const [newProps, propsOnChange] = extractField(props, 'onChange');
+    const [newFormikField, formikOnChange] = extractField(field, 'onChange');
 
     const combinedOnChange = (ev: any) => {
+        if (onEnter && ev.nativeEvent.inputType === "insertLineBreak") {
+            onEnter(ev)
+            return;
+        }
         if (propsOnChange) {
             propsOnChange(ev);
         }
@@ -42,7 +40,7 @@ export default function TextAreaAutoHeight({ defaultHeight, ...props }: Props) {
 
     useEffect(() => {
         adjust();
-    })
+    });
 
-    return <textarea ref={domRef} {...formikField} {...props} onChange={combinedOnChange}/>;
+    return <textarea ref={domRef} {...newFormikField} {...newProps} onChange={combinedOnChange} />;
 }
