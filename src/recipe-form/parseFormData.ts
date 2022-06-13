@@ -50,8 +50,9 @@ export default function parseFormData(formData: RecipeFormData): Recipe {
 
     if (formData.instructions.length > 0) {
         recipe.instructions = formData.instructions
+            .map(instruction => instruction.instruction)
             // remove empty instructions
-            .flatMap(instruction => instruction.trim() !== '' ? [instruction] : []);
+            .filter(instruction => instruction.trim() !== '');
     }
 
     if (formData.substitutions.length > 0) {

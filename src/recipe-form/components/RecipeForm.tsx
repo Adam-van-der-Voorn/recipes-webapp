@@ -16,7 +16,7 @@ export type RecipeFormData = {
     ingredients: RecipeInputIngredients,
     servings: string,
     makes: string;
-    instructions: string[],
+    instructions: RecipeInputInstruction[],
     substitutions: RecipeInputSubstitutions,
 };
 
@@ -34,6 +34,11 @@ export type RecipeInputIngredients = {
     }[];
     anchor: number,
 };
+
+export type RecipeInputInstruction = {
+    id: string;
+    instruction: string;
+}
 
 export type RecipeInputSubstitutions = {
     additions: {

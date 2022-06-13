@@ -1,16 +1,21 @@
 import { useFormikContext, FieldArrayRenderProps } from "formik";
 import React, { useRef, useEffect } from "react";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from "uuid";
+import DragDropList from "../../../components-misc/DragDropList";
 import TextAreaAutoHeight from "../../../components-misc/TextAreaAutoHeight";
 import FormErrorMessage from "../FormErrorMessage";
-import { RecipeFormData } from "../RecipeForm";
+import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
+import Instruction from "./Instruction";
 import './InstructionsField.css';
+
+const newIngredient = () => ({ id: uuidv4(), instruction: '' });
+// arbitrary negative value
+const NO_FOCUS = -2;
 
 type Props = {
     arrayHelpers: FieldArrayRenderProps;
 };
-
-// arbitrary negative value
-const NO_FOCUS = -2;
 
 function InstructionsField({ arrayHelpers }: Props) {
     const { values, setFieldValue } = useFormikContext<RecipeFormData>();
@@ -20,8 +25,9 @@ function InstructionsField({ arrayHelpers }: Props) {
 
     useEffect(() => {
         if (instructions.length === 0) {
-            setFieldValue(`instructions`, ['']);
+            setFieldValue(`instructions`, [newIngredient()]);
         }
+        console.log(instructions);
     }, [values.instructions]);
 
     useEffect(() => {
@@ -34,7 +40,7 @@ function InstructionsField({ arrayHelpers }: Props) {
     }, [nextInFocus.current]);
 
     const handleEnter = (idx: number) => {
-        arrayHelpers.insert(idx + 1, '');
+        arrayHelpers.insert(idx + 1, newIngredient());
         nextInFocus.current = idx + 1;
         return;
     };
@@ -44,6 +50,7 @@ function InstructionsField({ arrayHelpers }: Props) {
             if (instructions.length > 1) {
                 nextInFocus.current = Math.max(0, idx - 1);
                 arrayHelpers.remove(idx);
+                ev.preventDefault();
             }
         }
     };
@@ -51,21 +58,19 @@ function InstructionsField({ arrayHelpers }: Props) {
     return (
         <>
             <h2>Method</h2>
-            <div className="instructions" ref={containerRef}>
-                {values.instructions.map((instruction, idx) => (
-                    <div key={idx} className="field-container inline">
-                        <label htmlFor={`instructions.${idx}`}>{idx + 1}.</label>
-                        <TextAreaAutoHeight name={`instructions.${idx}`}
-                            className="instruction"
-                            onEnter={() => handleEnter(idx)}
-                            onKeyDown={(ev: any) => handleKeyDown(ev, idx)}
-                            autoComplete="off"
+            <DragDropList data={values.instructions} setData={(newData) => setFieldValue('instructions', newData)}>
+                <div className="instructions" ref={containerRef}>
+                    {values.instructions.map((instruction, idx) => (
+                        <Instruction key={instruction.id}
+                            id={instruction.id}
+                            idx={idx}
+                            handleEnter={handleEnter}
+                            handleKeyDown={handleKeyDown}
                         />
-                        <FormErrorMessage name={`instructions.${idx}`} />
-                    </div>
-                ))}
-            </div>
-        </>
+                    ))}
+                </div>
+            </DragDropList>
+s       </>
     );
 };
 
