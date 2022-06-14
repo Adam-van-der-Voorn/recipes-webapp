@@ -7,9 +7,10 @@ type Props = {
     id: string,
     idx: number;
     handleKeyDown: (ev: any, idx: number) => void;
+    handleKeyUp: (ev: any) => void;
 };
 
-export default function Instruction({ id, idx, handleKeyDown }: Props) {
+export default function Instruction({ id, idx, handleKeyDown, handleKeyUp }: Props) {
     return (
         <Draggable key={id} draggableId={id} index={idx}>
             {(provided, snapshot) => (
@@ -21,6 +22,7 @@ export default function Instruction({ id, idx, handleKeyDown }: Props) {
                     <label htmlFor={`instructions.${idx}.instruction`} >{idx + 1}.</label>
                     <TextAreaAutoHeight name={`instructions.${idx}.instruction`}
                         onKeyDown={(ev: any) => handleKeyDown(ev, idx)}
+                        onKeyUp={handleKeyUp}
                         autoComplete="off"
                     />
                     <div {...provided.dragHandleProps}>

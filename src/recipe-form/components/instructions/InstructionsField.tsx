@@ -1,5 +1,5 @@
 import { useFormikContext, FieldArrayRenderProps } from "formik";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import DragDropList from "../../../components-misc/DragDropList";
 import { RecipeFormData } from "../RecipeForm";
@@ -20,11 +20,12 @@ function InstructionsField({ arrayHelpers }: Props) {
     const nextInFocus = useRef<number>(NO_FOCUS);
     const instructions = values.instructions;
 
+    const [isKeyDown, setIsKeyDown] = useState(false);
+
     useEffect(() => {
         if (instructions.length === 0) {
             setFieldValue(`instructions`, [newIngredient()]);
         }
-        console.log(instructions);
     }, [values.instructions]);
 
     useEffect(() => {
@@ -37,18 +38,31 @@ function InstructionsField({ arrayHelpers }: Props) {
     }, [nextInFocus.current]);
 
     const handleKeyDown = (ev: any, idx: number) => {
-        if (ev.code === "Backspace" && ev.target.value === "" && instructions.length > 1) {
+        const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && instructions.length > 1;
+        const shouldAddLine = ev.code === "Enter";
+
+        if (shouldRemoveLine || shouldAddLine) {
             ev.preventDefault();
+            if (isKeyDown) {
+                return;
+            }
+            setIsKeyDown(true);
+        }
+
+        if (shouldRemoveLine) {
             nextInFocus.current = Math.max(0, idx - 1);
             arrayHelpers.remove(idx);
-
         }
-        else if (ev.code === "Enter") {
-            ev.preventDefault();
+
+        else if (shouldAddLine) {
             arrayHelpers.insert(idx + 1, newIngredient());
             nextInFocus.current = idx + 1;
         }
     };
+
+    const handleKeyUp = (ev: any) => {
+        setIsKeyDown(false)
+    }
 
     return (
         <>
@@ -60,6 +74,7 @@ function InstructionsField({ arrayHelpers }: Props) {
                             id={instruction.id}
                             idx={idx}
                             handleKeyDown={handleKeyDown}
+                            handleKeyUp={handleKeyUp}
                         />
                     ))}
                 </div>
