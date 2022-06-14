@@ -70,7 +70,7 @@ function InstructionsField({ arrayHelpers }: Props) {
                     ))}
                 </div>
             </DragDropList>
-s       </>
+        </>
     );
 };
 
