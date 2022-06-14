@@ -1,4 +1,4 @@
-import { useFormikContext, ErrorMessage, Field, FieldArray } from "formik";
+import { useFormikContext, FastField, FieldArray } from "formik";
 import React, { useEffect, useRef } from "react";
 import { RecipeFormData } from "../RecipeForm";
 import { MdMoreVert, MdAnchor } from 'react-icons/md';
@@ -38,7 +38,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
         <>
             {!isOnlyList &&
                 <div>
-                    <Field name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
+                    <FastField name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
                     <FormErrorMessage name={`${thisListName}.name`} />
                 </div>
             }
@@ -58,7 +58,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                             const percentageInput = (
                                 <div className="percentage">
-                                    <Field name={`${ingredientNamePrefix}.percentage`}
+                                    <FastField name={`${ingredientNamePrefix}.percentage`}
                                         type="text"
                                         onBlur={onPercentageBlur(listIdx, localIdx)}
                                         placeholder="?"
@@ -76,7 +76,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                             return (
                                 <React.Fragment key={localIdx}>
-                                    <Field name={`${ingredientNamePrefix}.name`}
+                                    <FastField name={`${ingredientNamePrefix}.name`}
                                         type="text"
                                         className={isLastField ? "name new-ingredient" : "name"}
                                         autoComplete="off"
@@ -85,7 +85,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                                     {!isLastField &&
                                         <>
-                                            <Field name={`${ingredientNamePrefix}.quantity`}
+                                            <FastField name={`${ingredientNamePrefix}.quantity`}
                                                 type="text"
                                                 className="quantity"
                                                 onBlur={onQuantityBlur(listIdx, localIdx)}

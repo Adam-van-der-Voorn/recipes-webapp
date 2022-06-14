@@ -1,4 +1,4 @@
-import { Field, FieldArray, Form, Formik } from "formik";
+import { FastField, FieldArray, Form, Formik } from "formik";
 import { Recipe } from "../../types/recipeTypes";
 import getFullSchema from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
@@ -71,7 +71,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
             >
                 {({ values }) => (
                     <Form>
-                        <Field name="name"
+                        <FastField name="name"
                             type="text"
                             className="title"
                             placeholder="Untitled"
@@ -81,7 +81,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor="timeframe">Timeframe:</label>
-                            <Field name="timeframe"
+                            <FastField name="timeframe"
                                 type="text"
                                 placeholder="-"
                                 autoComplete="off"
@@ -91,7 +91,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor="makes">Makes:</label>
-                            <Field name="makes"
+                            <FastField name="makes"
                                 type="text"
                                 placeholder="-"
                                 autoComplete="off"
@@ -101,7 +101,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                         <div className="field-container inline">
                             <label htmlFor='servings'>Serves:</label>
-                            <Field name="servings"
+                            <FastField name="servings"
                                 type="text"
                                 placeholder="-"
                                 autoComplete="off"
