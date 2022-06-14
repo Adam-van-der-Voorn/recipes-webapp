@@ -1,11 +1,8 @@
 import { useFormikContext, FieldArrayRenderProps } from "formik";
-import React, { useRef, useEffect } from "react";
-import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import { useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import DragDropList from "../../../components-misc/DragDropList";
-import TextAreaAutoHeight from "../../../components-misc/TextAreaAutoHeight";
-import FormErrorMessage from "../FormErrorMessage";
-import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
+import { RecipeFormData } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
 
@@ -39,19 +36,17 @@ function InstructionsField({ arrayHelpers }: Props) {
         }
     }, [nextInFocus.current]);
 
-    const handleEnter = (idx: number) => {
-        arrayHelpers.insert(idx + 1, newIngredient());
-        nextInFocus.current = idx + 1;
-        return;
-    };
-
     const handleKeyDown = (ev: any, idx: number) => {
-        if (ev.code === "Backspace" && ev.target.value === "") {
-            if (instructions.length > 1) {
-                nextInFocus.current = Math.max(0, idx - 1);
-                arrayHelpers.remove(idx);
-                ev.preventDefault();
-            }
+        if (ev.code === "Backspace" && ev.target.value === "" && instructions.length > 1) {
+            ev.preventDefault();
+            nextInFocus.current = Math.max(0, idx - 1);
+            arrayHelpers.remove(idx);
+
+        }
+        else if (ev.code === "Enter") {
+            ev.preventDefault();
+            arrayHelpers.insert(idx + 1, newIngredient());
+            nextInFocus.current = idx + 1;
         }
     };
 
@@ -64,7 +59,6 @@ function InstructionsField({ arrayHelpers }: Props) {
                         <Instruction key={instruction.id}
                             id={instruction.id}
                             idx={idx}
-                            handleEnter={handleEnter}
                             handleKeyDown={handleKeyDown}
                         />
                     ))}

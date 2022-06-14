@@ -4,13 +4,12 @@ import extractField from "../util/extractField";
 
 type Props = {
     defaultHeight?: string;
-    onEnter?: (ev: any) => void;
     name: string;
     [key: string]: any;
 };
 
 // works with border-box only
-export default function TextAreaAutoHeight({ defaultHeight = '0', onEnter = undefined, ...props }: Props) {
+export default function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props) {
     const [field] = useField(props);
     const domRef = useRef<HTMLTextAreaElement>(null);
 
@@ -27,10 +26,6 @@ export default function TextAreaAutoHeight({ defaultHeight = '0', onEnter = unde
     const [newFormikField, formikOnChange] = extractField(field, 'onChange');
 
     const combinedOnChange = (ev: any) => {
-        if (onEnter && ev.nativeEvent.inputType === "insertLineBreak") {
-            onEnter(ev)
-            return;
-        }
         if (propsOnChange) {
             propsOnChange(ev);
         }

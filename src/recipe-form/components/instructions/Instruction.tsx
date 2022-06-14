@@ -6,11 +6,10 @@ import { MdDragHandle } from 'react-icons/md';
 type Props = {
     id: string,
     idx: number;
-    handleEnter: (idx: number) => void;
     handleKeyDown: (ev: any, idx: number) => void;
 };
 
-export default function Instruction({ id, idx, handleEnter, handleKeyDown }: Props) {
+export default function Instruction({ id, idx, handleKeyDown }: Props) {
     return (
         <Draggable key={id} draggableId={id} index={idx}>
             {(provided, snapshot) => (
@@ -21,7 +20,6 @@ export default function Instruction({ id, idx, handleEnter, handleKeyDown }: Pro
                 >
                     <label htmlFor={`instructions.${idx}.instruction`} >{idx + 1}.</label>
                     <TextAreaAutoHeight name={`instructions.${idx}.instruction`}
-                        onEnter={() => handleEnter(idx)}
                         onKeyDown={(ev: any) => handleKeyDown(ev, idx)}
                         autoComplete="off"
                     />
