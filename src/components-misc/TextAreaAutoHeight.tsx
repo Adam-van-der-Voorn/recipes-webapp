@@ -1,16 +1,15 @@
 import { useField } from "formik";
-import { useEffect, useRef } from "react";
+import { HTMLProps, useEffect, useRef } from "react";
 import extractField from "../util/extractField";
 
 type Props = {
     defaultHeight?: string;
     name: string;
-    [key: string]: any;
-};
+} & HTMLProps<HTMLButtonElement>;
 
 // works with border-box only
 export default function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props) {
-    const [field] = useField(props);
+    const [field] = useField(props.name);
     const domRef = useRef<HTMLTextAreaElement>(null);
 
     const adjust = () => {
