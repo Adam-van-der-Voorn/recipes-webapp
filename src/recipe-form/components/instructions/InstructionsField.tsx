@@ -1,80 +1,72 @@
-import { useFormikContext, FieldArrayRenderProps } from "formik";
+import { useFieldArray, UseFormReturn } from "react-hook-form";
 import { useRef, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import DragDropList from "../../../components-misc/DragDropList";
-import { RecipeFormData } from "../RecipeForm";
+import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
-
-const newIngredient = () => ({ id: uuidv4(), instruction: '' });
-// arbitrary negative value
-const NO_FOCUS = -2;
+import useListFocuser from "../../useListFocuser";
 
 type Props = {
-    arrayHelpers: FieldArrayRenderProps;
+    formHelper: UseFormReturn<RecipeFormData>;
 };
 
-function InstructionsField({ arrayHelpers }: Props) {
-    const { values, setFieldValue } = useFormikContext<RecipeFormData>();
+function InstructionsField({ formHelper }: Props) {
+    const { setValue, control } = formHelper;
+    const { fields, remove, insert } = useFieldArray({ control, name: "instructions" });
+
     const containerRef = useRef<HTMLDivElement>(null);
-    const nextInFocus = useRef<number>(NO_FOCUS);
-    const instructions = values.instructions;
+
+    const setFocus = useListFocuser(containerRef);
 
     const [isKeyDown, setIsKeyDown] = useState(false);
 
     useEffect(() => {
-        if (instructions.length === 0) {
-            setFieldValue(`instructions`, [newIngredient()]);
+        if (fields.length === 0) {
+            setValue(`instructions`, [{ val: '' }]);
         }
-    }, [values.instructions]);
-
-    useEffect(() => {
-        if (nextInFocus.current !== NO_FOCUS) {
-            const line = containerRef.current?.children.item(nextInFocus.current)!;
-            const input = line.querySelector<HTMLTextAreaElement>('textarea');
-            input!.focus();
-            nextInFocus.current = NO_FOCUS;
-        }
-    }, [nextInFocus.current]);
+    }, [fields]);
 
     const handleKeyDown = (ev: any, idx: number) => {
-        const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && instructions.length > 1;
+        const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && fields.length > 1;
         const shouldAddLine = ev.code === "Enter";
 
         if (shouldRemoveLine || shouldAddLine) {
             ev.preventDefault();
             if (isKeyDown) {
+                console.log(`InstructionsField: handleKeyDown: [${ev.code}] key 'pressed' but key is already down.`);
                 return;
             }
+            console.log(`InstructionsField: handleKeyDown: [${ev.code}] key pressed at idx ${idx}`);
             setIsKeyDown(true);
         }
 
         if (shouldRemoveLine) {
-            nextInFocus.current = Math.max(0, idx - 1);
-            arrayHelpers.remove(idx);
+            setFocus(Math.max(0, idx - 1));
+            remove(idx);
         }
 
         else if (shouldAddLine) {
-            arrayHelpers.insert(idx + 1, newIngredient());
-            nextInFocus.current = idx + 1;
+            insert(idx + 1, { val: '' });
+            setFocus(idx + 1);
         }
     };
 
     const handleKeyUp = (ev: any) => {
-        setIsKeyDown(false)
-    }
+        setIsKeyDown(false);
+    };
 
     return (
         <>
             <h2>Method</h2>
-            <DragDropList data={values.instructions} setData={(newData) => setFieldValue('instructions', newData)}>
+            <DragDropList data={fields} setData={(newData) => setValue('instructions', newData as RecipeInputInstruction[])}>
                 <div className="instructions" ref={containerRef}>
-                    {values.instructions.map((instruction, idx) => (
-                        <Instruction key={instruction.id}
-                            id={instruction.id}
+                    {fields.map((field, idx) => (
+                        <Instruction key={field.id}
+                            id={field.id}
                             idx={idx}
                             handleKeyDown={handleKeyDown}
                             handleKeyUp={handleKeyUp}
+                            formHelper={formHelper}
                         />
                     ))}
                 </div>

@@ -1,5 +1,4 @@
-import { useField } from "formik";
-import { HTMLProps, useEffect, useRef } from "react";
+import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef } from "react";
 import extractField from "../util/extractField";
 
 type Props = {
@@ -8,27 +7,27 @@ type Props = {
 } & HTMLProps<HTMLButtonElement>;
 
 // works with border-box only
-export default function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props) {
-    const [field] = useField(props.name);
-    const domRef = useRef<HTMLTextAreaElement>(null);
+const TextAreaAutoHeight = forwardRef<HTMLTextAreaElement, Props>(({ defaultHeight = '0', ...props }, ref) => {
+
+    const innerRef = useRef<HTMLTextAreaElement>(null);
+
+    useImperativeHandle(ref, () => innerRef.current!);
 
     const adjust = () => {
-        if (!domRef.current) {
+        if (!innerRef.current) {
             console.error("TextAreaAutoHeight: ref is null");
             return;
         }
-        domRef.current.style.height = defaultHeight;
-        domRef.current.style.height = (domRef.current.scrollHeight + 3) + "px"; // why the 3? border adjustment I think
+        innerRef.current.style.height = defaultHeight;
+        innerRef.current.style.height = (innerRef.current.scrollHeight + 3) + "px"; // why the 3? border adjustment I think
     };
 
     const [newProps, propsOnChange] = extractField(props, 'onChange');
-    const [newFormikField, formikOnChange] = extractField(field, 'onChange');
 
     const combinedOnChange = (ev: any) => {
         if (propsOnChange) {
             propsOnChange(ev);
         }
-        formikOnChange(ev);
         adjust();
     };
 
@@ -36,5 +35,7 @@ export default function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Pr
         adjust();
     });
 
-    return <textarea ref={domRef} {...newFormikField} {...newProps} onChange={combinedOnChange} />;
-}
+    return <textarea ref={innerRef} {...newProps} onChange={combinedOnChange} />;
+});
+
+export default TextAreaAutoHeight;
