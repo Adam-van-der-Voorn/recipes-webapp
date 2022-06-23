@@ -69,55 +69,55 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
     const onSubmit: SubmitHandler<RecipeFormData> = data => console.log(data);
 
     return (
-        <form className="RecipeForm"
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <input {...register("name")}
-                className="title"
-                placeholder="Untitled"
-                autoComplete="off"
-            />
-            <FormErrorMessage error={errors.name} />
-
-            <div className="field-container inline">
-                <label htmlFor="timeframe">Timeframe:</label>
-                <input {...register("timeframe")}
-                    type="text"
-                    placeholder="-"
+        <div className="RecipeForm">
+            <form onSubmit={handleSubmit(onSubmit)} >
+                <input {...register("name")}
+                    className="title"
+                    placeholder="Untitled"
                     autoComplete="off"
                 />
-                <FormErrorMessage error={errors.timeframe} />
-            </div>
+                <FormErrorMessage error={errors.name} />
 
-            <div className="field-container inline">
-                <label htmlFor="makes">Makes:</label>
-                <input {...register("makes")}
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                />
-                <FormErrorMessage error={errors.makes} />
-            </div>
+                <div className="field-container inline">
+                    <label htmlFor="timeframe">Timeframe:</label>
+                    <input {...register("timeframe")}
+                        type="text"
+                        placeholder="-"
+                        autoComplete="off"
+                    />
+                    <FormErrorMessage error={errors.timeframe} />
+                </div>
 
-            <div className="field-container inline">
-                <label htmlFor='servings'>Serves:</label>
-                <input {...register("servings")}
-                    type="text"
-                    placeholder="-"
-                    autoComplete="off"
-                />
-                <FormErrorMessage error={errors.servings} />
-            </div>
+                <div className="field-container inline">
+                    <label htmlFor="makes">Makes:</label>
+                    <input {...register("makes")}
+                        type="text"
+                        placeholder="-"
+                        autoComplete="off"
+                    />
+                    <FormErrorMessage error={errors.makes} />
+                </div>
 
-            <div className="field-container stacked">
-                <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight name={`notes`} defaultHeight={'112px'} />
-                <FormErrorMessage error={errors.notes} />
-            </div>
+                <div className="field-container inline">
+                    <label htmlFor='servings'>Serves:</label>
+                    <input {...register("servings")}
+                        type="text"
+                        placeholder="-"
+                        autoComplete="off"
+                    />
+                    <FormErrorMessage error={errors.servings} />
+                </div>
 
-            <InstructionsField formHelper={formHelper} />
-            <input type="submit" />
-        </form >
+                <div className="field-container stacked">
+                    <label htmlFor="notes">Extra notes</label>
+                    <TextAreaAutoHeight name={`notes`} defaultHeight={'112px'} />
+                    <FormErrorMessage error={errors.notes} />
+                </div>
+
+                <InstructionsField formHelper={formHelper} />
+                <input type="submit" />
+            </form >
+        </div>
     );
 }
 
