@@ -1,4 +1,3 @@
-import { FastField, FieldArray, Form, Formik } from "formik";
 import { Recipe } from "../../types/recipeTypes";
 import getFullSchema from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
@@ -79,6 +78,36 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                 autoComplete="off"
             />
             <FormErrorMessage error={errors.name} />
+
+            <div className="field-container inline">
+                <label htmlFor="timeframe">Timeframe:</label>
+                <input {...register("timeframe")}
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                />
+                <FormErrorMessage error={errors.timeframe} />
+            </div>
+
+            <div className="field-container inline">
+                <label htmlFor="makes">Makes:</label>
+                <input {...register("makes")}
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                />
+                <FormErrorMessage error={errors.makes} />
+            </div>
+
+            <div className="field-container inline">
+                <label htmlFor='servings'>Serves:</label>
+                <input {...register("servings")}
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                />
+                <FormErrorMessage error={errors.servings} />
+            </div>
 
             <InstructionsField formHelper={formHelper} />
             <input type="submit" />
