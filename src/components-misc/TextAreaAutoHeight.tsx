@@ -1,5 +1,7 @@
 import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef } from "react";
-import extractField from "../util/extractField";
+import extractFields from "../util/extractFields";
+import cx from 'classnames';
+import './TextAreaAutoHeight.css'
 
 type Props = {
     defaultHeight?: string;
@@ -22,7 +24,7 @@ const TextAreaAutoHeight = forwardRef<HTMLTextAreaElement, Props>(({ defaultHeig
         innerRef.current.style.height = (innerRef.current.scrollHeight + 3) + "px"; // why the 3? border adjustment I think
     };
 
-    const [newProps, propsOnChange] = extractField(props, 'onChange');
+    const [newProps, propsOnChange, propsClassName] = extractFields(props, 'onChange', 'className');
 
     const combinedOnChange = (ev: any) => {
         if (propsOnChange) {
@@ -31,11 +33,13 @@ const TextAreaAutoHeight = forwardRef<HTMLTextAreaElement, Props>(({ defaultHeig
         adjust();
     };
 
+    const className = cx(propsClassName, 'auto-height')
+
     useEffect(() => {
         adjust();
     });
 
-    return <textarea ref={innerRef} {...newProps} onChange={combinedOnChange} />;
+    return <textarea ref={innerRef} {...newProps} className={className} onChange={combinedOnChange} />;
 });
 
 export default TextAreaAutoHeight;
