@@ -9,6 +9,8 @@ import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+
 
 export type RecipeFormData = {
     name: string,
@@ -58,8 +60,13 @@ type Props = {
 
 function RecipeForm({ doSubmit, initialValues }: Props) {
 
-    const formHelper = useForm<RecipeFormData>();
-    const { register, handleSubmit } = formHelper;
+    const formHelper = useForm<RecipeFormData>({
+        resolver: yupResolver(getFullSchema()),
+        mode: 'onBlur',
+        reValidateMode: 'onBlur',
+    });
+
+    const { register, handleSubmit, formState: { errors } } = formHelper;
     const onSubmit: SubmitHandler<RecipeFormData> = data => console.log(data);
 
     return (
@@ -71,6 +78,8 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                 placeholder="Untitled"
                 autoComplete="off"
             />
+            <FormErrorMessage error={errors.name} />
+
             <InstructionsField formHelper={formHelper} />
             <input type="submit" />
         </form >

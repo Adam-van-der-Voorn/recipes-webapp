@@ -15,7 +15,7 @@ type Props = {
 };
 
 function Instruction({ id, idx, handleKeyDown, handleKeyUp, formHelper }: Props) {
-    const { register } = formHelper;
+    const { register, formState: { errors } } = formHelper;
     return (
         <Draggable key={id} draggableId={id} index={idx}>
             {(provided, snapshot) => (
@@ -33,7 +33,7 @@ function Instruction({ id, idx, handleKeyDown, handleKeyUp, formHelper }: Props)
                     <div {...provided.dragHandleProps}>
                         <MdDragHandle size={20} className="drag-handle"/>
                     </div>
-                    {/* <FormErrorMessage name={`instructions.${idx}.instruction`} /> */}
+                    <FormErrorMessage error={errors.instructions?.at(idx)?.val} />
                 </div>
             )}
         </Draggable>

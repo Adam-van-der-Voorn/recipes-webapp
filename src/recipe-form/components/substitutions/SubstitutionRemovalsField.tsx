@@ -20,7 +20,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
 
     return (
         <div>
-            <label>You may substitute</label>
+            {/* <label>You may substitute</label>
             {
                 values.substitutions[index].removals.map((removal, idx) => (
                     <div key={idx}>
@@ -51,7 +51,7 @@ function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
             }
             <button type="button" onClick={() => arrayHelpers.push({ quantity: '', ingredientName: '' })}>
                 ++
-            </button >
+            </button > */}
         </div >
     );
 }

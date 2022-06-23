@@ -69,6 +69,13 @@ const yupSubstitutionsSchema = Yup.array().of(
     })
 );
 
+const yupInstructionsSchema = Yup.array().of(
+    Yup.object({
+        val: Yup.string()
+            .max(4, "Please make this step shorter"),
+    })
+);
+
 export default function getFullSchema() {
     return Yup.object({
         name: yupRecipeNameSchema,
@@ -81,8 +88,7 @@ export default function getFullSchema() {
         servings: Yup.string()
             .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
             .matches(decimalValPattern, 'Must be a number'),
-        instructions: Yup.array()
-            .max(1000, "Please make this step shorter"),
+        instructions: yupInstructionsSchema,
         substitutions: yupSubstitutionsSchema,
     });
 };

@@ -5,6 +5,7 @@ import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
 import useListFocuser from "../../useListFocuser";
+import FormErrorMessage from "../FormErrorMessage";
 
 type Props = {
     formHelper: UseFormReturn<RecipeFormData>;
@@ -27,8 +28,12 @@ function InstructionsField({ formHelper }: Props) {
     }, [fields]);
 
     const handleKeyDown = (ev: any, idx: number) => {
+        if (ev.code === "Enter") {
+            ev.preventDefault();
+        }
+
         const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && fields.length > 1;
-        const shouldAddLine = ev.code === "Enter";
+        const shouldAddLine = ev.code === "Enter" && fields.length < 99;
 
         if (shouldRemoveLine || shouldAddLine) {
             ev.preventDefault();

@@ -13,6 +13,10 @@
     margin-bottom: 1.5rem;
 }
 
+.instruction > .error {
+    grid-column: span 2;
+}
+
 .drag-handle {
     color: var(--neutral-3);
     padding-left: 0.5rem;

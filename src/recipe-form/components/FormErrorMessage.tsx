@@ -1,22 +1,19 @@
 import { useField } from "formik";
+import { FieldError } from "react-hook-form";
 import { RecipeFormData } from '../components/RecipeForm';
 
 type Props = {
-    name: string;
+    error?: FieldError;
 };
 
-function FormErrorMessage({ name }: Props) {
-    const [input, meta, helpers] = useField<RecipeFormData>(name);
-    
-    const hasError = meta.error && meta.touched;
-
-    if (!hasError) {
+function FormErrorMessage({ error }: Props) {
+    if (!error) {
         return null;
     }
 
     return (
         <div className="error">
-            {meta.error}
+            {error.message}
         </div>
     );
 }

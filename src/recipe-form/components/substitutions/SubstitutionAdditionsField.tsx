@@ -19,7 +19,7 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
 
     return (
         <div>
-            <p>with...</p>
+            {/* <p>with...</p>
             {
                 values.substitutions[index].additions.map((addition, idx) => (
                     <div key={idx}>
@@ -45,7 +45,7 @@ function SubstitutionAdditionsField({ index, arrayHelpers }: Props) {
             }
             <button type="button" onClick={() => arrayHelpers.push({ quantity: '', ingredientName: '' })}>
                 ++
-            </button >
+            </button > */}
         </div >
     );
 }

@@ -34,89 +34,90 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
         }
     }, [values.ingredients.lists[listIdx].ingredients]);
 
-    return (
-        <>
-            {!isOnlyList &&
-                <div>
-                    <FastField name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
-                    <FormErrorMessage name={`${thisListName}.name`} />
-                </div>
-            }
-            <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
-                <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
-                    <div className="grid-header">Ingredient</div>
-                    <div className="grid-header">Quantity</div>
-                    {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
-                    <div></div> {/* grid filler for inline button menu */}
+    return null;
+    // return (
+    //     <>
+    //         {!isOnlyList &&
+    //             <div>
+    //                 <FastField name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
+    //                 <FormErrorMessage name={`${thisListName}.name`} />
+    //             </div>
+    //         }
+    //         <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
+    //             <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
+    //                 <div className="grid-header">Ingredient</div>
+    //                 <div className="grid-header">Quantity</div>
+    //                 {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
+    //                 <div></div> {/* grid filler for inline button menu */}
 
-                    {
-                        values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
-                            const globalIdx = listPos + localIdx;
-                            const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
-                            const isLastField = localIdx === ingredients.length - 1;
-                            const isAnchor = globalIdx === values.ingredients.anchor;
+    //                 {
+    //                     values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
+    //                         const globalIdx = listPos + localIdx;
+    //                         const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
+    //                         const isLastField = localIdx === ingredients.length - 1;
+    //                         const isAnchor = globalIdx === values.ingredients.anchor;
 
-                            const percentageInput = (
-                                <div className="percentage">
-                                    <FastField name={`${ingredientNamePrefix}.percentage`}
-                                        type="text"
-                                        onBlur={onPercentageBlur(listIdx, localIdx)}
-                                        placeholder="?"
-                                        autoComplete="off"
-                                    />
-                                    %
-                                </div>
-                            );
+    //                         const percentageInput = (
+    //                             <div className="percentage">
+    //                                 <FastField name={`${ingredientNamePrefix}.percentage`}
+    //                                     type="text"
+    //                                     onBlur={onPercentageBlur(listIdx, localIdx)}
+    //                                     placeholder="?"
+    //                                     autoComplete="off"
+    //                                 />
+    //                                 %
+    //                             </div>
+    //                         );
 
-                            const percentageField = isPercentagesIncluded
-                                ? isAnchor
-                                    ? <div className="anchor"><MdAnchor /></div>
-                                    : percentageInput
-                                : null;
+    //                         const percentageField = isPercentagesIncluded
+    //                             ? isAnchor
+    //                                 ? <div className="anchor"><MdAnchor /></div>
+    //                                 : percentageInput
+    //                             : null;
 
-                            return (
-                                <React.Fragment key={localIdx}>
-                                    <FastField name={`${ingredientNamePrefix}.name`}
-                                        type="text"
-                                        className={isLastField ? "name new-ingredient" : "name"}
-                                        autoComplete="off"
-                                        placeholder={isLastField ? "Add new ingredient" : ""}
-                                    />
+    //                         return (
+    //                             <React.Fragment key={localIdx}>
+    //                                 <FastField name={`${ingredientNamePrefix}.name`}
+    //                                     type="text"
+    //                                     className={isLastField ? "name new-ingredient" : "name"}
+    //                                     autoComplete="off"
+    //                                     placeholder={isLastField ? "Add new ingredient" : ""}
+    //                                 />
 
-                                    {!isLastField &&
-                                        <>
-                                            <FastField name={`${ingredientNamePrefix}.quantity`}
-                                                type="text"
-                                                className="quantity"
-                                                onBlur={onQuantityBlur(listIdx, localIdx)}
-                                                autoComplete="off"
-                                            />
+    //                                 {!isLastField &&
+    //                                     <>
+    //                                         <FastField name={`${ingredientNamePrefix}.quantity`}
+    //                                             type="text"
+    //                                             className="quantity"
+    //                                             onBlur={onQuantityBlur(listIdx, localIdx)}
+    //                                             autoComplete="off"
+    //                                         />
 
-                                            {percentageField}
+    //                                         {percentageField}
 
-                                            <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                                <MenuItemToggleable text="Optional" value={ingredients[localIdx].optional} toggle={b => setFieldValue(`${ingredientNamePrefix}.optional`, b)} />
-                                                {!isAnchor && isPercentagesIncluded &&
-                                                    <MenuItemAction text="Set to anchor" action={() => setFieldValue('ingredients.anchor', globalIdx)} />
-                                                }
-                                                <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
-                                            </DropdownMenu>
+    //                                         <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
+    //                                             <MenuItemToggleable text="Optional" value={ingredients[localIdx].optional} toggle={b => setFieldValue(`${ingredientNamePrefix}.optional`, b)} />
+    //                                             {!isAnchor && isPercentagesIncluded &&
+    //                                                 <MenuItemAction text="Set to anchor" action={() => setFieldValue('ingredients.anchor', globalIdx)} />
+    //                                             }
+    //                                             <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
+    //                                         </DropdownMenu>
 
-                                            <div className="ingredient-errors">
-                                                <FormErrorMessage name={`${ingredientNamePrefix}.name`} />
-                                                <FormErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-                                                <FormErrorMessage name={`${ingredientNamePrefix}.percentage`} />
-                                            </div>
-                                        </>
-                                    }
-                                </React.Fragment>
-                            );
-                        })
-                    }
-                </div>
-            } />
-        </>
-    );
+    //                                         <div className="ingredient-errors">
+    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.name`} />
+    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.quantity`} />
+    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.percentage`} />
+    //                                         </div>
+    //                                     </>
+    //                                 }
+    //                             </React.Fragment>
+    //                         );
+    //                     })
+    //                 }
+    //             </div>
+    //         } />
+    //     </>
+    // );
 };
 
 export default IngredientsSubField;
