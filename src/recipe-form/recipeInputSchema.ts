@@ -11,7 +11,9 @@ const isLastIngredient = (context: any) => {
 };
 
 export const yupQuantitySchema = Yup.string()
-    .matches(unitValPattern, 'Must be a number, followed by a unit')
+    .test('is-unitval', 'Must be a number, followed by a unit', (el, context) => {
+        return (!el || unitValPattern.test(el));
+    })
     .max(30, 'please make this shorter');
 
 export const yupIngredientNameSchema = Yup.string()
@@ -72,7 +74,7 @@ const yupSubstitutionsSchema = Yup.array().of(
 const yupInstructionsSchema = Yup.array().of(
     Yup.object({
         val: Yup.string()
-            .max(4, "Please make this step shorter"),
+            .max(300, "Please make this step shorter"),
     })
 );
 
