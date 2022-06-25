@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, memo, ForwardedRef } from "react";
 import extractFields from "../util/extractFields";
 import cx from 'classnames';
 import './TextAreaAutoHeight.css'
@@ -6,10 +6,10 @@ import './TextAreaAutoHeight.css'
 type Props = {
     defaultHeight?: string;
     name: string;
-} & HTMLProps<HTMLButtonElement>;
+} & HTMLProps<HTMLTextAreaElement>;
 
 // works with border-box only
-const TextAreaAutoHeight = forwardRef<HTMLTextAreaElement, Props>(({ defaultHeight = '0', ...props }, ref) => {
+function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props, ref: ForwardedRef<HTMLTextAreaElement>) {
 
     const innerRef = useRef<HTMLTextAreaElement>(null);
 
@@ -40,6 +40,6 @@ const TextAreaAutoHeight = forwardRef<HTMLTextAreaElement, Props>(({ defaultHeig
     });
 
     return <textarea ref={innerRef} {...newProps} className={className} onChange={combinedOnChange} />;
-});
+}
 
-export default TextAreaAutoHeight;
+export default forwardRef(TextAreaAutoHeight);
