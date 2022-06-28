@@ -1,6 +1,5 @@
 import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
-import { concatIngredients } from "../../concatIngredients";
 import FormErrorMessage from "../FormErrorMessage";
 import { RecipeFormData } from "../RecipeForm";
 

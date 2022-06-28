@@ -63,6 +63,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
         resolver: yupResolver(getFullSchema()),
         mode: 'onBlur',
         reValidateMode: 'onBlur',
+        defaultValues: initialValues
     });
 
     const { register, handleSubmit, formState: { errors } } = formHelper;
@@ -114,7 +115,10 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                     <FormErrorMessage error={errors.notes} />
                 </div>
 
+                <IngredientsField {...formHelper} />
+
                 <InstructionsField formHelper={formHelper} />
+                
                 <input type="submit" />
             </form >
         </div>

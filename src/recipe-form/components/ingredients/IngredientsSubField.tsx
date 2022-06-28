@@ -1,6 +1,6 @@
-import { useFormikContext, FastField, FieldArray } from "formik";
-import React, { useEffect, useRef } from "react";
-import { RecipeFormData } from "../RecipeForm";
+import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
+import React, { memo, useEffect, useRef } from "react";
+import { RecipeFormData, RecipeInputIngredient } from "../RecipeForm";
 import { MdMoreVert, MdAnchor } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
@@ -8,116 +8,120 @@ import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
 
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    setValue: UseFormSetValue<RecipeFormData>;
+    getValues: UseFormGetValues<RecipeFormData>;
+    register: UseFormRegister<RecipeFormData>;
+}
 
 type Props = {
     listIdx: number;
     listPos: number;
     isPercentagesIncluded: boolean;
     isOnlyList: boolean;
-    onPercentageBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
-    onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
-};
+} & FormHelpers;
+   
 
-function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur }: Props) {
-    const { values, setFieldValue } = useFormikContext<RecipeFormData>();
-    const thisListName = `ingredients.lists.${listIdx}`;
-    const thisList = values.ingredients.lists[listIdx];
-    const ingredients = thisList.ingredients;
-    const lastField = useRef(ingredients[ingredients.length - 1]);
+function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, ...formHelpers }: Props) {
+    const { control, setValue, getValues, register } = formHelpers;
+    const { append, remove, update, fields: ingredients } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
+    const { errors } = useFormState({ control })
+    const lastField = useWatch({ name: `ingredients.lists.${listIdx}.ingredients.${ingredients.length - 1}`, control });
+    useWatch({ name: `ingredients.anchor`, control });
 
     useEffect(() => {
-        lastField.current = ingredients[ingredients.length - 1];
-        if (!lastField.current || (lastField.current.name !== '' || lastField.current.quantity !== '')) {
+        if (!lastField || (lastField.name !== '')) {
             // last field is not 'empty'
             const emptyField = { name: '', quantity: '', optional: false, percentage: '' };
-            setFieldValue(`${thisListName}.ingredients`, [...thisList.ingredients, emptyField]);
+            append(emptyField, { shouldFocus: false });
         }
-    }, [values.ingredients.lists[listIdx].ingredients]);
+    }, [lastField]);
 
-    return null;
-    // return (
-    //     <>
-    //         {!isOnlyList &&
-    //             <div>
-    //                 <FastField name={`${thisListName}.name`} type="text" placeholder="Untitled List" autoComplete="off" />
-    //                 <FormErrorMessage name={`${thisListName}.name`} />
-    //             </div>
-    //         }
-    //         <FieldArray name={`${thisListName}.ingredients`} render={arrayHelpers =>
-    //             <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
-    //                 <div className="grid-header">Ingredient</div>
-    //                 <div className="grid-header">Quantity</div>
-    //                 {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
-    //                 <div></div> {/* grid filler for inline button menu */}
+    return (
+        <>
+            {!isOnlyList &&
+                <div>
+                    <input {...register(`ingredients.lists.${listIdx}.name`)} type="text" placeholder="Untitled List" autoComplete="off" />
+                    <FormErrorMessage error={errors.ingredients?.lists?.at(listIdx)?.name} />
+                </div>
+            }
+            <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
+                <div className="grid-header">Ingredient</div>
+                <div className="grid-header">Quantity</div>
+                {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
+                <div></div> {/* grid filler for inline button menu */}
 
-    //                 {
-    //                     values.ingredients.lists[listIdx].ingredients.map((ingredient, localIdx) => {
-    //                         const globalIdx = listPos + localIdx;
-    //                         const ingredientNamePrefix = `${thisListName}.ingredients.${localIdx}`;
-    //                         const isLastField = localIdx === ingredients.length - 1;
-    //                         const isAnchor = globalIdx === values.ingredients.anchor;
+                {
+                    ingredients.map((ingredient, localIdx) => {
+                        const globalIdx = listPos + localIdx;
+                        const isLastField = localIdx === ingredients.length - 1;
+                        const isAnchor = globalIdx === getValues().ingredients.anchor;
+                        const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
 
-    //                         const percentageInput = (
-    //                             <div className="percentage">
-    //                                 <FastField name={`${ingredientNamePrefix}.percentage`}
-    //                                     type="text"
-    //                                     onBlur={onPercentageBlur(listIdx, localIdx)}
-    //                                     placeholder="?"
-    //                                     autoComplete="off"
-    //                                 />
-    //                                 %
-    //                             </div>
-    //                         );
+                        const percentageInput = (
+                            <div className="percentage">
+                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`)}
+                                    type="text"
+                                    placeholder="?"
+                                    autoComplete="off"
+                                />
+                                %
+                            </div>
+                        );
 
-    //                         const percentageField = isPercentagesIncluded
-    //                             ? isAnchor
-    //                                 ? <div className="anchor"><MdAnchor /></div>
-    //                                 : percentageInput
-    //                             : null;
+                        const percentageField = isPercentagesIncluded
+                            ? isAnchor
+                                ? <div className="anchor"><MdAnchor /></div>
+                                : percentageInput
+                            : null;
 
-    //                         return (
-    //                             <React.Fragment key={localIdx}>
-    //                                 <FastField name={`${ingredientNamePrefix}.name`}
-    //                                     type="text"
-    //                                     className={isLastField ? "name new-ingredient" : "name"}
-    //                                     autoComplete="off"
-    //                                     placeholder={isLastField ? "Add new ingredient" : ""}
-    //                                 />
+                        return (
+                            <React.Fragment key={localIdx}>
+                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
+                                    type="text"
+                                    className={isLastField ? "name new-ingredient" : "name"}
+                                    autoComplete="off"
+                                    placeholder={isLastField ? "Add new ingredient" : ""}
+                                />
 
-    //                                 {!isLastField &&
-    //                                     <>
-    //                                         <FastField name={`${ingredientNamePrefix}.quantity`}
-    //                                             type="text"
-    //                                             className="quantity"
-    //                                             onBlur={onQuantityBlur(listIdx, localIdx)}
-    //                                             autoComplete="off"
-    //                                         />
+                                {!isLastField &&
+                                    <>
+                                        <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`)}
+                                            type="text"
+                                            className="quantity"
+                                            autoComplete="off"
+                                        />
 
-    //                                         {percentageField}
+                                        {percentageField}
 
-    //                                         <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-    //                                             <MenuItemToggleable text="Optional" value={ingredients[localIdx].optional} toggle={b => setFieldValue(`${ingredientNamePrefix}.optional`, b)} />
-    //                                             {!isAnchor && isPercentagesIncluded &&
-    //                                                 <MenuItemAction text="Set to anchor" action={() => setFieldValue('ingredients.anchor', globalIdx)} />
-    //                                             }
-    //                                             <MenuItemAction text="Delete" action={() => arrayHelpers.remove(localIdx)} />
-    //                                         </DropdownMenu>
+                                        <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
+                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => update(localIdx,  {
+                                                name: ingredient.name,
+                                                quantity: ingredient.quantity,
+                                                percentage: ingredient.percentage,
+                                                optional: b
+                                            })} />
+                                            {!isAnchor && isPercentagesIncluded &&
+                                                <MenuItemAction text="Set to anchor" action={() => setValue('ingredients.anchor', globalIdx)} />
+                                            }
+                                            <MenuItemAction text="Delete" action={() => remove(localIdx)} />
+                                        </DropdownMenu>
 
-    //                                         <div className="ingredient-errors">
-    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.name`} />
-    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.quantity`} />
-    //                                             <FormErrorMessage name={`${ingredientNamePrefix}.percentage`} />
-    //                                         </div>
-    //                                     </>
-    //                                 }
-    //                             </React.Fragment>
-    //                         );
-    //                     })
-    //                 }
-    //             </div>
-    //         } />
-    //     </>
-    // );
+                                        <div className="ingredient-errors">
+                                            <FormErrorMessage error={listErrors?.name} />
+                                            <FormErrorMessage error={listErrors?.quantity} />
+                                            <FormErrorMessage error={listErrors?.percentage} />
+                                        </div>
+                                    </>
+                                }
+                            </React.Fragment>
+                        );
+                    })
+                }
+            </div>
+        </>
+    );
 };
 
 export default IngredientsSubField;
