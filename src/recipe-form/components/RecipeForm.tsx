@@ -111,7 +111,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                 <div className="field-container stacked">
                     <label htmlFor="notes">Extra notes</label>
-                    <TextAreaAutoHeight name={`notes`} defaultHeight={'112px'} />
+                    <TextAreaAutoHeight {...register("notes")} defaultHeight={'112px'} />
                     <FormErrorMessage error={errors.notes} />
                 </div>
 

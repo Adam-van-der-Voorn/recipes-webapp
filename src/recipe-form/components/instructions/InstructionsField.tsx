@@ -5,7 +5,6 @@ import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
 import useListFocuser from "../../useListFocuser";
-import FormErrorMessage from "../FormErrorMessage";
 
 type Props = {
     formHelper: UseFormReturn<RecipeFormData>;

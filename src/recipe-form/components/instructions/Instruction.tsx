@@ -17,7 +17,7 @@ type Props = {
 function Instruction({ id, idx, handleKeyDown, handleKeyUp, formHelper }: Props) {
     const { register, formState: { errors } } = formHelper;
     return (
-        <Draggable key={id} draggableId={id} index={idx}>
+        <Draggable draggableId={id} index={idx}>
             {(provided, snapshot) => (
                 <div className="instruction"
                     ref={provided.innerRef}
