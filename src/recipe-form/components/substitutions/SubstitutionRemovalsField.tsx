@@ -1,56 +1,67 @@
-import { ErrorMessage, Field, FieldArrayRenderProps, useFormikContext } from "formik";
 import { useEffect } from "react";
+import { Control, UseFormSetValue, UseFormRegister, useFieldArray, UseFormGetValues, useFormState } from "react-hook-form";
+import { register } from "../../../serviceWorkerRegistration";
 import FormErrorMessage from "../FormErrorMessage";
 import { RecipeFormData } from "../RecipeForm";
 
-type Props = {
-    index: number;
-    arrayHelpers: FieldArrayRenderProps;
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    getValues: UseFormGetValues<RecipeFormData>;
+    register: UseFormRegister<RecipeFormData>;
 };
 
-function SubstitutionRemovalsField({ index, arrayHelpers }: Props) {
-    const { values } = useFormikContext<RecipeFormData>();
+type Props = {
+    index: number;
+} & FormHelpers;
+
+function SubstitutionRemovalsField({ index, ...formHelpers }: Props) {
+    const { control, register, getValues } = formHelpers;
+    const { fields: removals, append, remove } = useFieldArray({ control, name: `substitutions.${index}.removals` });
+    const errors = useFormState({ control, name: `substitutions.${index}.removals` })
+        .errors.substitutions?.at(index)?.removals;
 
     useEffect(() => {
-        if (values.substitutions[index].removals.length === 0) {
-            arrayHelpers.push({ quantity: '', ingredientName: '' });
+        if (removals.length === 0) {
+            append({ quantity: '', ingredientName: '' });
         }
     }, []);
 
     return (
         <div>
-            {/* <label>You may substitute</label>
+            <label>You may substitute</label>
             {
-                values.substitutions[index].removals.map((removal, idx) => (
-                    <div key={idx}>
+                removals.map((removal, idx) => (
+                    <div key={removal.id}>
                         {idx !== 0 &&
-                            <button type="button" onClick={() => arrayHelpers.remove(idx)}>
+                            <button type="button" onClick={() => remove(idx)}>
                                 --
                             </button>
                         }
-                        <Field name={`substitutions.${index}.removals.${idx}.quantity`}
+                        <input {...register(`substitutions.${index}.removals.${idx}.quantity`)}
                             type="text"
                             autoComplete="off"
                             placeholder="all"
                         />
                         <span>of</span>
-                        <Field name={`substitutions.${index}.removals.${idx}.ingredientName`} as="select">
+                        <select {...register(`substitutions.${index}.removals.${idx}.ingredientName`)}>
                             <option disabled value="">Select an ingredient</option>
                             {
-                                concatIngredients(values).map(ingredient => {
-                                    const name = ingredient.name;
-                                    return <option key={name} value={name.toLowerCase()}>{name}</option>;
-                                })
+                                getValues().ingredients.lists
+                                    .flatMap(list => list.ingredients)
+                                    .map(ingredient => {
+                                        const name = ingredient.name;
+                                        return <option key={name} value={name.toLowerCase()}>{name}</option>;
+                                    })
                             }
-                        </Field> <br />
-                        <FormErrorMessage name={`substitutions.${index}.removals.${idx}.quantity`} /><br />
-                        <FormErrorMessage name={`substitutions.${index}.removals.${idx}.ingredientName`} />
+                        </select> <br />
+                        <FormErrorMessage error={errors?.at(idx)?.ingredientName} /><br />
+                        <FormErrorMessage error={errors?.at(idx)?.quantity} />
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ quantity: '', ingredientName: '' })}>
+            <button type="button" onClick={() => append({ quantity: '', ingredientName: '' })}>
                 ++
-            </button > */}
+            </button >
         </div >
     );
 }

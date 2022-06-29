@@ -1,35 +1,40 @@
-import { useFormikContext, FieldArrayRenderProps, FieldArray } from "formik";
+import { Control, UseFormSetValue, UseFormGetValues, UseFormRegister, useFieldArray } from "react-hook-form";
 import { RecipeFormData } from "../RecipeForm";
 import SubstitutionAdditionsField from "./SubstitutionAdditionsField";
 import SubstitutionRemovalsField from "./SubstitutionRemovalsField";
 
-type Props = {
-    arrayHelpers: FieldArrayRenderProps;
-};
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    getValues: UseFormGetValues<RecipeFormData>;
+    register: UseFormRegister<RecipeFormData>;
+}
 
-function SubstitutionsField({ arrayHelpers }: Props) {
-    const { values } = useFormikContext<RecipeFormData>();
+type Props = { } & FormHelpers; 
+
+function SubstitutionsField({ ...formHelpers }: Props) {
+    const { control, register, getValues } = formHelpers;
+    const { fields: substitutions, remove, append } = useFieldArray({ control, name: "substitutions" });
 
     return (
         <div>
             <h2>Substitutions</h2>
             {
-                values.substitutions.map((substitution, index) => (
-                    <div key={index}>
-                        <button type="button" onClick={() => arrayHelpers.remove(index)}>
+                substitutions.map((substitution, index) => (
+                    <div key={substitution.id}>
+                        <button type="button" onClick={() => remove(index)}>
                             -
                         </button>
-                        <FieldArray name={`substitutions.${index}.removals`} render={removalsArrayHelpers => (
-                            <SubstitutionRemovalsField index={index} arrayHelpers={removalsArrayHelpers} />
-                        )} />
-                        <FieldArray name={`substitutions.${index}.additions`} render={additionsArrayHelpers => (
-                            <SubstitutionAdditionsField index={index} arrayHelpers={additionsArrayHelpers} />
-                        )} />
+                        <SubstitutionRemovalsField index={index}
+                            {...{control, register, getValues}}
+                        />
+                        <SubstitutionAdditionsField index={index}
+                            {...{control, register}}
+                        />
                         <hr/>
                     </div>
                 ))
             }
-            <button type="button" onClick={() => arrayHelpers.push({ additions: [], removals: [] })}>
+            <button type="button" onClick={() => append({ additions: [], removals: [] })}>
                 +
             </button >
         </div >
