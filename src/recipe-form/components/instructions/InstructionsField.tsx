@@ -1,17 +1,22 @@
-import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { useRef, useEffect, useState } from "react";
+import { Control, useFieldArray, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { useRef, useEffect, useState, useCallback, memo } from "react";
 import DragDropList from "../../../components-misc/DragDropList";
 import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
 import useListFocuser from "../../useListFocuser";
 
-type Props = {
-    formHelper: UseFormReturn<RecipeFormData>;
-};
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    setValue: UseFormSetValue<RecipeFormData>;
+    register: UseFormRegister<RecipeFormData>;
+}
 
-function InstructionsField({ formHelper }: Props) {
-    const { setValue, control } = formHelper;
+type Props = { } & FormHelpers;
+
+function InstructionsField({ ...formHelpers }: Props) {
+    const { setValue, control, register } = formHelpers;
+    const instructionFormProps = { control, register };
     const { fields, remove, insert } = useFieldArray({ control, name: "instructions" });
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -24,9 +29,9 @@ function InstructionsField({ formHelper }: Props) {
         if (fields.length === 0) {
             setValue(`instructions`, [{ val: '' }]);
         }
-    }, [fields]);
+    }, [fields, setValue]);
 
-    const handleKeyDown = (ev: any, idx: number) => {
+    const handleKeyDown = useCallback((ev: any, idx: number) => {
         if (ev.code === "Enter") {
             ev.preventDefault();
         }
@@ -53,11 +58,11 @@ function InstructionsField({ formHelper }: Props) {
             insert(idx + 1, { val: '' });
             setFocus(idx + 1);
         }
-    };
+    }, [fields, isKeyDown, setIsKeyDown, setFocus, remove, insert]);
 
-    const handleKeyUp = (ev: any) => {
+    const handleKeyUp = useCallback((ev: any) => {
         setIsKeyDown(false);
-    };
+    }, [setIsKeyDown]);
 
     return (
         <>
@@ -70,7 +75,7 @@ function InstructionsField({ formHelper }: Props) {
                             idx={idx}
                             handleKeyDown={handleKeyDown}
                             handleKeyUp={handleKeyUp}
-                            formHelper={formHelper}
+                            {...instructionFormProps}
                         />
                     ))}
                 </div>
@@ -79,4 +84,4 @@ function InstructionsField({ formHelper }: Props) {
     );
 };
 
-export default InstructionsField;
+export default memo(InstructionsField);

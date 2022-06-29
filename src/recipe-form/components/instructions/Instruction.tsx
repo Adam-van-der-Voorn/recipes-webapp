@@ -2,20 +2,25 @@ import { Draggable } from "react-beautiful-dnd";
 import TextAreaAutoHeight from "../../../components-misc/TextAreaAutoHeight";
 import FormErrorMessage from "../FormErrorMessage";
 import { MdDragHandle } from 'react-icons/md';
-import { UseFormReturn } from "react-hook-form";
+import { Control, UseFormRegister, useFormState } from "react-hook-form";
 import { RecipeFormData } from "../RecipeForm";
 import { memo } from "react";
+
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    register: UseFormRegister<RecipeFormData>;
+}
 
 type Props = {
     id: string,
     idx: number;
     handleKeyDown: (ev: any, idx: number) => void;
     handleKeyUp: (ev: any) => void;
-    formHelper: UseFormReturn<RecipeFormData>;
-};
+} & FormHelpers;
 
-function Instruction({ id, idx, handleKeyDown, handleKeyUp, formHelper }: Props) {
-    const { register, formState: { errors } } = formHelper;
+function Instruction({ id, idx, handleKeyDown, handleKeyUp, ...formHelpers }: Props) {
+    const { register, control } = formHelpers;
+    const { errors } = useFormState({ control, name: `instructions`, exact: true});
     return (
         <Draggable draggableId={id} index={idx}>
             {(provided, snapshot) => (

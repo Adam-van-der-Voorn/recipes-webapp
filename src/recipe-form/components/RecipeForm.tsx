@@ -66,7 +66,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
         defaultValues: initialValues
     });
 
-    const { register, handleSubmit, formState: { errors } } = formHelper;
+    const { register, handleSubmit, control, setValue, formState: { errors } } = formHelper;
     const onSubmit: SubmitHandler<RecipeFormData> = data => console.log(data);
 
     return (
@@ -117,7 +117,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                 <IngredientsField {...formHelper} />
 
-                <InstructionsField formHelper={formHelper} />
+                <InstructionsField {...{control, register, setValue}} />
                 
                 <input type="submit" />
             </form >
