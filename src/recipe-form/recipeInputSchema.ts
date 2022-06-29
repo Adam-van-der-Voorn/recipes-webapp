@@ -33,18 +33,24 @@ const yupIngredientsSchema = Yup.object().shape({
                     .required("A name is required."),
                 ingredients: Yup.array().of(
                     Yup.object().shape({
-                        name: yupIngredientNameSchema
-                            .test('is-required', 'Ingredient name is required.', (el, context) => {
-                                return (el !== undefined || isLastIngredient(context));
-                            }),
-                        quantity: yupQuantitySchema
-                            .test('is-required', 'Ingredient quantity is required.', (el, context) => {
-                                return (el !== undefined || isLastIngredient(context));
+                        name: Yup.string()
+                            .default('')
+                            .test('required', 'Ingredient name is required.', (el, context) => {
+                                return isLastIngredient(context) || el.trim() !== '';
+                            })
+                            .max(60, 'Please make this shorter.'),
+                        quantity: Yup.string()
+                            .default('')
+                            .test('required', 'Ingredient quantity is required.', (el, context) => {
+                                return isLastIngredient(context) || el.trim() !== '';
+                            })
+                            .max(30, 'please make this shorter')
+                            .test('is-unitval', 'Must be a number, followed by a unit', (el, context) => {
+                                return (!el || unitValPattern.test(el));
                             }),
                         percentage: Yup.string()
                             .test('is-num-or-whitespace', 'Must be a valid percentage.', (el, context) => {
                                 if (el === undefined) {
-                                    console.log("undef")
                                     return false;
                                 }
                                 return (el.trim() === '' || decimalValPattern.test(el));
