@@ -24,7 +24,9 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
 
     useEffect(() => {
         if (!hasMultipleLists) {
-            const l = fullIngredientList();
+            const l = getValues().ingredients.lists
+                .flatMap(list => list.ingredients.slice(0, -1))
+                .concat([{name: '', quantity: '', optional: false, percentage: ''}])
             replace([{ name: "Main", ingredients: l }]);
         }
     }, [hasMultipleLists]);
