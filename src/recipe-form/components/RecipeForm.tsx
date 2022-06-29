@@ -67,7 +67,11 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
     });
 
     const { register, handleSubmit, control, setValue, getValues, formState: { errors }} = formHelper;
-    const onSubmit: SubmitHandler<RecipeFormData> = data => console.log(data);
+
+    const onSubmit: SubmitHandler<RecipeFormData> = data => {
+        const parsed = parseFormData(data);
+        doSubmit(parsed);
+    };
 
     return (
         <div className="RecipeForm">

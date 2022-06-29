@@ -1,10 +1,8 @@
-import { useFieldArray, UseFormReturn, useFormState, useWatch } from "react-hook-form";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { parseUnitValInput, parseUnitValInputs } from "../../parseUnitValInputs";
-import { RecipeFormData, RecipeInputIngredient } from "../RecipeForm";
-import convert, { Unit } from 'convert-units';
+import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { parseUnitValInput } from "../../parseUnitValInputs";
+import { RecipeFormData } from "../RecipeForm";
 import { UnitVal } from "../../../types/recipeTypes";
-import { isConvertableUnit, isSameMeasure } from "../../../util/units";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";

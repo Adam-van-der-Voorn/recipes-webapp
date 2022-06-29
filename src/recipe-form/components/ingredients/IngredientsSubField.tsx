@@ -1,6 +1,6 @@
-import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
-import React, { memo, useEffect, useRef } from "react";
-import { RecipeFormData, RecipeInputIngredient } from "../RecipeForm";
+import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import { RecipeFormData } from "../RecipeForm";
 import { MdMoreVert, MdAnchor } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";

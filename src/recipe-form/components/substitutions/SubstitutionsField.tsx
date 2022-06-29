@@ -1,4 +1,4 @@
-import { Control, UseFormSetValue, UseFormGetValues, UseFormRegister, useFieldArray } from "react-hook-form";
+import { Control, UseFormGetValues, UseFormRegister, useFieldArray } from "react-hook-form";
 import { RecipeFormData } from "../RecipeForm";
 import SubstitutionAdditionsField from "./SubstitutionAdditionsField";
 import SubstitutionRemovalsField from "./SubstitutionRemovalsField";

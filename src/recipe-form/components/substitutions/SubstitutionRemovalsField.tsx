@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { Control, UseFormSetValue, UseFormRegister, useFieldArray, UseFormGetValues, useFormState } from "react-hook-form";
-import { register } from "../../../serviceWorkerRegistration";
+import { Control, UseFormRegister, useFieldArray, UseFormGetValues, useFormState } from "react-hook-form";
 import FormErrorMessage from "../FormErrorMessage";
 import { RecipeFormData } from "../RecipeForm";
 
