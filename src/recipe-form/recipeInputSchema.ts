@@ -42,8 +42,13 @@ const yupIngredientsSchema = Yup.object().shape({
                                 return (el !== undefined || isLastIngredient(context));
                             }),
                         percentage: Yup.string()
-                            .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
-                            .matches(decimalValPattern, 'Must be a valid percentage'),
+                            .test('is-num-or-whitespace', 'Must be a valid percentage.', (el, context) => {
+                                if (el === undefined) {
+                                    console.log("undef")
+                                    return false;
+                                }
+                                return (el.trim() === '' || decimalValPattern.test(el));
+                            })
                     })
                 )
             })
@@ -88,8 +93,12 @@ export default function getFullSchema() {
             .max(10000, 'Please make this shorter.'),
         ingredients: yupIngredientsSchema,
         servings: Yup.string()
-            .transform(old => old.trim() === '' ? '0' : old) // allow whitespace only
-            .matches(decimalValPattern, 'Must be a number'),
+            .test('is-num-or-whitespace', 'Must be a number of servings', (el, context) => {
+                if (el === undefined) {
+                    return false;
+                }
+                return (el.trim() === '' || decimalValPattern.test(el));
+            }),
         instructions: yupInstructionsSchema,
         substitutions: yupSubstitutionsSchema,
     });
