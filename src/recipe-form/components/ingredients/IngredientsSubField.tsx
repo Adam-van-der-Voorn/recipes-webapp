@@ -20,10 +20,12 @@ type Props = {
     listPos: number;
     isPercentagesIncluded: boolean;
     isOnlyList: boolean;
+    onPercentageBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
+    onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
 } & FormHelpers;
    
 
-function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, ...formHelpers }: Props) {
+function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
     const { control, setValue, getValues, register } = formHelpers;
     const { append, remove, update, fields: ingredients } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
     const { errors } = useFormState({ control })
@@ -61,7 +63,9 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                         const percentageInput = (
                             <div className="percentage">
-                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`)}
+                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
+                                    onBlur: onPercentageBlur(listIdx, localIdx)
+                                })}
                                     type="text"
                                     placeholder="?"
                                     autoComplete="off"
@@ -87,7 +91,9 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
                                 {!isLastField &&
                                     <>
-                                        <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`)}
+                                        <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`, {
+                                            onBlur: onQuantityBlur(listIdx, localIdx)
+                                        })}
                                             type="text"
                                             className="quantity"
                                             autoComplete="off"

@@ -12,11 +12,12 @@ import IconButton from "../../../components-misc/IconButton";
 import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
+import getPercentageFromVal from "../../../util/getPercentageFromVal";
 
 type Props = {} & UseFormReturn<RecipeFormData>;
 
 function IngredientsField({ setValue, getValues, control, register }: Props) {
-    const ingredientFormProps = { control, setValue, getValues, register }
+    const ingredientFormProps = { control, setValue, getValues, register };
     const { append, replace, fields: lists } = useFieldArray({ control, name: "ingredients.lists" });
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
     const [hasMultipleLists, setHasMultipleLists] = useState(lists.length > 1);
@@ -24,25 +25,90 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
     useEffect(() => {
         if (!hasMultipleLists) {
             const l = fullIngredientList();
-            console.log("concating to ", l)
-            replace([{ name: "Main", ingredients: l}]);
+            replace([{ name: "Main", ingredients: l }]);
         }
     }, [hasMultipleLists]);
 
-    useEffect(() => {
-        console.log("lists", lists)
-        console.log("full list", fullIngredientList())
-    }, [lists])
-
     const fullIngredientList = () => getValues().ingredients.lists.flatMap(list => list.ingredients);
 
-    const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => { // TODO: lists
+    const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => {
         let numPrecedingIngredients = 0;
         for (let i = 0; i < subListIdx; i++) {
             numPrecedingIngredients += getValues().ingredients.lists[i].ingredients.length;
         }
         return numPrecedingIngredients + localIdx;
     };
+
+    const setPercentageAuto = (subListIdx: number, localIdx: number): void => {
+        const ingredient = getValues().ingredients.lists[subListIdx].ingredients[localIdx];
+        const anchorIdx = getValues().ingredients.anchor;
+        const anchor = fullIngredientList()[anchorIdx];
+        const percentage: number | undefined = getPercentageFromVal(ingredient, anchor);
+        if (percentage) {
+            setPercentage(percentage, subListIdx, localIdx);
+        }
+        else {
+            setValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`, '');
+        }
+    };
+
+    const onQuantityBlur = (subListIdx: number, localIdx: number) => (e: any) => {
+        const quantity = parseUnitValInput(e.target.value);
+        if (quantity) {
+            setQuantity(quantity, subListIdx, localIdx);
+        }
+        if (isPercentagesIncluded) {
+            const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
+            const ingredients = getValues().ingredients;
+            if (globalIdx === ingredients.anchor) {
+                for (let subListIdx = 0; subListIdx < ingredients.lists.length; subListIdx++) {
+                    const subList = ingredients.lists[subListIdx];
+                    for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
+                        setPercentageAuto(subListIdx, localIdx);
+                    }
+                }
+            }
+            else {
+                setPercentageAuto(subListIdx, localIdx);
+            }
+        }
+    };
+
+    const onPercentageBlur = (subListIdx: number, localIdx: number) => (e: any) => {
+        const subIngredientList = getValues().ingredients.lists[subListIdx];
+        const subjectField = subIngredientList.ingredients[localIdx];
+        const subjectPercentage = parseFloat(subjectField.percentage);
+        if (isNaN(subjectPercentage)) {
+            return;
+        }
+        setPercentage(subjectPercentage, subListIdx, localIdx);
+
+        const anchorField = fullIngredientList()[getValues().ingredients.anchor];
+        const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
+        if (anchorQuantity) {
+            const subjectQuantity = parseUnitValInput(subjectField.quantity);
+            const newQuantity = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectQuantity);
+            if (newQuantity) {
+                setQuantity(newQuantity, subListIdx, localIdx);
+            }
+        }
+    };
+
+    const setQuantity = (quantity: UnitVal, subListIdx: number, localIdx: number) => {
+        const rounded = +(quantity.value).toFixed(2)
+        setValue(
+            `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`,
+            `${rounded} ${quantity.unit}`
+        )
+    }
+
+    const setPercentage = (percentage: number, subListIdx: number, localIdx: number) => {
+        const rounded = +(percentage).toFixed(2)
+        setValue(
+            `ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`,
+            `${rounded}`
+        )
+    }
 
     const handleMultipleListsChange = (newVal: boolean) => {
         const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.");
@@ -68,6 +134,8 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
                         listPos={LocalToGlobalIdx(idx, 0)}
                         isPercentagesIncluded={isPercentagesIncluded}
                         isOnlyList={!hasMultipleLists}
+                        onQuantityBlur={onQuantityBlur}
+                        onPercentageBlur={onPercentageBlur}
                         {...ingredientFormProps}
                     />
                 ))
