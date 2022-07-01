@@ -1,4 +1,4 @@
-import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue } from "react-hook-form";
+import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue, useWatch } from "react-hook-form";
 import { memo, useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
 import { UnitVal } from "../../../types/recipeTypes";
@@ -10,7 +10,7 @@ import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
-import { RecipeInput } from "../../../types/RecipeInputTypes";
+import { IngredientSublistInput, RecipeInput } from "../../../types/RecipeInputTypes";
 type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
@@ -25,29 +25,39 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
     const { append, replace, fields } = useFieldArray({ control, name: "ingredients.lists" });
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
     const [hasMultipleLists, setHasMultipleLists] = useState(fields.length > 1);
+    const lists = useWatch({control, name: "ingredients.lists"})
+    const anchorIdx = useWatch({control, name: "ingredients.anchor"})
 
     useEffect(() => {
         if (!hasMultipleLists) {
-            const l = getValues().ingredients.lists
+            const l = lists
                 .flatMap(list => list.ingredients.slice(0, -1))
                 .concat([{name: '', quantity: '', optional: false, percentage: ''}])
             replace([{ name: "Main", ingredients: l }]);
         }
     }, [hasMultipleLists]);
 
-    const fullIngredientList = () => getValues().ingredients.lists.flatMap(list => list.ingredients);
+    useEffect(() => {
+        for (let subListIdx = 0; subListIdx < lists.length; subListIdx++) {
+            const subList = lists[subListIdx];
+            for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
+                setPercentageBasedOffIngredient(subListIdx, localIdx);
+            }
+        }
+    }, [anchorIdx]);
+
+    const fullIngredientList = () => lists.flatMap(list => list.ingredients);
 
     const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => {
         let numPrecedingIngredients = 0;
         for (let i = 0; i < subListIdx; i++) {
-            numPrecedingIngredients += getValues().ingredients.lists[i].ingredients.length;
+            numPrecedingIngredients += lists[i].ingredients.length;
         }
         return numPrecedingIngredients + localIdx;
     };
 
-    const setPercentageAuto = (subListIdx: number, localIdx: number): void => {
-        const ingredient = getValues().ingredients.lists[subListIdx].ingredients[localIdx];
-        const anchorIdx = getValues().ingredients.anchor;
+    const setPercentageBasedOffIngredient = (subListIdx: number, localIdx: number): void => {
+        const ingredient = lists[subListIdx].ingredients[localIdx];
         const anchor = fullIngredientList()[anchorIdx];
         const percentage: number | undefined = getPercentageFromVal(ingredient, anchor);
         if (percentage) {
@@ -65,23 +75,22 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
         }
         if (isPercentagesIncluded) {
             const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
-            const ingredients = getValues().ingredients;
-            if (globalIdx === ingredients.anchor) {
-                for (let subListIdx = 0; subListIdx < ingredients.lists.length; subListIdx++) {
-                    const subList = ingredients.lists[subListIdx];
+            if (globalIdx === anchorIdx) {
+                for (let subListIdx = 0; subListIdx < lists.length; subListIdx++) {
+                    const subList = lists[subListIdx];
                     for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
-                        setPercentageAuto(subListIdx, localIdx);
+                        setPercentageBasedOffIngredient(subListIdx, localIdx);
                     }
                 }
             }
             else {
-                setPercentageAuto(subListIdx, localIdx);
+                setPercentageBasedOffIngredient(subListIdx, localIdx);
             }
         }
     };
 
     const onPercentageBlur = (subListIdx: number, localIdx: number) => (e: any) => {
-        const subIngredientList = getValues().ingredients.lists[subListIdx];
+        const subIngredientList = lists[subListIdx];
         const subjectField = subIngredientList.ingredients[localIdx];
         const subjectPercentage = parseFloat(subjectField.percentage);
         if (isNaN(subjectPercentage)) {
@@ -89,7 +98,7 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
         }
         setPercentage(subjectPercentage, subListIdx, localIdx);
 
-        const anchorField = fullIngredientList()[getValues().ingredients.anchor];
+        const anchorField = fullIngredientList()[anchorIdx];
         const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
         if (anchorQuantity) {
             const subjectQuantity = parseUnitValInput(subjectField.quantity);
@@ -104,7 +113,8 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
         const rounded = +(quantity.value).toFixed(2)
         setValue(
             `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`,
-            `${rounded} ${quantity.unit}`
+            `${rounded} ${quantity.unit}`,
+            { shouldValidate: true }
         )
     }
 
@@ -112,7 +122,8 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
         const rounded = +(percentage).toFixed(2)
         setValue(
             `ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`,
-            `${rounded}`
+            `${rounded}`,
+            { shouldValidate: true }
         )
     }
 

@@ -18,7 +18,7 @@ function InstructionsField({ ...formHelpers }: Props) {
     const { setValue, control, register } = formHelpers;
     const instructionFormProps = { control, register };
     const { fields, remove, insert, replace } = useFieldArray({ control, name: "instructions" });
-    const instructions: unknown[] = useWatch({control, name: "instructions", nest: true} as any)
+    const instructions = useWatch({control, name: "instructions"});
 
     const containerRef = useRef<HTMLDivElement>(null);
 
