@@ -7,13 +7,14 @@ import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggle
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
+import PercentageInput from "./PercentageInput";
 
 type FormHelpers = {
     control: Control<RecipeFormData, any>;
     setValue: UseFormSetValue<RecipeFormData>;
     getValues: UseFormGetValues<RecipeFormData>;
     register: UseFormRegister<RecipeFormData>;
-}
+};
 
 type Props = {
     listIdx: number;
@@ -23,12 +24,12 @@ type Props = {
     onPercentageBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
     onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
 } & FormHelpers;
-   
+
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
     const { control, setValue, getValues, register } = formHelpers;
     const { append, remove, update, fields: ingredients } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
-    const { errors } = useFormState({ control })
+    const { errors } = useFormState({ control });
     const lastField = useWatch({ name: `ingredients.lists.${listIdx}.ingredients.${ingredients.length - 1}`, control });
     useWatch({ name: `ingredients.anchor`, control });
 
@@ -61,25 +62,6 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                         const isAnchor = globalIdx === getValues().ingredients.anchor;
                         const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
 
-                        const percentageInput = (
-                            <div className="percentage">
-                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
-                                    onBlur: onPercentageBlur(listIdx, localIdx)
-                                })}
-                                    type="text"
-                                    placeholder="?"
-                                    autoComplete="off"
-                                />
-                                %
-                            </div>
-                        );
-
-                        const percentageField = isPercentagesIncluded
-                            ? isAnchor
-                                ? <div className="anchor"><MdAnchor /></div>
-                                : percentageInput
-                            : null;
-
                         return (
                             <React.Fragment key={localIdx}>
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
@@ -99,15 +81,16 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                             autoComplete="off"
                                         />
 
-                                        {percentageField}
+                                        {isPercentagesIncluded &&
+                                            <PercentageInput {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
+                                                onBlur: onPercentageBlur(listIdx, localIdx)
+                                            })}
+                                                isAnchor={isAnchor}
+                                            />
+                                        }
 
                                         <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => update(localIdx,  {
-                                                name: ingredient.name,
-                                                quantity: ingredient.quantity,
-                                                percentage: ingredient.percentage,
-                                                optional: b
-                                            })} />
+                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => update(localIdx, { name: ingredient.name, quantity: ingredient.quantity, percentage: ingredient.percentage, optional: b })} />
                                             {!isAnchor && isPercentagesIncluded &&
                                                 <MenuItemAction text="Set to anchor" action={() => setValue('ingredients.anchor', globalIdx)} />
                                             }
