@@ -1,4 +1,4 @@
-import { Control, useFieldArray, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
 import { useRef, useEffect, useState, useCallback, memo } from "react";
 import DragDropList from "../../../components-misc/DragDropList";
 import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
@@ -17,7 +17,8 @@ type Props = { } & FormHelpers;
 function InstructionsField({ ...formHelpers }: Props) {
     const { setValue, control, register } = formHelpers;
     const instructionFormProps = { control, register };
-    const { fields, remove, insert } = useFieldArray({ control, name: "instructions" });
+    const { fields, remove, insert, replace } = useFieldArray({ control, name: "instructions" });
+    const instructions: unknown[] = useWatch({control, name: "instructions", nest: true} as any)
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -67,7 +68,7 @@ function InstructionsField({ ...formHelpers }: Props) {
     return (
         <>
             <h2>Method</h2>
-            <DragDropList data={fields} setData={(newData) => setValue('instructions', newData as RecipeInputInstruction[])}>
+            <DragDropList data={instructions} setData={(newData) => replace(newData as any)}>
                 <div className="instructions" ref={containerRef}>
                     {fields.map((field, idx) => (
                         <Instruction key={field.id}

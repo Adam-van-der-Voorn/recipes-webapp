@@ -1,4 +1,4 @@
-import { useRef, useEffect, RefObject } from "react";
+import { useRef, useEffect, RefObject, useCallback } from "react";
 
 
 // arbitrary negative value
@@ -33,7 +33,7 @@ function useListFocuser(containerRef: RefObject<HTMLElement>) {
         }
     });
 
-    const setFocus = (idx: number) => nextInFocus.current = idx;
+    const setFocus = useCallback((idx: number) => nextInFocus.current = idx, [nextInFocus]);
     
     return setFocus;
 }
