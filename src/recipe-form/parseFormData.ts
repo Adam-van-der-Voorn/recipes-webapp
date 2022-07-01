@@ -1,8 +1,8 @@
 import { Recipe } from "../types/recipeTypes";
+import { RecipeInput } from "../types/RecipeInputTypes";
 import { parseUnitValInput } from "./parseUnitValInputs";
-import { RecipeFormData } from "./components/RecipeForm";
 
-export default function parseFormData(formData: RecipeFormData): Recipe {
+export default function parseFormData(formData: RecipeInput): Recipe {
     // parse form data
     const recipe: Recipe = {
         name: formData.name.trim(),

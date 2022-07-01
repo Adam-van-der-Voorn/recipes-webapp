@@ -1,10 +1,10 @@
 import convert, { Unit } from "convert-units";
-import { RecipeInputIngredient } from "../recipe-form/components/RecipeForm";
 import { parseUnitValInputs } from "../recipe-form/parseUnitValInputs";
 import { UnitVal } from "../types/recipeTypes";
+import { IngredientInput } from "../types/RecipeInputTypes";
 import { isSameMeasure, isConvertableUnit } from "./units";
 
-export default function getPercentageFromVal(subject: RecipeInputIngredient, anchor: RecipeInputIngredient): number | undefined {
+export default function getPercentageFromVal(subject: IngredientInput, anchor: IngredientInput): number | undefined {
     const quantities: UnitVal[] = parseUnitValInputs(anchor.quantity, subject.quantity);
     if (quantities.length !== 2 || !isSameMeasure(quantities[0].unit, quantities[1].unit)) {
         return undefined;

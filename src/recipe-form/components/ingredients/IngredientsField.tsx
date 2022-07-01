@@ -1,7 +1,6 @@
 import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue } from "react-hook-form";
 import { memo, useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
-import { RecipeFormData } from "../RecipeForm";
 import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
@@ -11,20 +10,21 @@ import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    setValue: UseFormSetValue<RecipeFormData>;
-    getValues: UseFormGetValues<RecipeFormData>
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    setValue: UseFormSetValue<RecipeInput>;
+    getValues: UseFormGetValues<RecipeInput>
+    register: UseFormRegister<RecipeInput>;
 }
 
 type Props = {} & FormHelpers;
 
 function IngredientsField({ setValue, getValues, control, register }: Props) {
     const ingredientFormProps = { control, setValue, getValues, register };
-    const { append, replace, fields: lists } = useFieldArray({ control, name: "ingredients.lists" });
+    const { append, replace, fields } = useFieldArray({ control, name: "ingredients.lists" });
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
-    const [hasMultipleLists, setHasMultipleLists] = useState(lists.length > 1);
+    const [hasMultipleLists, setHasMultipleLists] = useState(fields.length > 1);
 
     useEffect(() => {
         if (!hasMultipleLists) {
@@ -134,7 +134,7 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
                 </DropdownMenu>
             </h2>
             {
-                lists.map((sublist, idx) => (
+                fields.map((sublist, idx) => (
                     <IngredientsSubField key={sublist.id}
                         listIdx={idx}
                         listPos={LocalToGlobalIdx(idx, 0)}

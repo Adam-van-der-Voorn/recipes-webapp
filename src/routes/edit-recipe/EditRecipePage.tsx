@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { RecipesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import RecipeForm, { RecipeInputIngredients, RecipeInputInstruction, RecipeInputSubstitutions } from "../../recipe-form/components/RecipeForm";
 import { UnitVal, Recipe } from "../../types/recipeTypes";
 import MyError from "../../components-misc/MyError";
 import { v4 as uuid4 } from 'uuid';
+import RecipeForm from "../../recipe-form/components/RecipeForm";
+import { IngredientListsInput, InstructionInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
@@ -34,7 +35,7 @@ function EditRecipePage() {
         return null;
     }
 
-    const ingredients: RecipeInputIngredients = recipe.ingredients
+    const ingredients: IngredientListsInput = recipe.ingredients
         ? {
             lists: recipe.ingredients.lists
                 .map(subIngredientList => {
@@ -57,12 +58,12 @@ function EditRecipePage() {
             anchor: 0
         };
 
-    const instructions: RecipeInputInstruction[] = recipe.instructions
+    const instructions: InstructionInput[] = recipe.instructions
         ? recipe.instructions.map(instruction => ({ val: instruction }))
         : []
 
 
-    const substitutions: RecipeInputSubstitutions = recipe.substitutions
+    const substitutions: SubstitutionInput[] = recipe.substitutions
         ? recipe.substitutions
             .map(substitution => {
                 return {

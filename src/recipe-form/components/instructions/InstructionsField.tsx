@@ -1,15 +1,15 @@
 import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
 import { useRef, useEffect, useState, useCallback, memo } from "react";
 import DragDropList from "../../../components-misc/DragDropList";
-import { RecipeFormData, RecipeInputInstruction } from "../RecipeForm";
 import Instruction from "./Instruction";
 import './InstructionsField.css';
 import useListFocuser from "../../useListFocuser";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    setValue: UseFormSetValue<RecipeFormData>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    setValue: UseFormSetValue<RecipeInput>;
+    register: UseFormRegister<RecipeInput>;
 }
 
 type Props = { } & FormHelpers;

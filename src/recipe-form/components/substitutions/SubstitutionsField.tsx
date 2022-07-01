@@ -1,12 +1,12 @@
 import { Control, UseFormGetValues, UseFormRegister, useFieldArray } from "react-hook-form";
-import { RecipeFormData } from "../RecipeForm";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 import SubstitutionAdditionsField from "./SubstitutionAdditionsField";
 import SubstitutionRemovalsField from "./SubstitutionRemovalsField";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    getValues: UseFormGetValues<RecipeFormData>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    getValues: UseFormGetValues<RecipeInput>;
+    register: UseFormRegister<RecipeInput>;
 }
 
 type Props = { } & FormHelpers; 

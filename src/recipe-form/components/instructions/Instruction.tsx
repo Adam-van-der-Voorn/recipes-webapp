@@ -3,12 +3,12 @@ import TextAreaAutoHeight from "../../../components-misc/TextAreaAutoHeight";
 import FormErrorMessage from "../FormErrorMessage";
 import { MdDragHandle } from 'react-icons/md';
 import { Control, UseFormRegister, useFormState } from "react-hook-form";
-import { RecipeFormData } from "../RecipeForm";
 import { memo } from "react";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    register: UseFormRegister<RecipeInput>;
 }
 
 type Props = {

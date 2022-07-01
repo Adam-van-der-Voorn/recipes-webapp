@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Control, UseFormRegister, useFieldArray, UseFormGetValues, useFormState } from "react-hook-form";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 import FormErrorMessage from "../FormErrorMessage";
-import { RecipeFormData } from "../RecipeForm";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    getValues: UseFormGetValues<RecipeFormData>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    getValues: UseFormGetValues<RecipeInput>;
+    register: UseFormRegister<RecipeInput>;
 };
 
 type Props = {

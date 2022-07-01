@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { Control, useFieldArray, UseFormRegister, useFormState } from "react-hook-form";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 import FormErrorMessage from "../FormErrorMessage";
-import { RecipeFormData } from "../RecipeForm";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    register: UseFormRegister<RecipeInput>;
 };
 
 type Props = {

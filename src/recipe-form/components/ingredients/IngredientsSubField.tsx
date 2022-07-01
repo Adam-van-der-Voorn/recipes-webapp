@@ -1,6 +1,5 @@
 import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
 import React, { useEffect } from "react";
-import { RecipeFormData } from "../RecipeForm";
 import { MdMoreVert, MdAnchor } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
@@ -8,12 +7,13 @@ import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
 import PercentageInput from "./PercentageInput";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
 
 type FormHelpers = {
-    control: Control<RecipeFormData, any>;
-    setValue: UseFormSetValue<RecipeFormData>;
-    getValues: UseFormGetValues<RecipeFormData>;
-    register: UseFormRegister<RecipeFormData>;
+    control: Control<RecipeInput, any>;
+    setValue: UseFormSetValue<RecipeInput>;
+    getValues: UseFormGetValues<RecipeInput>;
+    register: UseFormRegister<RecipeInput>;
 };
 
 type Props = {

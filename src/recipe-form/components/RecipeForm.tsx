@@ -9,57 +9,16 @@ import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-
-
-export type RecipeFormData = {
-    name: string,
-    timeframe: string,
-    notes: string,
-    ingredients: RecipeInputIngredients,
-    servings: string,
-    makes: string,
-    instructions: RecipeInputInstruction[],
-    substitutions: RecipeInputSubstitutions,
-};
-
-export type RecipeInputIngredient = {
-    name: string,
-    quantity: string,
-    optional: boolean,
-    percentage: string,
-};
-
-export type RecipeInputIngredients = {
-    lists: {
-        name: string;
-        ingredients: RecipeInputIngredient[];
-    }[];
-    anchor: number,
-};
-
-export type RecipeInputInstruction = {
-    val: string;
-};
-
-export type RecipeInputSubstitutions = {
-    additions: {
-        quantity: string,
-        ingredientName: string;
-    }[],
-    removals: {
-        quantity: string,
-        ingredientName: string;
-    }[];
-}[];
+import { RecipeInput } from "../../types/RecipeInputTypes";
 
 type Props = {
     doSubmit: (recipe: Recipe) => void;
-    initialValues: RecipeFormData;
+    initialValues: RecipeInput;
 };
 
 function RecipeForm({ doSubmit, initialValues }: Props) {
 
-    const formHelper = useForm<RecipeFormData>({
+    const formHelper = useForm<RecipeInput>({
         resolver: yupResolver(getFullSchema()),
         mode: 'onBlur',
         reValidateMode: 'onBlur',
@@ -68,7 +27,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
     const { register, handleSubmit, control, setValue, getValues, formState: { errors }} = formHelper;
 
-    const onSubmit: SubmitHandler<RecipeFormData> = data => {
+    const onSubmit: SubmitHandler<RecipeInput> = data => {
         const parsed = parseFormData(data);
         doSubmit(parsed);
     };
@@ -119,7 +78,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                     <FormErrorMessage error={errors.notes} />
                 </div>
 
-                <IngredientsField {...formHelper} />
+                <IngredientsField {...{control, register, getValues, setValue}} />
 
                 <InstructionsField {...{control, register, setValue}} />
 
