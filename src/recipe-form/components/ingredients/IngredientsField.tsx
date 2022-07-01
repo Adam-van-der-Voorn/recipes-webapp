@@ -1,5 +1,5 @@
-import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue } from "react-hook-form";
+import { memo, useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
 import { RecipeFormData } from "../RecipeForm";
 import { UnitVal } from "../../../types/recipeTypes";
@@ -11,8 +11,14 @@ import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
+type FormHelpers = {
+    control: Control<RecipeFormData, any>;
+    setValue: UseFormSetValue<RecipeFormData>;
+    getValues: UseFormGetValues<RecipeFormData>
+    register: UseFormRegister<RecipeFormData>;
+}
 
-type Props = {} & UseFormReturn<RecipeFormData>;
+type Props = {} & FormHelpers;
 
 function IngredientsField({ setValue, getValues, control, register }: Props) {
     const ingredientFormProps = { control, setValue, getValues, register };
@@ -149,4 +155,4 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
     );
 };
 
-export default IngredientsField;
+export default memo(IngredientsField);
