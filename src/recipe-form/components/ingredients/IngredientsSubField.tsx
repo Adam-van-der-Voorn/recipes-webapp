@@ -25,21 +25,21 @@ type Props = {
     onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
 } & FormHelpers;
 
-
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
     const { control, setValue, getValues, register } = formHelpers;
-    const { append, remove, update, fields: ingredients } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
+    const { append, remove, update, fields } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
     const { errors } = useFormState({ control });
-    const lastField = useWatch({ name: `ingredients.lists.${listIdx}.ingredients.${ingredients.length - 1}`, control });
     useWatch({ name: `ingredients.anchor`, control });
 
     useEffect(() => {
+        const currentIngredients = getValues().ingredients.lists[listIdx].ingredients;
+        const lastField = currentIngredients[currentIngredients.length - 1]
         if (!lastField || (lastField.name !== '')) {
             // last field is not 'empty'
             const emptyField = { name: '', quantity: '', optional: false, percentage: '' };
             append(emptyField, { shouldFocus: false });
         }
-    }, [lastField]);
+    });
 
     return (
         <>
@@ -56,14 +56,14 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 <div></div> {/* grid filler for inline button menu */}
 
                 {
-                    ingredients.map((ingredient, localIdx) => {
+                    fields.map((ingredient, localIdx) => {
                         const globalIdx = listPos + localIdx;
-                        const isLastField = localIdx === ingredients.length - 1;
+                        const isLastField = localIdx === fields.length - 1;
                         const isAnchor = globalIdx === getValues().ingredients.anchor;
                         const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
 
                         return (
-                            <React.Fragment key={localIdx}>
+                            <React.Fragment key={ingredient.id}>
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
                                     type="text"
                                     className={isLastField ? "name new-ingredient" : "name"}
