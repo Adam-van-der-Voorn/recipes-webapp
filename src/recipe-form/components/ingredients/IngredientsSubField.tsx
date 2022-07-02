@@ -45,7 +45,11 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
         <>
             {!isOnlyList &&
                 <div>
-                    <input {...register(`ingredients.lists.${listIdx}.name`)} type="text" placeholder="Untitled List" autoComplete="off" />
+                    <input {...register(`ingredients.lists.${listIdx}.name`)}
+                        type="text"
+                        className="ingredients-sublist-name"
+                        placeholder="Untitled List"
+                        autoComplete="off" />
                     <FormErrorMessage error={errors.ingredients?.lists?.at(listIdx)?.name} />
                 </div>
             }

@@ -4,6 +4,8 @@
     grid-auto-rows: auto;
     column-gap: 1.6rem;
     row-gap: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
 
 }
 
@@ -17,7 +19,6 @@
 
 .ingredient-list > .grid-header {
     font-size: 1.4rem;
-    padding-left: 0.5rem;
     color: var(--neutral-2);
 }
 
@@ -47,4 +48,21 @@ svg.close {
 
 svg.close:active {
     color: var(--neutral-9);
+}
+
+input[type=text].ingredients-sublist-name {
+    font-size: 2.4rem;
+    height: 2.5ch;
+    border-bottom: 2px solid transparent;
+    padding: 0;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+input[type=text].ingredients-sublist-name:focus {
+    border-bottom: 2px solid var(--neutral-3);
+}
+
+input[type=text].ingredients-sublist-name:hover:not(:focus) {
+    border-bottom: 2px solid var(--neutral-6);
 }
