@@ -1,5 +1,5 @@
-import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormReturn, UseFormSetValue, useWatch } from "react-hook-form";
-import { memo, useEffect, useState } from "react";
+import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
 import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
@@ -10,30 +10,30 @@ import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
-import { IngredientSublistInput, RecipeInput } from "../../../types/RecipeInputTypes";
+import { RecipeInput } from "../../../types/RecipeInputTypes";
+import useFieldList from "../../../util/hooks/useFieldList";
+import { v4 as uuid4 } from 'uuid';
+
 type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
-    getValues: UseFormGetValues<RecipeInput>
     register: UseFormRegister<RecipeInput>;
-}
+};
 
 type Props = {} & FormHelpers;
 
-function IngredientsField({ setValue, getValues, control, register }: Props) {
-    const ingredientFormProps = { control, setValue, getValues, register };
-    const { append, replace, fields } = useFieldArray({ control, name: "ingredients.lists" });
+function IngredientsField({ setValue, control, register }: Props) {
+    const lists = useWatch({control, name: "ingredients.lists"});
+    const anchorIdx = useWatch({control, name: "ingredients.anchor"});
+    const { replace, push } = useFieldList("ingredients.lists", setValue, lists);
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
-    const [hasMultipleLists, setHasMultipleLists] = useState(fields.length > 1);
-    const lists = useWatch({control, name: "ingredients.lists"})
-    const anchorIdx = useWatch({control, name: "ingredients.anchor"})
+    const [hasMultipleLists, setHasMultipleLists] = useState(lists.length > 1);
 
     useEffect(() => {
         if (!hasMultipleLists) {
             const l = lists
-                .flatMap(list => list.ingredients.slice(0, -1))
-                .concat([{name: '', quantity: '', optional: false, percentage: ''}])
-            replace([{ name: "Main", ingredients: l }]);
+                .flatMap(list => list.ingredients.slice(0, -1));
+            replace([{ id: uuid4(), name: "Main", ingredients: l }]);
         }
     }, [hasMultipleLists]);
 
@@ -110,22 +110,22 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
     };
 
     const setQuantity = (quantity: UnitVal, subListIdx: number, localIdx: number) => {
-        const rounded = +(quantity.value).toFixed(2)
+        const rounded = +(quantity.value).toFixed(2);
         setValue(
             `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`,
             `${rounded} ${quantity.unit}`,
             { shouldValidate: true }
-        )
-    }
+        );
+    };
 
     const setPercentage = (percentage: number, subListIdx: number, localIdx: number) => {
-        const rounded = +(percentage).toFixed(2)
+        const rounded = +(percentage).toFixed(2);
         setValue(
             `ingredients.lists.${subListIdx}.ingredients.${localIdx}.percentage`,
             `${rounded}`,
             { shouldValidate: true }
-        )
-    }
+        );
+    };
 
     const handleMultipleListsChange = (newVal: boolean) => {
         const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.");
@@ -145,20 +145,20 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
                 </DropdownMenu>
             </h2>
             {
-                fields.map((sublist, idx) => (
-                    <IngredientsSubField key={sublist.id}
+                lists.map((list, idx) => (
+                    <IngredientsSubField key={list.id}
                         listIdx={idx}
                         listPos={LocalToGlobalIdx(idx, 0)}
                         isPercentagesIncluded={isPercentagesIncluded}
                         isOnlyList={!hasMultipleLists}
                         onQuantityBlur={onQuantityBlur}
                         onPercentageBlur={onPercentageBlur}
-                        {...ingredientFormProps}
+                        {...{register, setValue, control}}
                     />
                 ))
             }
             {hasMultipleLists &&
-                <button type="button" onClick={() => append({ name: '', ingredients: [] })}>
+                <button type="button" onClick={() => push({ id: uuid4(), name: '', ingredients: [] })}>
                     Add ingredient list
                 </button >
             }
@@ -166,4 +166,4 @@ function IngredientsField({ setValue, getValues, control, register }: Props) {
     );
 };
 
-export default memo(IngredientsField);
+export default IngredientsField;

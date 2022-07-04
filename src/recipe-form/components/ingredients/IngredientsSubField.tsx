@@ -8,11 +8,12 @@ import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
 import PercentageInput from "./PercentageInput";
 import { RecipeInput } from "../../../types/RecipeInputTypes";
+import useFieldList from "../../../util/hooks/useFieldList";
+import { v4 as uuid4 } from 'uuid';
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
-    getValues: UseFormGetValues<RecipeInput>;
     register: UseFormRegister<RecipeInput>;
 };
 
@@ -26,18 +27,18 @@ type Props = {
 } & FormHelpers;
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
-    const { control, setValue, getValues, register } = formHelpers;
-    const { append, remove, update, fields } = useFieldArray({ control, name: `ingredients.lists.${listIdx}.ingredients` });
+    const { control, setValue, register } = formHelpers;
+    const ingredients = useWatch({control, name: `ingredients.lists.${listIdx}.ingredients`});
+    const anchorIdx = useWatch({control, name: 'ingredients.anchor'});
+    const { push, remove } = useFieldList(`ingredients.lists.${listIdx}.ingredients`, setValue, ingredients);
     const { errors } = useFormState({ control });
-    useWatch({ name: `ingredients.anchor`, control });
 
     useEffect(() => {
-        const currentIngredients = getValues().ingredients.lists[listIdx].ingredients;
-        const lastField = currentIngredients[currentIngredients.length - 1]
+        const lastField = ingredients[ingredients.length - 1]
         if (!lastField || (lastField.name !== '')) {
             // last field is not 'empty'
-            const emptyField = { name: '', quantity: '', optional: false, percentage: '' };
-            append(emptyField, { shouldFocus: false });
+            const emptyField = { id: uuid4(), name: '', quantity: '', optional: false, percentage: '' };
+            push(emptyField);
         }
     });
 
@@ -60,12 +61,11 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 <div></div> {/* grid filler for inline button menu */}
 
                 {
-                    fields.map((ingredient, localIdx) => {
+                    ingredients.map((ingredient, localIdx) => {
                         const globalIdx = listPos + localIdx;
-                        const isLastField = localIdx === fields.length - 1;
-                        const isAnchor = globalIdx === getValues().ingredients.anchor;
+                        const isLastField = localIdx === ingredients.length - 1;
+                        const isAnchor = globalIdx === anchorIdx;
                         const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
-
                         return (
                             <React.Fragment key={ingredient.id}>
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
@@ -94,7 +94,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                         }
 
                                         <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => update(localIdx, { name: ingredient.name, quantity: ingredient.quantity, percentage: ingredient.percentage, optional: b })} />
+                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => setValue(`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`, b)} />
                                             {!isAnchor && isPercentagesIncluded &&
                                                 <MenuItemAction text="Set to anchor" action={() => setValue('ingredients.anchor', globalIdx)} />
                                             }

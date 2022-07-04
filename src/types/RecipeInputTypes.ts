@@ -10,6 +10,7 @@ export type RecipeInput = {
 };
 
 export type IngredientInput = {
+    id: string;
     name: string,
     quantity: string,
     optional: boolean,
@@ -22,6 +23,7 @@ export type IngredientListsInput = {
 };
 
 export type IngredientSublistInput = {
+    id: string;
     name: string;
     ingredients: IngredientInput[];
 };

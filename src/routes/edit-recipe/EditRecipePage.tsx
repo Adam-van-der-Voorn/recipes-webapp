@@ -40,9 +40,11 @@ function EditRecipePage() {
             lists: recipe.ingredients.lists
                 .map(subIngredientList => {
                     return {
+                        id: uuid4(),
                         name: subIngredientList.name,
                         ingredients: subIngredientList.ingredients.map(ingredient => {
                             return {
+                                id: uuid4(),
                                 name: ingredient.name,
                                 quantity: unitValToString(ingredient.quantity),
                                 optional: ingredient.optional,
