@@ -5,6 +5,8 @@ import Instruction from "./Instruction";
 import './InstructionsField.css';
 import useListFocuser from "../../useListFocuser";
 import { RecipeInput } from "../../../types/RecipeInputTypes";
+import useFieldList from "../../../util/hooks/useFieldList";
+import { v4 as uuid4 } from 'uuid';
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -14,11 +16,9 @@ type FormHelpers = {
 
 type Props = { } & FormHelpers;
 
-function InstructionsField({ ...formHelpers }: Props) {
-    const { setValue, control, register } = formHelpers;
-    const instructionFormProps = { control, register };
-    const { fields, remove, insert, replace } = useFieldArray({ control, name: "instructions" });
+function InstructionsField({ setValue, control, register }: Props) {
     const instructions = useWatch({control, name: "instructions"});
+    const { remove, insert, replace } = useFieldList("instructions", setValue, instructions);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -27,18 +27,18 @@ function InstructionsField({ ...formHelpers }: Props) {
     const [isKeyDown, setIsKeyDown] = useState(false);
 
     useEffect(() => {
-        if (fields.length === 0) {
-            setValue(`instructions`, [{ val: '' }]);
+        if (instructions.length === 0) {
+            replace([{ id: uuid4(), val: '' }]);
         }
-    }, [fields, setValue]);
+    }, [instructions, setValue]);
 
     const handleKeyDown = useCallback((ev: any, idx: number) => {
         if (ev.code === "Enter") {
             ev.preventDefault();
         }
 
-        const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && fields.length > 1;
-        const shouldAddLine = ev.code === "Enter" && fields.length < 99;
+        const shouldRemoveLine = ev.code === "Backspace" && ev.target.value === "" && instructions.length > 1;
+        const shouldAddLine = ev.code === "Enter" && instructions.length < 99;
 
         if (shouldRemoveLine || shouldAddLine) {
             ev.preventDefault();
@@ -56,10 +56,10 @@ function InstructionsField({ ...formHelpers }: Props) {
         }
 
         else if (shouldAddLine) {
-            insert(idx + 1, { val: '' });
+            insert(idx + 1, { id: uuid4(), val: '' });
             setFocus(idx + 1);
         }
-    }, [fields, isKeyDown, setIsKeyDown, setFocus, remove, insert]);
+    }, [instructions, isKeyDown, setIsKeyDown, setFocus, remove, insert]);
 
     const handleKeyUp = useCallback((ev: any) => {
         setIsKeyDown(false);
@@ -70,13 +70,13 @@ function InstructionsField({ ...formHelpers }: Props) {
             <h2>Method</h2>
             <DragDropList data={instructions} setData={(newData) => replace(newData as any)}>
                 <div className="instructions" ref={containerRef}>
-                    {fields.map((field, idx) => (
-                        <Instruction key={field.id}
-                            id={field.id}
+                    {instructions.map((instruction, idx) => (
+                        <Instruction key={instruction.id}
+                            id={instruction.id}
                             idx={idx}
                             handleKeyDown={handleKeyDown}
                             handleKeyUp={handleKeyUp}
-                            {...instructionFormProps}
+                            {...{register, control}}
                         />
                     ))}
                 </div>

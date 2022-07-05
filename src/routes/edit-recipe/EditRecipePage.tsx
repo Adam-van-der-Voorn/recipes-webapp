@@ -61,7 +61,7 @@ function EditRecipePage() {
         };
 
     const instructions: InstructionInput[] = recipe.instructions
-        ? recipe.instructions.map(instruction => ({ val: instruction }))
+        ? recipe.instructions.map(instruction => ({ id: uuid4(), val: instruction }))
         : []
 
 

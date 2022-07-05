@@ -29,6 +29,7 @@ export type IngredientSublistInput = {
 };
 
 export type InstructionInput = {
+    id: string;
     val: string;
 };
 
