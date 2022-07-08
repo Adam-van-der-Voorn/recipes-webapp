@@ -2,14 +2,15 @@ import React from 'react';
 import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
+import ValidChild from '../../types/ValidChild';
 import './DropdownMenu.css';
-type Child = JSX.Element | null | false;
+
 
 type Props = {
     trigger: any;
     position?: PopupPosition | PopupPosition[];
     offset?: string[];
-    children?: Child | Child[];
+    children?: ValidChild | ValidChild[];
 };
 
 type Context = {

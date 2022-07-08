@@ -29,3 +29,8 @@ h2 {
 h3 {
     font-size: 2rem;
 }
+
+dialog {
+    position: fixed;
+    top: 10px;
+}
