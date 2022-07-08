@@ -1,6 +1,6 @@
-import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
+import { Control, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
 import React, { useEffect } from "react";
-import { MdMoreVert, MdAnchor } from 'react-icons/md';
+import { MdMoreVert } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";

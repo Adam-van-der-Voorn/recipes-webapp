@@ -23,7 +23,7 @@ function SubstitutionRemovalsField({ index, ...formHelpers }: Props) {
         if (removals.length === 0) {
             append({ quantity: '', ingredientName: '' });
         }
-    }, []);
+    }, [removals.length, append]);
 
     return (
         <div>

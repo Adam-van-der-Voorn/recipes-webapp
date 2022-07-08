@@ -22,7 +22,7 @@ function SubstitutionAdditionsField({ index, ...formHelpers }: Props) {
         if (additions.length === 0) {
             append({ quantity: '', ingredientName: '' });
         }
-    }, []);
+    }, [additions.length, append]);
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import { Control, useFieldArray, UseFormGetValues, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
+import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
 import { useRef, useEffect, useState, useCallback, memo } from "react";
 import DragDropList from "../../../components-misc/DragDropList";
 import Instruction from "./Instruction";
@@ -30,7 +30,7 @@ function InstructionsField({ setValue, control, register }: Props) {
         if (instructions.length === 0) {
             replace([{ id: uuid4(), val: '' }]);
         }
-    }, [instructions, setValue]);
+    }, [instructions, replace]);
 
     const handleKeyDown = useCallback((ev: any, idx: number) => {
         if (ev.code === "Enter") {

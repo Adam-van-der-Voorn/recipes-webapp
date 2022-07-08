@@ -19,7 +19,7 @@ type Context = {
 export const DropdownContext = createContext<Context>({setDropdownOpen: (b) => {}});
 
 export default function DropdownMenu({ trigger, position, offset, children }: Props) {
-    console.assert(!offset || offset.length == 2, 'DropdownMenu: Offset should be an array [x, y]');
+    console.assert(!offset || offset.length === 2, 'DropdownMenu: Offset should be an array [x, y]');
     const offsetStyle = offset ? { top: offset[1], left: offset[0] } : undefined;
     const [isOpen, setIsOpen] = useState(false);
 
