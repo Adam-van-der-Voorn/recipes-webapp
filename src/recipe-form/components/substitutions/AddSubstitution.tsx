@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Toggle from "../../../components-misc/toggle/Toggle";
 import { SubstitutionInput } from "../../../types/RecipeInputTypes";
 
 type Props = {
