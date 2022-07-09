@@ -34,11 +34,11 @@ export type InstructionInput = {
 };
 
 export type SubstitutionInput = {
-    additions: SubstitutionPartInput[],
-    removals: SubstitutionPartInput[];
+    additions: SubstitutionAdditionInput[],
+    removals: string[];
 };
 
-export type SubstitutionPartInput = {
-    quantity: string;
+export type SubstitutionAdditionInput = {
+    proportion: string;
     ingredientName: string;
 }

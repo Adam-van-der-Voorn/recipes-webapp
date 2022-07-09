@@ -56,16 +56,13 @@ export default function parseFormData(formData: RecipeInput): Recipe {
     }
 
     if (formData.substitutions.length > 0) {
-        const parseSubPart = (subPartInput: { quantity: string, ingredientName: string; }) => {
-            return {
-                ingredientName: subPartInput.ingredientName.trim(),
-                ...(subPartInput.quantity !== '' && {quantity: parseUnitValInput(subPartInput.quantity)!}) 
-            };
-        };
         recipe.substitutions = formData.substitutions.map(substitution => {
             return {
-                additions: substitution.additions.map(addition => parseSubPart(addition)),
-                removals: substitution.removals.map(removal => parseSubPart(removal))
+                additions: substitution.additions.map(addition => ({
+                    ingredientName: addition.ingredientName.trim(),
+                    proportion: parseFloat(addition.proportion)
+                })),
+                removals: substitution.removals
             };
         });
     }

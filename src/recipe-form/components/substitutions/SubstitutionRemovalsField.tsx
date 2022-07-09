@@ -15,13 +15,13 @@ type Props = {
 
 function SubstitutionRemovalsField({ index, ...formHelpers }: Props) {
     const { control, register, getValues } = formHelpers;
-    const { fields: removals, append, remove } = useFieldArray({ control, name: `substitutions.${index}.removals` });
+    const { fields: removals, append, remove } = useFieldArray({ control, name: `substitutions.${index}.removals` as any });
     const errors = useFormState({ control, name: `substitutions.${index}.removals` })
         .errors.substitutions?.at(index)?.removals;
 
     useEffect(() => {
         if (removals.length === 0) {
-            append({ quantity: '', ingredientName: '' });
+            append({ proportion: '', ingredientName: '' });
         }
     }, [removals.length, append]);
 
@@ -36,13 +36,7 @@ function SubstitutionRemovalsField({ index, ...formHelpers }: Props) {
                                 --
                             </button>
                         }
-                        <input {...register(`substitutions.${index}.removals.${idx}.quantity`)}
-                            type="text"
-                            autoComplete="off"
-                            placeholder="all"
-                        />
-                        <span>of</span>
-                        <select {...register(`substitutions.${index}.removals.${idx}.ingredientName`)}>
+                        <select {...register(`substitutions.${index}.removals.${idx}`)}>
                             <option disabled value="">Select an ingredient</option>
                             {
                                 getValues().ingredients.lists
@@ -53,12 +47,11 @@ function SubstitutionRemovalsField({ index, ...formHelpers }: Props) {
                                     })
                             }
                         </select> <br />
-                        <FormErrorMessage error={errors?.at(idx)?.ingredientName} /><br />
-                        <FormErrorMessage error={errors?.at(idx)?.quantity} />
+                        <FormErrorMessage error={errors?.at(idx)} />
                     </div>
                 ))
             }
-            <button type="button" onClick={() => append({ quantity: '', ingredientName: '' })}>
+            <button type="button" onClick={() => append({ proportion: '', ingredientName: '' })}>
                 ++
             </button >
         </div >

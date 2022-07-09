@@ -11,14 +11,14 @@ export type Ingredient = {
     kjs?: number;
 };
 
-export type SubstitutionPart = {
+export type SubstitutionAddition = {
     ingredientName: string;
-    quantity?: UnitVal;
+    proportion: number;
 };
 
 export type Substitution = {
-    additions: SubstitutionPart[],
-    removals: SubstitutionPart[],
+    additions: SubstitutionAddition[],
+    removals: string[],
 };
 
 export type IngredientsList = {

@@ -20,7 +20,7 @@ function SubstitutionAdditionsField({ index, ...formHelpers }: Props) {
 
     useEffect(() => {
         if (additions.length === 0) {
-            append({ quantity: '', ingredientName: '' });
+            append({ proportion: '', ingredientName: '' });
         }
     }, [additions.length, append]);
 
@@ -35,7 +35,7 @@ function SubstitutionAdditionsField({ index, ...formHelpers }: Props) {
                                 --
                             </button>
                         }
-                        <input {...register(`substitutions.${index}.additions.${idx}.quantity`)}
+                        <input {...register(`substitutions.${index}.additions.${idx}.proportion`)}
                             autoComplete="off"
                         />
                         <span>of</span>
@@ -45,11 +45,11 @@ function SubstitutionAdditionsField({ index, ...formHelpers }: Props) {
                         />
                         <br />
                         <FormErrorMessage error={errors?.at(idx)?.ingredientName} /><br />
-                        <FormErrorMessage error={errors?.at(idx)?.quantity} />
+                        <FormErrorMessage error={errors?.at(idx)?.proportion} />
                     </div>
                 ))
             }
-            <button type="button" onClick={() => append({ quantity: '', ingredientName: '' })}>
+            <button type="button" onClick={() => append({ proportion: '', ingredientName: '' })}>
                 ++
             </button >
         </div >

@@ -71,16 +71,11 @@ function EditRecipePage() {
                 return {
                     additions: substitution.additions.map(addition => {
                         return {
-                            quantity: unitValToString(addition.quantity),
+                            proportion: addition.proportion.toString(10),
                             ingredientName: addition.ingredientName
                         };
                     }),
-                    removals: substitution.removals.map(removal => {
-                        return {
-                            quantity: unitValToString(removal.quantity),
-                            ingredientName: removal.ingredientName
-                        };
-                    })
+                    removals: substitution.removals
                 };
             })
         : [];
