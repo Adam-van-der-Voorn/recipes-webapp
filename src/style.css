@@ -32,5 +32,12 @@ h3 {
 
 dialog {
     position: fixed;
-    top: 10px;
+    top: 2.5rem;
+    width: min(75rem, 100%);
+    margin: auto;
+    border-radius: 0.3rem;
+    border: 1px solid var(--neutral-4);
+    box-sizing: border-box;
+    box-shadow: 0rem 2rem 3rem rgba(0, 0, 0, 0.3);
+    padding: 2rem;
 }

@@ -1,3 +1,3 @@
-type ValidChild = JSX.Element | null | false;
+type ValidChild = JSX.Element | null | false | string;
 
 export default ValidChild;

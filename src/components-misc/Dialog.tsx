@@ -1,16 +1,16 @@
-import { forwardRef, HTMLProps, useImperativeHandle, useRef, ForwardedRef, useEffect, useCallback, useState } from "react";
+import { forwardRef, HTMLProps, useImperativeHandle, useRef, ForwardedRef, useEffect } from "react";
 import ValidChild from "../types/ValidChild";
-import extractFields from "../util/extractFields";
 import isWithinBounds from "../util/isWithinBounds";
 import './TextAreaAutoHeight.css';
 
 type Props = {
     closeOnBackgroudClick?: boolean;
+    keepMounted?: boolean;
     onClose: () => void;
     children?: ValidChild | ValidChild[];
 } & HTMLProps<HTMLDialogElement>;
 
-function Dialog({ closeOnBackgroudClick = true, onClose, children, ...props }: Props, ref: ForwardedRef<HTMLDialogElement>) {
+function Dialog({ closeOnBackgroudClick = false, keepMounted = false, onClose, children, ...props }: Props, ref: ForwardedRef<HTMLDialogElement>) {
     const innerRef = useRef<HTMLDialogElement>(null);
     useImperativeHandle(ref, () => innerRef.current!);
 
@@ -33,12 +33,12 @@ function Dialog({ closeOnBackgroudClick = true, onClose, children, ...props }: P
         return function cleanup() {
             document.removeEventListener('click', handleClick);
         };
-    }, [handleClick]);
+    });
 
     return (
         <dialog ref={innerRef} {...props}>
-            {children}
-        </dialog >
+            {(keepMounted && children) || (props.open && children)}
+        </dialog>
     );
 }
 

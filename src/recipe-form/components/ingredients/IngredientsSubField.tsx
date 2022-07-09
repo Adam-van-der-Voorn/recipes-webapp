@@ -7,9 +7,12 @@ import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
 import PercentageInput from "./PercentageInput";
-import { RecipeInput } from "../../../types/RecipeInputTypes";
+import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes";
 import useFieldList from "../../../util/hooks/useFieldList";
 import { v4 as uuid4 } from 'uuid';
+import Dialog from "../../../components-misc/Dialog";
+import useModal from "../../../util/hooks/useModal";
+import AddSubstitution from "../substitutions/AddSubstitution";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -42,8 +45,19 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
         }
     });
 
+    const { openModal: openDialogue, modal: dialogue } = useModal<string, SubstitutionInput>(({ ...renderProps }) => (
+        <Dialog open={true} onClose={() => renderProps.cancel()} closeOnBackgroudClick>
+            <AddSubstitution {...renderProps} />
+        </Dialog>
+    ));
+
+    const handleNewSubstitution = (result: SubstitutionInput) => {
+        console.log("result", result)
+    }
+
     return (
         <>
+            {dialogue}
             {!isOnlyList &&
                 <div>
                     <input {...register(`ingredients.lists.${listIdx}.name`)}
@@ -99,6 +113,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                                                 <MenuItemAction text="Set to anchor" action={() => setValue('ingredients.anchor', globalIdx)} />
                                             }
                                             <MenuItemAction text="Delete" action={() => remove(localIdx)} />
+                                            <MenuItemAction text="Provide substitution" action={() => openDialogue({input: ingredient.name, onClose: handleNewSubstitution})} />
                                         </DropdownMenu>
 
                                         <div className="ingredient-errors">

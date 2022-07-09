@@ -72,9 +72,14 @@ input[type=text] {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-color: var(--neutral-5);
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
     box-sizing: border-box;
+}
+
+input[type=text].in-string {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 textarea {
