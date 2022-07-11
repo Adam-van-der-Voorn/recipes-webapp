@@ -31,9 +31,13 @@ type Props = {
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
     const { control, setValue, register } = formHelpers;
-    const ingredients = useWatch({control, name: `ingredients.lists.${listIdx}.ingredients`});
-    const substitutions = useWatch({control, name: `substitutions`});
-    const anchorIdx = useWatch({control, name: 'ingredients.anchor'});
+
+    const [ingredients, substitutions, anchorIdx] = useWatch({control, name: [
+        `ingredients.lists.${listIdx}.ingredients`,
+        `substitutions`,
+        `ingredients.anchor`
+    ]});
+
     const { push, remove } = useFieldList(`ingredients.lists.${listIdx}.ingredients`, setValue, ingredients);
     const { push: addSubstitution } = useFieldList(`substitutions`, setValue, substitutions);
 

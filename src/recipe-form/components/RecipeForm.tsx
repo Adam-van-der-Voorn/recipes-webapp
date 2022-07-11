@@ -80,9 +80,9 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                 <IngredientsField {...{control, register, getValues, setValue}} />
 
-                <InstructionsField {...{control, register, setValue}} />
+                <SubstitutionsField {...{control}} />
 
-                <SubstitutionsField {...{control, register, getValues}} />
+                <InstructionsField {...{control, register, setValue}} />
                 
                 <input type="submit" />
             </form >
