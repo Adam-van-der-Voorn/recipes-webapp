@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RecipesContext } from "../../App";
+import MultiLineParagraph from "../../components-misc/MultiLineParagraph";
 import MyError from "../../components-misc/MyError";
 import { Recipe } from "../../types/recipeTypes";
 
@@ -36,11 +37,10 @@ function RecipePage() {
         content = <>
             <h1>{name}</h1>
             <Link to={`/edit-${recipeId}`}>Edit</Link>
-            <button onClick={deleteAndNavigate}>del</button>
             {servings && <div>Serves {servings}</div>}
             {makes && <div>Makes {makes.value} {makes.unit}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
-            {notes && <pre>{notes}</pre>}
+            {notes && <MultiLineParagraph>{notes}</MultiLineParagraph>}
             {ingredients &&
                 <>
                     <h2>Ingredients</h2>
@@ -76,11 +76,11 @@ function RecipePage() {
             {instructions &&
                 <>
                     <h2>Method</h2>
-                    <p>{instructions}</p>
+                    <MultiLineParagraph>{instructions}</MultiLineParagraph>
                 </>
             }
-            <br /><br /><br /><br />
-            <pre>{JSON.stringify(recipe, null, 2)}</pre>;
+            <hr />
+            <button onClick={deleteAndNavigate}>Delete</button>
         </>;
     }
 

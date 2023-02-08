@@ -1,5 +1,6 @@
 .ingredient-list {
     --percent-symbol-width: 1.3ch;
+    --quantity-input-width: 10ch;
     display: inline-grid;
     grid-auto-rows: auto;
     column-gap: 1.6rem;
@@ -18,18 +19,18 @@
 }
 
 .ingredient-list > .grid-header {
-    font-size: 1.4rem;
+    font-size: var(--font-size-small);
     color: var(--neutral-2);
 }
 
 .ingredient-list.hide-percentages {
     --num-ingredient-columns: 3;
-    grid-template-columns: 1fr 12ch auto;
+    grid-template-columns: 1fr var(--quantity-input-width) auto;
 }
 
 .ingredient-list.show-percentages {
     --num-ingredient-columns: 4;
-    grid-template-columns: 1fr 12ch calc(7ch + var(--percent-symbol-width)) auto;
+    grid-template-columns: 1fr var(--quantity-input-width) calc(5ch + var(--percent-symbol-width)) auto;
 }
 
 .ingredient-errors {
@@ -51,7 +52,7 @@ svg.close:active {
 }
 
 input[type=text].ingredients-sublist-name {
-    font-size: 2.4rem;
+    font-size: var(--font-size-h2);
     height: 2.5ch;
     border-bottom: 2px solid transparent;
     padding: 0;

@@ -13,7 +13,7 @@ function IconButton({icon, size, ...props}: Props, ref: ForwardedRef<HTMLDivElem
     const className = (existingClasses + ' icon-button').trim();
 
     return (
-        <div className="icon-button-container" ref={ref} style={{ width: size, height: size }} tabIndex={1}>
+        <div className="icon-button-container" ref={ref} style={{ width: size, height: size }}>
             {icon({size, ...props, className})}
         </div>
     );

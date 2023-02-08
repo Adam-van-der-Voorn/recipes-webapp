@@ -2,32 +2,54 @@
 
 body {
     margin: 0px;
+    padding: 0px;
+}
+
+#app-content {
+    width: min(80rem, 100vw);
+    margin: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-sizing: border-box;
 }
 
 html {
     font-size: 62.5%;
     font-family: 'Karla', Helvetica, Arial, sans-serif;
+    --font-size-small: 1.6rem;
+    --font-size-normal: 1.8rem;
+    --font-size-h1: 3.8rem;
+    --font-size-h2: 2.6rem;
+    --font-size-h3: 2.2rem;
+
 }
 
 button, input, select, textarea {
     font-family: inherit;
-    font-size: 1.6rem;
+    font-size: var(--font-size-normal);
 }
 
 p, span, a, div, label {
-    font-size: 1.6rem;
+    font-size: var(--font-size-normal);
 }
 
 h1 {
-    font-size: 3.2rem
+    font-size: var(--font-size-h1);
 }
 
 h2 {
-    font-size: 2.4rem;
+    font-size: var(--font-size-h2);
 }
 
 h3 {
-    font-size: 2rem;
+    font-size: var(--font-size-h3);
+}
+
+h1, h2, h3 {
+    margin-top: 1.3ch;
+    margin-bottom: 0.7ch;
 }
 
 dialog {

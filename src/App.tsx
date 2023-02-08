@@ -21,7 +21,7 @@ function App() {
 
     return (
         <RecipesContext.Provider value={recipeStorageInterface}>
-            <div className="App">
+            <div id="app-content">
                 <Outlet />
             </div>
         </RecipesContext.Provider>
