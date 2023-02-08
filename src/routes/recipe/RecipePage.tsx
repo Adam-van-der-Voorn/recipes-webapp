@@ -44,30 +44,30 @@ function RecipePage() {
             {ingredients &&
                 <>
                     <h2>Ingredients</h2>
-                    {ingredients.lists.map(sublist => {
-                        return (<div key={sublist.name}>
+                    {ingredients.lists.map((sublist, i) => (
+                        <div key={`list-${i}`}>
                             <h3>{sublist.name}</h3>
-                            {sublist.ingredients.map(ingredient => {
+                            {sublist.ingredients.map((ingredient, ii) => {
                                 const optional = ingredient.optional ? <>(optional)</> : <></>;
-                                return <div key={ingredient.name}>{ingredient.quantity.value} {ingredient.quantity.unit}{'\t'}{ingredient.name} {optional}</div>;
+                                return <div key={`ingredient-${ii}/${i}`}>{ingredient.quantity.value} {ingredient.quantity.unit}{'\t'}{ingredient.name} {optional}</div>;
                             })}
-                        </div>);
-                    })}
+                        </div>
+                    ))}
                 </>
             }
             {substitutions &&
                 <>
                     <h3>Substitutions</h3>
-                    {substitutions.map((substitution, idx) => {
-                        return (<div key={idx}>
-                            <h4>substitution {idx + 1}</h4>
+                    {substitutions.map((substitution, i) => {
+                        return (<div key={`sub-${i}`}>
+                            <h4>substitution {i + 1}</h4>
                             <div>add:</div>
                             {substitution.additions.map(addition => {
-                                return <div key={addition.ingredientName}> {addition.proportion} {"<--proportion"} {addition.ingredientName}</div>;
+                                return <div key={`addition-${i}`}> {addition.proportion} {"<--proportion"} {addition.ingredientName}</div>;
                             })}
                             <div>remove:</div>
                             {substitution.removals.map(removal => {
-                                return <div key={removal}> {removal}</div>;
+                                return <div key={`removal-${i}`}> {removal}</div>;
                             })}
                         </div>);
                     })}

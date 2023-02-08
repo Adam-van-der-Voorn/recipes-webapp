@@ -97,7 +97,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                         if (ingredient.isFake) {
                             return (
                                 <React.Fragment key={ingredient.id}>
-                                    <input
+                                    <input name="add-new"
                                         onChange={(ev) => push({ id: ingredient.id, ...defaultFieldValues, name: ev.target.value })}
                                         type="text"
                                         className="name new-ingredient"

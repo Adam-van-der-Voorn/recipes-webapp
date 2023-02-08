@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from "react";
+import React, { ForwardedRef, forwardRef, Fragment } from "react";
 
 type Props = {
     props?: React.HTMLAttributes<HTMLDivElement>,
@@ -7,12 +7,16 @@ type Props = {
 
 
 function MultiLineParagraph({children, props}: Props, ref: ForwardedRef<HTMLDivElement>) {
-    children = children || ""
-    const lines = children.split("\n")
-        .map(line => <>{line}<br /></>)
-
+    let content;
+    if (!children) {
+        content = null
+    }
+    else {
+        content = children.split("\n")
+            .map((line, i) => <Fragment key={i}>{line}</Fragment>)
+    }
     return (
-        <p ref={ref}>{lines}</p>
+        <p ref={ref}>{content}</p>
     );
 }
 
