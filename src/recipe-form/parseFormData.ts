@@ -1,4 +1,4 @@
-import { Recipe, Substitution } from "../types/recipeTypes";
+import { Recipe } from "../types/recipeTypes";
 import { RecipeInput, SubstitutionInput } from "../types/RecipeInputTypes";
 import { parseUnitValInput } from "./parseUnitValInputs";
 
@@ -26,22 +26,14 @@ export default function parseFormData(formData: RecipeInput): Recipe {
 
     if (formData.ingredients.lists.length > 0) {
         recipe.ingredients = {
-            lists: formData.ingredients.lists.map(sublist => {
-                return {
-                    name: sublist.name,
-                    ingredients: sublist.ingredients.flatMap((ingredient, idx) => {
-                        // do not include dummy field in ingredients
-                        if (idx === sublist.ingredients.length - 1) {
-                            return [];
-                        }
-                        return [{
-                            name: ingredient.name,
-                            quantity: parseUnitValInput(ingredient.quantity)!,
-                            optional: ingredient.optional
-                        }];
-                    })
-                };
-            })
+            lists: formData.ingredients.lists.map(sublist => ({
+                name: sublist.name,
+                ingredients: sublist.ingredients.map((ingredient, idx) => ({
+                    name: ingredient.name,
+                    quantity: parseUnitValInput(ingredient.quantity)!,
+                    optional: ingredient.optional
+                }))
+            }))
         };
         if (formData.ingredients.anchor) {
             recipe.ingredients.anchor = formData.ingredients.anchor;

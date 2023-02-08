@@ -1,5 +1,5 @@
 import { Control, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
-import React, { useEffect } from "react";
+import React from "react";
 import { MdMoreVert } from 'react-icons/md';
 import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
@@ -14,25 +14,32 @@ import Dialog from "../../../components-misc/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
 
+const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: ''};
+
 type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
     register: UseFormRegister<RecipeInput>;
 };
 
+type FakeTag = {
+    isFake?: boolean;
+}
+
 type Props = {
     listIdx: number;
     listPos: number;
     isPercentagesIncluded: boolean;
-    isOnlyList: boolean;
+    isNamed: boolean;
     onPercentageBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
     onQuantityBlur: (subListIdx: number, localIdx: number) => (e: any) => void;
+    onAnchorChange: (newAnchorIdx: number) => void;
 } & FormHelpers;
 
-function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyList, onPercentageBlur, onQuantityBlur, ...formHelpers }: Props) {
+function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed, onPercentageBlur, onQuantityBlur, onAnchorChange, ...formHelpers }: Props) {
     const { control, setValue, register } = formHelpers;
 
-    const [ingredients, substitutions, anchorIdx] = useWatch({control, name: [
+    const [ingredients, substitutions, currentAnchorIdx] = useWatch({control, name: [
         `ingredients.lists.${listIdx}.ingredients`,
         `substitutions`,
         `ingredients.anchor`
@@ -43,14 +50,15 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
 
     const { errors } = useFormState({ control });
 
-    useEffect(() => {
-        const lastField = ingredients[ingredients.length - 1]
-        if (!lastField || (lastField.name !== '')) {
-            // last field is not 'empty'
-            const emptyField = { id: uuid4(), name: '', quantity: '', optional: false, percentage: '' };
-            push(emptyField);
-        }
-    });
+    // include fakeTag to ingredints type
+    const rows = [...ingredients] as Array<(typeof ingredients[0]) & FakeTag>
+
+    const lastIngredient = ingredients[ingredients.length - 1]
+    if (!lastIngredient || (lastIngredient.name !== '')) {
+        // last field is not 'empty'
+        // push a "fake" field for the user to input the next ingredient
+        rows.push({ ...defaultFieldValues, id: uuid4(), isFake: true });
+    }
 
     const { openModal: openDialogue, modal: dialogue } = useModal<string, SubstitutionInput>(({ ...renderProps }) => (
         <Dialog open={true} onClose={() => renderProps.cancel()} closeOnBackgroudClick>
@@ -65,7 +73,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
     return (
         <>
             {dialogue}
-            {!isOnlyList &&
+            {isNamed &&
                 <div>
                     <input {...register(`ingredients.lists.${listIdx}.name`)}
                         type="text"
@@ -82,54 +90,60 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isOnlyLi
                 <div></div> {/* grid filler for inline button menu */}
 
                 {
-                    ingredients.map((ingredient, localIdx) => {
+                    rows.map((ingredient, localIdx) => {
                         const globalIdx = listPos + localIdx;
-                        const isLastField = localIdx === ingredients.length - 1;
-                        const isAnchor = globalIdx === anchorIdx;
+                        const isAnchor = globalIdx === currentAnchorIdx;
                         const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
+                        if (ingredient.isFake) {
+                            return (
+                                <React.Fragment key={ingredient.id}>
+                                    <input
+                                        onChange={(ev) => push({ id: ingredient.id, ...defaultFieldValues, name: ev.target.value })}
+                                        type="text"
+                                        className="name new-ingredient"
+                                        autoComplete="off"
+                                        placeholder="Add new ingredient"
+                                />
+                                </React.Fragment>
+                            )
+                        }
                         return (
                             <React.Fragment key={ingredient.id}>
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
                                     type="text"
-                                    className={isLastField ? "name new-ingredient" : "name"}
+                                    className="name"
                                     autoComplete="off"
-                                    placeholder={isLastField ? "Add new ingredient" : ""}
+                                />
+                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`, {
+                                    onBlur: onQuantityBlur(listIdx, localIdx)
+                                })}
+                                    type="text"
+                                    className="quantity"
+                                    autoComplete="off"
                                 />
 
-                                {!isLastField &&
-                                    <>
-                                        <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`, {
-                                            onBlur: onQuantityBlur(listIdx, localIdx)
-                                        })}
-                                            type="text"
-                                            className="quantity"
-                                            autoComplete="off"
-                                        />
-
-                                        {isPercentagesIncluded &&
-                                            <PercentageInput {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
-                                                onBlur: onPercentageBlur(listIdx, localIdx)
-                                            })}
-                                                isAnchor={isAnchor}
-                                            />
-                                        }
-
-                                        <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
-                                            <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => setValue(`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`, b)} />
-                                            {!isAnchor && isPercentagesIncluded &&
-                                                <MenuItemAction text="Set to anchor" action={() => setValue('ingredients.anchor', globalIdx)} />
-                                            }
-                                            <MenuItemAction text="Delete" action={() => remove(localIdx)} />
-                                            <MenuItemAction text="Provide substitution" action={() => openDialogue({input: ingredient.name, onClose: handleNewSubstitution})} />
-                                        </DropdownMenu>
-
-                                        <div className="ingredient-errors">
-                                            <FormErrorMessage error={listErrors?.name} />
-                                            <FormErrorMessage error={listErrors?.quantity} />
-                                            <FormErrorMessage error={listErrors?.percentage} />
-                                        </div>
-                                    </>
+                                {isPercentagesIncluded &&
+                                    <PercentageInput {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
+                                        onBlur: onPercentageBlur(listIdx, localIdx)
+                                    })}
+                                        isAnchor={isAnchor}
+                                    />
                                 }
+
+                                <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
+                                    <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => setValue(`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`, b)} />
+                                    {!isAnchor && isPercentagesIncluded &&
+                                        <MenuItemAction text="Set to anchor" action={() => onAnchorChange(globalIdx)} />
+                                    }
+                                    <MenuItemAction text="Delete" action={() => remove(localIdx)} />
+                                    <MenuItemAction text="Provide substitution" action={() => openDialogue({input: ingredient.name, onClose: handleNewSubstitution})} />
+                                </DropdownMenu>
+
+                                <div className="ingredient-errors">
+                                    <FormErrorMessage error={listErrors?.name} />
+                                    <FormErrorMessage error={listErrors?.quantity} />
+                                    <FormErrorMessage error={listErrors?.percentage} />
+                                </div>
                             </React.Fragment>
                         );
                     })

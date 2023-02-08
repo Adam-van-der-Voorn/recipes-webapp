@@ -6,6 +6,9 @@ import { isSameMeasure, isConvertableUnit } from "./units";
 
 export default function getPercentageFromVal(subject: IngredientInput, anchor: IngredientInput): number | undefined {
     const quantities: UnitVal[] = parseUnitValInputs(anchor.quantity, subject.quantity);
+
+    // check quantities can be parsed,
+    // and that quanities can be converted between
     if (quantities.length !== 2 || !isSameMeasure(quantities[0].unit, quantities[1].unit)) {
         return undefined;
     }

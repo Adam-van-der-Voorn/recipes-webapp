@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { DropdownContext } from './DropdownMenu';
 import './DropdownMenu.css';
 

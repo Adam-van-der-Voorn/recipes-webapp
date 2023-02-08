@@ -1,5 +1,5 @@
 import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
 import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
@@ -11,8 +11,8 @@ import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggle
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
 import { RecipeInput } from "../../../types/RecipeInputTypes";
-import useFieldList from "../../../util/hooks/useFieldList";
 import { v4 as uuid4 } from 'uuid';
+import useFieldList from "../../../util/hooks/useFieldList";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -24,31 +24,22 @@ type Props = {} & FormHelpers;
 
 function IngredientsField({ setValue, control, register }: Props) {
     const lists = useWatch({control, name: "ingredients.lists"});
-    const anchorIdx = useWatch({control, name: "ingredients.anchor"});
+    const currentAnchorIdx = useWatch({control, name: "ingredients.anchor"});
     const { replace, push } = useFieldList("ingredients.lists", setValue, lists);
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
     const [hasMultipleLists, setHasMultipleLists] = useState(lists.length > 1);
 
-    useEffect(() => {
-        if (!hasMultipleLists) {
-            const l = lists
-                .flatMap(list => list.ingredients.slice(0, -1));
-            replace([{ id: uuid4(), name: "Main", ingredients: l }]);
-        }
-    }, [hasMultipleLists]);
+    const aggregatedIngredients = lists.flatMap(list => list.ingredients);
 
     useEffect(() => {
-        for (let subListIdx = 0; subListIdx < lists.length; subListIdx++) {
-            const subList = lists[subListIdx];
-            for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
-                setPercentageBasedOffIngredient(subListIdx, localIdx);
-            }
-        }
-    }, [anchorIdx]);
+        setAllPercentages(currentAnchorIdx)
+    // in this case, we do want to only run on mount
+    // further changes to the percentage fields will
+    // be done via user input
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    const fullIngredientList = () => lists.flatMap(list => list.ingredients);
-
-    const LocalToGlobalIdx = (subListIdx: number, localIdx: number) => {
+    const localToGlobalIdx = (subListIdx: number, localIdx: number) => {
         let numPrecedingIngredients = 0;
         for (let i = 0; i < subListIdx; i++) {
             numPrecedingIngredients += lists[i].ingredients.length;
@@ -56,9 +47,9 @@ function IngredientsField({ setValue, control, register }: Props) {
         return numPrecedingIngredients + localIdx;
     };
 
-    const setPercentageBasedOffIngredient = (subListIdx: number, localIdx: number): void => {
+    const setPercentageBasedOffIngredient = (subListIdx: number, localIdx: number, anchorIdx: number): void => {
         const ingredient = lists[subListIdx].ingredients[localIdx];
-        const anchor = fullIngredientList()[anchorIdx];
+        const anchor = aggregatedIngredients[anchorIdx];
         const percentage: number | undefined = getPercentageFromVal(ingredient, anchor);
         if (percentage) {
             setPercentage(percentage, subListIdx, localIdx);
@@ -68,28 +59,30 @@ function IngredientsField({ setValue, control, register }: Props) {
         }
     };
 
-    const onQuantityBlur = (subListIdx: number, localIdx: number) => (e: any) => {
-        const quantity = parseUnitValInput(e.target.value);
+    const setAllPercentages = (anchorIdx: number) => {
+        for (let subListIdx = 0; subListIdx < lists.length; subListIdx++) {
+            const subList = lists[subListIdx];
+            for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
+                setPercentageBasedOffIngredient(subListIdx, localIdx, anchorIdx);
+            }
+        }
+    }
+
+    const onQuantityBlur = (subListIdx: number, localIdx: number) => (ev: any) => {
+        const quantity = parseUnitValInput(ev.target.value);
         if (quantity) {
             setQuantity(quantity, subListIdx, localIdx);
         }
-        if (isPercentagesIncluded) {
-            const globalIdx = LocalToGlobalIdx(subListIdx, localIdx);
-            if (globalIdx === anchorIdx) {
-                for (let subListIdx = 0; subListIdx < lists.length; subListIdx++) {
-                    const subList = lists[subListIdx];
-                    for (let localIdx = 0; localIdx < subList.ingredients.length; localIdx++) {
-                        setPercentageBasedOffIngredient(subListIdx, localIdx);
-                    }
-                }
-            }
-            else {
-                setPercentageBasedOffIngredient(subListIdx, localIdx);
-            }
+        const globalIdx = localToGlobalIdx(subListIdx, localIdx);
+        if (globalIdx === currentAnchorIdx) {
+            setAllPercentages(currentAnchorIdx)
+        }
+        else {
+            setPercentageBasedOffIngredient(subListIdx, localIdx, currentAnchorIdx);
         }
     };
 
-    const onPercentageBlur = (subListIdx: number, localIdx: number) => (e: any) => {
+    const onPercentageBlur = (subListIdx: number, localIdx: number) => (ev: any) => {
         const subIngredientList = lists[subListIdx];
         const subjectField = subIngredientList.ingredients[localIdx];
         const subjectPercentage = parseFloat(subjectField.percentage);
@@ -98,7 +91,7 @@ function IngredientsField({ setValue, control, register }: Props) {
         }
         setPercentage(subjectPercentage, subListIdx, localIdx);
 
-        const anchorField = fullIngredientList()[anchorIdx];
+        const anchorField = aggregatedIngredients[currentAnchorIdx];
         const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
         if (anchorQuantity) {
             const subjectQuantity = parseUnitValInput(subjectField.quantity);
@@ -108,6 +101,12 @@ function IngredientsField({ setValue, control, register }: Props) {
             }
         }
     };
+
+    const onAnchorChange = (newAnchorIdx: number) => {
+        console.log("anchor change, new idx", newAnchorIdx)
+        setAllPercentages(newAnchorIdx);
+        setValue("ingredients.anchor", newAnchorIdx);
+    }
 
     const setQuantity = (quantity: UnitVal, subListIdx: number, localIdx: number) => {
         const rounded = +(quantity.value).toFixed(2);
@@ -127,12 +126,16 @@ function IngredientsField({ setValue, control, register }: Props) {
         );
     };
 
-    const handleMultipleListsChange = (newVal: boolean) => {
-        const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.");
-        if (!newVal && !confirmation()) {
-            return;
+    const handleMultipleListsChange = (_hasMultipleLists: boolean) => {
+        if (!_hasMultipleLists) {
+            const confirmation = () => window.confirm("Are you sure you want to switch back to having a single list? This will remove all your list names and cannot be undone.");
+            if (!confirmation()) {
+                return;
+            }
+            console.log("merging", aggregatedIngredients)
+            replace([{ id: uuid4(), name: "Main", ingredients: aggregatedIngredients }]);
         }
-        setHasMultipleLists(newVal);
+        setHasMultipleLists(_hasMultipleLists)
     };
 
     return (
@@ -148,11 +151,12 @@ function IngredientsField({ setValue, control, register }: Props) {
                 lists.map((list, idx) => (
                     <IngredientsSubField key={list.id}
                         listIdx={idx}
-                        listPos={LocalToGlobalIdx(idx, 0)}
+                        listPos={localToGlobalIdx(idx, 0)}
                         isPercentagesIncluded={isPercentagesIncluded}
-                        isOnlyList={!hasMultipleLists}
+                        isNamed={hasMultipleLists}
                         onQuantityBlur={onQuantityBlur}
                         onPercentageBlur={onPercentageBlur}
+                        onAnchorChange={onAnchorChange}
                         {...{register, setValue, control}}
                     />
                 ))
