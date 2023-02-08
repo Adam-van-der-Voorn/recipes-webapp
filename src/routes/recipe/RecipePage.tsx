@@ -76,9 +76,7 @@ function RecipePage() {
             {instructions &&
                 <>
                     <h2>Method</h2>
-                    {instructions.map((step, idx) => {
-                        return <div key={idx}>{idx + 1}. {step}</div>;
-                    })}
+                    <p>{instructions}</p>
                 </>
             }
             <br /><br /><br /><br />

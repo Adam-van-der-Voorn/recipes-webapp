@@ -82,13 +82,6 @@ const yupSubstitutionsSchema = Yup.array().of(
     })
 );
 
-const yupInstructionsSchema = Yup.array().of(
-    Yup.object({
-        val: Yup.string()
-            .max(300, "Please make this step shorter"),
-    })
-);
-
 export default function getFullSchema() {
     return Yup.object({
         name: yupRecipeNameSchema,
@@ -105,7 +98,8 @@ export default function getFullSchema() {
                 }
                 return (el.trim() === '' || decimalValPattern.test(el));
             }),
-        instructions: yupInstructionsSchema,
+        instructions: Yup.string()
+            .max(10000, 'Please make this shorter.'),
         substitutions: yupSubstitutionsSchema,
     });
 };

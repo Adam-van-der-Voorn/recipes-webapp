@@ -5,7 +5,7 @@ export type RecipeInput = {
     ingredients: IngredientListsInput,
     servings: string,
     makes: string,
-    instructions: InstructionInput[],
+    instructions: string,
     substitutions: SubstitutionInput[],
 };
 
@@ -26,11 +26,6 @@ export type IngredientSublistInput = {
     id: string;
     name: string;
     ingredients: IngredientInput[];
-};
-
-export type InstructionInput = {
-    id: string;
-    val: string;
 };
 
 export type SubstitutionInput = {

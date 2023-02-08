@@ -1,7 +1,6 @@
 import { Recipe } from "../../types/recipeTypes";
 import getFullSchema from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
-import InstructionsField from "./instructions/InstructionsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 import './RecipeForm.css';
 import parseFormData from "../parseFormData";
@@ -82,7 +81,11 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                 <SubstitutionsField {...{control}} />
 
-                <InstructionsField {...{control, register, setValue}} />
+                <div className="field-container stacked">
+                    <label htmlFor="instructions">Instructions</label>
+                    <TextAreaAutoHeight {...register("instructions")} defaultHeight={'112px'} />
+                    <FormErrorMessage error={errors.instructions} />
+                </div>
                 
                 <input type="submit" />
             </form >

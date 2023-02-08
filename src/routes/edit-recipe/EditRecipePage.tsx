@@ -5,7 +5,7 @@ import { UnitVal, Recipe } from "../../types/recipeTypes";
 import MyError from "../../components-misc/MyError";
 import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
-import { IngredientListsInput, InstructionInput, SubstitutionInput } from "../../types/RecipeInputTypes";
+import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 
 const unitValToString = (unitVal: UnitVal | undefined) => {
     if (unitVal !== undefined) {
@@ -60,11 +60,6 @@ function EditRecipePage() {
             anchor: 0
         };
 
-    const instructions: InstructionInput[] = recipe.instructions
-        ? recipe.instructions.map(instruction => ({ id: uuid4(), val: instruction }))
-        : []
-
-
     const substitutions: SubstitutionInput[] = recipe.substitutions
         ? recipe.substitutions
             .map(substitution => {
@@ -87,7 +82,7 @@ function EditRecipePage() {
         notes: recipe.notes || '',
         ingredients: ingredients,
         servings: recipe.servings?.toString(10) || '',
-        instructions: instructions,
+        instructions: recipe.instructions || '',
         substitutions: substitutions,
     };
 

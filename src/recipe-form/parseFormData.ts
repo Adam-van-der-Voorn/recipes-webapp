@@ -40,11 +40,8 @@ export default function parseFormData(formData: RecipeInput): Recipe {
         }
     }
 
-    if (formData.instructions.length > 0) {
+    if (formData.instructions !== '') {
         recipe.instructions = formData.instructions
-            .map(instruction => instruction.val)
-            // remove empty instructions
-            .filter(instruction => instruction.trim() !== '');
     }
 
     if (formData.substitutions.length > 0) {

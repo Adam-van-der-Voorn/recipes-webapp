@@ -29,7 +29,7 @@ function AddRecipePage() {
             anchor: 0
         },
         servings: '',
-        instructions: [],
+        instructions: '',
         substitutions: [],
     };
 

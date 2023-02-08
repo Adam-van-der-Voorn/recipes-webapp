@@ -38,6 +38,6 @@ export type Recipe = {
     makes?: UnitVal;
     notes?: string;
     ingredients?: IngredientsList;
-    instructions?: string[];
+    instructions?: string;
     substitutions?: Substitution[];
 };
