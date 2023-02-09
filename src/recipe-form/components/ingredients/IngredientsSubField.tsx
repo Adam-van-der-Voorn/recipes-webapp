@@ -1,7 +1,6 @@
 import { Control, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
 import React from "react";
 import { MdMoreVert } from 'react-icons/md';
-import IconButton from "../../../components-misc/IconButton";
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
 import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
@@ -130,7 +129,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     />
                                 }
 
-                                <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={25} tabIndex={0} />} position={'left top'} offset={['-0.8rem', '0rem']}>
+                                <DropdownMenu trigger={<span><MdMoreVert className="icon-button" size={25} tabIndex={0} /></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
                                     <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => setValue(`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`, b)} />
                                     {!isAnchor && isPercentagesIncluded &&
                                         <MenuItemAction text="Set to anchor" action={() => onAnchorChange(globalIdx)} />

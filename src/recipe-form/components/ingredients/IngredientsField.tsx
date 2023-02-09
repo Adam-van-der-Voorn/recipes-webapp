@@ -5,7 +5,6 @@ import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
-import IconButton from "../../../components-misc/IconButton";
 import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
@@ -142,7 +141,7 @@ function IngredientsField({ setValue, control, register }: Props) {
         <>
             <h2>
                 Ingredients
-                <DropdownMenu trigger={<IconButton icon={MdMoreVert} size={28} />} position={'right top'} offset={['0.8rem', '0rem']}>
+                <DropdownMenu trigger={<span><MdMoreVert className="icon-button inline" size={28} /></span>} position={'right top'} offset={['0.8rem', '0rem']}>
                     <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
                     <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>

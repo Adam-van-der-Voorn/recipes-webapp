@@ -1,8 +1,11 @@
-import { Control, useWatch } from "react-hook-form";
+import { Control, UseFormSetValue, useWatch } from "react-hook-form";
 import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes";
+import { MdClear } from "react-icons/md"
+import useFieldList from "../../../util/hooks/useFieldList";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
+    setValue: UseFormSetValue<RecipeInput>;
 };
 
 type Props = {} & FormHelpers;
@@ -12,8 +15,9 @@ const isBasicSubstitution = (substitution: SubstitutionInput) => {
         substitution.additions.length === 1
 };
 
-function SubstitutionsField({ control }: Props) {
+function SubstitutionsField({ control, setValue }: Props) {
     const substitutions = useWatch({ control, name: "substitutions" });
+    const { remove } = useFieldList("substitutions", setValue, substitutions)
 
     return (
         <>
@@ -22,9 +26,12 @@ function SubstitutionsField({ control }: Props) {
                     const { removals, additions } = substitution;
                     if (isBasicSubstitution(substitution)) {
                         return (
-                            <div key={i}>
-                                The {removals[0]} can be substituted for {additions[0]} [Edit button]
-                            </div>
+                            <p key={i}>
+                                The {removals[0]} can be substituted for {additions[0]} 
+                                <MdClear className="icon-button inline" style={{left: "10px"}}
+                                    onClick={() => remove(i)}
+                                />
+                            </p>
                         );
                     }
                     return (

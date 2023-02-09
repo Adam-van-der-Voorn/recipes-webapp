@@ -79,7 +79,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
                 <IngredientsField {...{control, register, getValues, setValue}} />
 
-                <SubstitutionsField {...{control}} />
+                <SubstitutionsField {...{control, setValue}} />
 
                 <div className="field-container stacked">
                     <label htmlFor="instructions">Instructions</label>
