@@ -29,11 +29,7 @@ export type IngredientSublistInput = {
 };
 
 export type SubstitutionInput = {
-    additions: SubstitutionAdditionInput[],
+    additions: string[],
     removals: string[];
+    notes: string
 };
-
-export type SubstitutionAdditionInput = {
-    proportion: string;
-    ingredientName: string;
-}

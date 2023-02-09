@@ -62,23 +62,13 @@ const yupIngredientsSchema = Yup.object().shape({
     anchor: Yup.string()
 });
 
-
+// TODO: ensure that removals are all listed ingredients
 const yupSubstitutionsSchema = Yup.array().of(
     Yup.object().shape({
-        additions: Yup.array().of(
-            Yup.object().shape({
-                quantity: yupQuantitySchema
-                    .required('Ingredient quantity is required.'),
-                ingredientName: yupIngredientNameSchema
-                    .required('Ingredient name is required.'),
-            })
-        ),
-        removals: Yup.array().of(
-            Yup.object().shape({
-                quantity: yupQuantitySchema,
-                ingredientName: Yup.string() // select field,
-            })
-        ),
+        additions: Yup.array().of(Yup.string()),
+        removals: Yup.array().of(Yup.string()),
+        notes: Yup.string()
+            .max(500, 'Please make these notes shorter.'),
     })
 );
 

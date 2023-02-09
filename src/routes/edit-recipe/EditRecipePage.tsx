@@ -60,20 +60,7 @@ function EditRecipePage() {
             anchor: 0
         };
 
-    const substitutions: SubstitutionInput[] = recipe.substitutions
-        ? recipe.substitutions
-            .map(substitution => {
-                return {
-                    additions: substitution.additions.map(addition => {
-                        return {
-                            proportion: addition.proportion.toString(10),
-                            ingredientName: addition.ingredientName
-                        };
-                    }),
-                    removals: substitution.removals
-                };
-            })
-        : [];
+    const substitutions: SubstitutionInput[] = recipe.substitutions || [];
 
     const initialValues = {
         name: recipe.name,

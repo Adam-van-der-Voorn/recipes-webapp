@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { RecipesContext } from "../../App";
 import MultiLineParagraph from "../../components-misc/MultiLineParagraph";
 import MyError from "../../components-misc/MyError";
-import { Recipe } from "../../types/recipeTypes";
+import { Recipe, Substitution } from "../../types/recipeTypes";
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
@@ -57,19 +57,21 @@ function RecipePage() {
             }
             {substitutions &&
                 <>
-                    <h3>Substitutions</h3>
                     {substitutions.map((substitution, i) => {
-                        return (<div key={`sub-${i}`}>
-                            <h4>substitution {i + 1}</h4>
-                            <div>add:</div>
-                            {substitution.additions.map(addition => {
-                                return <div key={`addition-${i}`}> {addition.proportion} {"<--proportion"} {addition.ingredientName}</div>;
-                            })}
-                            <div>remove:</div>
-                            {substitution.removals.map(removal => {
-                                return <div key={`removal-${i}`}> {removal}</div>;
-                            })}
-                        </div>);
+                        const { removals, additions } = substitution;
+                        if (isBasicSubstitution(substitution)) {
+                            return (
+                                <div key={i}>
+                                    The {removals[0]} can be substituted for {additions[0]}
+                                </div>
+                            );
+                        }
+                        return (
+                            <pre key={i}>
+                                display of this substitution is not yet suppourted :)
+                                {JSON.stringify(substitution)}
+                            </pre>
+                        );
                     })}
                 </>
             }
@@ -91,5 +93,10 @@ function RecipePage() {
         </div>
     );
 }
+
+const isBasicSubstitution = (substitution: Substitution) => {
+    return substitution.removals.length === 1 &&
+        substitution.additions.length === 1
+};
 
 export default RecipePage;

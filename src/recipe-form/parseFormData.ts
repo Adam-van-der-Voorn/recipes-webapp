@@ -1,5 +1,5 @@
 import { Recipe } from "../types/recipeTypes";
-import { RecipeInput, SubstitutionInput } from "../types/RecipeInputTypes";
+import { RecipeInput } from "../types/RecipeInputTypes";
 import { parseUnitValInput } from "./parseUnitValInputs";
 
 export default function parseFormData(formData: RecipeInput): Recipe {
@@ -45,17 +45,7 @@ export default function parseFormData(formData: RecipeInput): Recipe {
     }
 
     if (formData.substitutions.length > 0) {
-        recipe.substitutions = formData.substitutions.map(substitution => parseSubstitution(substitution));
+        recipe.substitutions = formData.substitutions
     }
     return recipe;
-}
-
-export function parseSubstitution(substitutionInput: SubstitutionInput) {
-    return {
-        additions: substitutionInput.additions.map(addition => ({
-            ingredientName: addition.ingredientName.trim(),
-            proportion: parseFloat(addition.proportion)
-        })),
-        removals: substitutionInput.removals
-    };
 }

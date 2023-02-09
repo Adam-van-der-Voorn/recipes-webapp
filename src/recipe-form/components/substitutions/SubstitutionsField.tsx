@@ -9,8 +9,7 @@ type Props = {} & FormHelpers;
 
 const isBasicSubstitution = (substitution: SubstitutionInput) => {
     return substitution.removals.length === 1 &&
-        substitution.additions.length === 1 &&
-        substitution.additions.at(0)!.proportion === "1";
+        substitution.additions.length === 1
 };
 
 function SubstitutionsField({ control }: Props) {
@@ -19,17 +18,17 @@ function SubstitutionsField({ control }: Props) {
     return (
         <>
             {
-                substitutions.map((substitution, idx)=> {
+                substitutions.map((substitution, i)=> {
                     const { removals, additions } = substitution;
                     if (isBasicSubstitution(substitution)) {
                         return (
-                            <div key={idx}>
-                                The {removals[0]} can be substituted for {additions[0].ingredientName} [Edit button]
+                            <div key={i}>
+                                The {removals[0]} can be substituted for {additions[0]} [Edit button]
                             </div>
                         );
                     }
                     return (
-                        <pre key={idx}>
+                        <pre key={i}>
                             display of this substitution is not yet suppourted :)
                             {JSON.stringify(substitution)}
                         </pre>

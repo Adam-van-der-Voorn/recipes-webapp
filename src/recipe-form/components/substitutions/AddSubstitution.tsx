@@ -13,15 +13,13 @@ function AddSubstitution({ input: ingredientName, confirm, cancel }: Props) {
         <>
             <h2>Add Substitution</h2>
             <p>
-                <span>Substitute the {ingredientName} with an equal amount of </span>
+                <span>Substitute the {ingredientName} with </span>
                 <input type="text" className="in-string" onChange={e => setSubstitution(e.target.value)} autoFocus />
             </p>
             <button type="button" className="primary" onClick={() => confirm({
-                additions: [{
-                    ingredientName: substitution,
-                    proportion: '1'
-                }],
-                removals: [ingredientName]
+                additions: [substitution],
+                removals: [ingredientName],
+                notes: ""
             })}>
                 Confirm
             </button>
