@@ -13,7 +13,7 @@ function MultiLineParagraph({children, props}: Props, ref: ForwardedRef<HTMLDivE
     }
     else {
         content = children.split("\n")
-            .map((line, i) => <Fragment key={i}>{line}</Fragment>)
+            .map((line, i) => <Fragment key={i}>{line}<br /></Fragment>)
     }
     return (
         <p ref={ref}>{content}</p>
