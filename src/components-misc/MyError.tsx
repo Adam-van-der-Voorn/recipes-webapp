@@ -3,7 +3,7 @@ type Props = {
 };
 
 const MyError = ({ message }: Props) => (
-    <div className="error-message">{message}</div >
+    <em className="error-message">{message}</em>
 );
 
 export default MyError;

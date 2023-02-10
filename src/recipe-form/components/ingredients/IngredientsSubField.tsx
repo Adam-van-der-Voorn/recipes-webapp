@@ -13,7 +13,7 @@ import Dialog from "../../../components-misc/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
 
-const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: ''};
+const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: '' };
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -23,7 +23,7 @@ type FormHelpers = {
 
 type FakeTag = {
     isFake?: boolean;
-}
+};
 
 type Props = {
     listIdx: number;
@@ -38,11 +38,13 @@ type Props = {
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed, onPercentageBlur, onQuantityBlur, onAnchorChange, ...formHelpers }: Props) {
     const { control, setValue, register } = formHelpers;
 
-    const [ingredients, substitutions, currentAnchorIdx] = useWatch({control, name: [
-        `ingredients.lists.${listIdx}.ingredients`,
-        `substitutions`,
-        `ingredients.anchor`
-    ]});
+    const [ingredients, substitutions, currentAnchorIdx] = useWatch({
+        control, name: [
+            `ingredients.lists.${listIdx}.ingredients`,
+            `substitutions`,
+            `ingredients.anchor`
+        ]
+    });
 
     const { push, remove } = useFieldList(`ingredients.lists.${listIdx}.ingredients`, setValue, ingredients);
     const { push: addSubstitution } = useFieldList(`substitutions`, setValue, substitutions);
@@ -50,9 +52,9 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
     const { errors } = useFormState({ control });
 
     // include fakeTag to ingredints type
-    const rows = [...ingredients] as Array<(typeof ingredients[0]) & FakeTag>
+    const rows = [...ingredients] as Array<(typeof ingredients[0]) & FakeTag>;
 
-    const lastIngredient = ingredients[ingredients.length - 1]
+    const lastIngredient = ingredients[ingredients.length - 1];
     if (!lastIngredient || (lastIngredient.name !== '')) {
         // last field is not 'empty'
         // push a "fake" field for the user to input the next ingredient
@@ -66,8 +68,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
     ));
 
     const handleNewSubstitution = (result: SubstitutionInput) => {
-        addSubstitution(result)
-    }
+        addSubstitution(result);
+    };
 
     return (
         <>
@@ -78,7 +80,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                         type="text"
                         className="ingredients-sublist-name h-3"
                         placeholder="Untitled List"
-                        autoComplete="off" />
+                        autoComplete="off"
+                    />
                     <FormErrorMessage error={errors.ingredients?.lists?.at(listIdx)?.name} />
                 </div>
             }
@@ -94,17 +97,20 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                         const isAnchor = globalIdx === currentAnchorIdx;
                         const listErrors = errors.ingredients?.lists?.at(listIdx)?.ingredients?.at(localIdx);
                         if (ingredient.isFake) {
-                            return (
-                                <React.Fragment key={ingredient.id}>
-                                    <input name="add-new"
-                                        onChange={(ev) => push({ id: ingredient.id, ...defaultFieldValues, name: ev.target.value })}
-                                        type="text"
-                                        className="name new-ingredient"
-                                        autoComplete="off"
-                                        placeholder="Add new ingredient"
+                            // fragment is needed so that one the user types and this input is replaced by
+                            // a registered input, focused is kept and user can keep typing
+                            return <React.Fragment key={ingredient.id}>
+                                <input name="add-new"
+                                    onChange={(ev) => push({ id: ingredient.id, ...defaultFieldValues, name: ev.target.value })}
+                                    type="text"
+                                    className="name new-ingredient"
+                                    autoComplete="off"
+                                    placeholder="Add new ingredient"
+                                    aria-label="new ingredient name"
+                                    aria-details="Used to add a new ingredient. Other fields will be added once a name is typed."
                                 />
-                                </React.Fragment>
-                            )
+                            </React.Fragment>
+                            
                         }
                         return (
                             <React.Fragment key={ingredient.id}>
@@ -112,6 +118,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     type="text"
                                     className="name"
                                     autoComplete="off"
+                                    aria-label="ingredient name"
                                 />
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`, {
                                     onBlur: onQuantityBlur(listIdx, localIdx)
@@ -119,6 +126,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     type="text"
                                     className="quantity"
                                     autoComplete="off"
+                                    aria-label="ingredient quantity"
                                 />
 
                                 {isPercentagesIncluded &&
@@ -135,7 +143,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                         <MenuItemAction text="Set to anchor" action={() => onAnchorChange(globalIdx)} />
                                     }
                                     <MenuItemAction text="Delete" action={() => remove(localIdx)} />
-                                    <MenuItemAction text="Provide substitution" action={() => openDialogue({input: ingredient.name, onClose: handleNewSubstitution})} />
+                                    <MenuItemAction text="Provide substitution" action={() => openDialogue({ input: ingredient.name, onClose: handleNewSubstitution })} />
                                 </DropdownMenu>
 
                                 <div className="ingredient-errors">

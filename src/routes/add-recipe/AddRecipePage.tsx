@@ -34,7 +34,7 @@ function AddRecipePage() {
     };
 
     return (
-        <div className="AddRecipePage">
+        <div className="AddRecipePage" aria-details="add a new recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
         </div>
     );

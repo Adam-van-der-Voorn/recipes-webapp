@@ -10,9 +10,9 @@ function FormErrorMessage({ error }: Props) {
     }
 
     return (
-        <div className="error">
+        <em className="error">
             {error.message}
-        </div>
+        </em>
     );
 }
 

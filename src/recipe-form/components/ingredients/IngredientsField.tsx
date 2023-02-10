@@ -139,13 +139,13 @@ function IngredientsField({ setValue, control, register }: Props) {
 
     return (
         <>
-            <h2>
-                Ingredients
+            <header className="h-2">
+                <h2 style={{display: "inline-block", margin: 0}}>Ingredients</h2>
                 <DropdownMenu trigger={<span><MdMoreVert className="icon-button inline" size={28} /></span>} position={'right top'} offset={['0.8rem', '0rem']}>
                     <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
                     <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>
-            </h2>
+            </header>
             {
                 lists.map((list, idx) => (
                     <IngredientsSubField key={list.id}

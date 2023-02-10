@@ -38,9 +38,9 @@ export default function DropdownMenu({ trigger, position, offset, children }: Pr
             onClose={() => setIsOpen(false)}
         >
             <DropdownContext.Provider value={{setDropdownOpen: setIsOpen}}>
-                <div className="dropdown-menu" style={offsetStyle}>
+                <menu className="dropdown-menu" style={offsetStyle}>
                     {children}
-                </div>
+                </menu>
             </DropdownContext.Provider>
         </Popup>
     );

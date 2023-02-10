@@ -13,7 +13,7 @@ function RecipeCardContainer() {
     });
 
     return (
-        <div className="RecipeCardContainer">
+        <div className="RecipeCardContainer" aria-details='list of saved recipies'>
             {cards}
         </div>
     );

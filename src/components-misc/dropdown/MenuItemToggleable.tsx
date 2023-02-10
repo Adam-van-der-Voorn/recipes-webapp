@@ -11,10 +11,10 @@ export default function MenuItemToggleable({text, value, toggle}: Props) {
     const checkBox = value ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />;
 
     return (
-        <div className="menu-button toggle" onClick={() => toggle(!value)}>
-            <span className="Text">{text}</span>
+        <li role="button" className="menu-button toggle" onClick={() => toggle(!value)}>
+            <span>{text}</span>
             <span className="checkbox">{checkBox}</span>
-        </div>
+        </li>
     );
 
 }

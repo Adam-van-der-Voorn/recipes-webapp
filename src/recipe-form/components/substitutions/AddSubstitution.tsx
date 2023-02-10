@@ -10,13 +10,19 @@ type Props = {
 function AddSubstitution({ input: ingredientName, confirm, cancel }: Props) {
     const [substitution, setSubstitution] = useState("");
     return (
-        <>
-            <h2>Add Substitution</h2>
-            <p>
-                <span>Substitute the {ingredientName} with </span>
-                <input type="text" className="in-string" onChange={e => setSubstitution(e.target.value)} autoFocus />
-            </p>
-            <button type="button" className="primary" onClick={() => confirm({
+        <fieldset>
+            <legend className="h-2">Add Substitution</legend>
+            <div>
+                <label htmlFor="sub">Substitute the {ingredientName} with </label>
+                <input type="text"
+                    name={"sub"}
+                    className="in-string"
+                    onChange={e => setSubstitution(e.target.value)}
+                    autoFocus
+                    aria-label={`a substitute for ${ingredientName}`}
+                />
+            </div>
+            <button aria-details="confirm substitution" type="button" className="primary" onClick={() => confirm({
                 additions: [substitution],
                 removals: [ingredientName],
                 notes: ""
@@ -26,7 +32,7 @@ function AddSubstitution({ input: ingredientName, confirm, cancel }: Props) {
             <button type="button" onClick={() => cancel()}>
                 Cancel
             </button>
-        </>
+        </fieldset>
     );
 };
 

@@ -1,7 +1,7 @@
 import { Fragment, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RecipesContext } from "../../App";
-import MultiLineParagraph from "../../components-misc/MultiLineParagraph";
+import StrList from "../../components-misc/MultiLineParagraph";
 import MyError from "../../components-misc/MyError";
 import { Recipe, Substitution } from "../../types/recipeTypes";
 import "./RecipePage.css"
@@ -41,37 +41,41 @@ function RecipePage() {
             {servings && <div>Serves {servings}</div>}
             {makes && <div>Makes {makes.value} {makes.unit}</div>}
             {timeframe && <div>Timeframe: {timeframe}</div>}
-            {notes && <MultiLineParagraph>{notes}</MultiLineParagraph>}
+            {notes && 
+                <section aria-details="recipie notes">
+                    <StrList>{notes}</StrList>
+                </section>
+            }
             {ingredients &&
-                <>
+                <section>
                     <h2>Ingredients</h2>
                     <div id="ingredient-lists-view" style={{ marginBottom: "18px"}}>
                     {ingredients.lists.map((sublist, i) => (
                         <div key={`list-${i}`} className="ingredient-list-view">
                             {ingredients.lists.length > 1 && <h3>{sublist.name}</h3>}
-                            <div className="tabbed" style={{ gridTemplateColumns: "auto auto",}}>
+                            <ul className="tabbed" style={{ gridTemplateColumns: "auto auto",}}>
                                 {sublist.ingredients.map((ingredient, ii) => {
                                     const optional = ingredient.optional ? <span>(optional)</span> : null;
                                     return <Fragment key={`ingredient-${ii}/${i}`}>
-                                        <div>{ingredient.name}</div>
-                                        <div>{ingredient.quantity.value} {ingredient.quantity.unit} {optional}</div>
+                                        <li>{ingredient.name}</li>
+                                        <li>{ingredient.quantity.value} {ingredient.quantity.unit} {optional}</li>
                                     </Fragment>;
                                 })}
-                            </div>
+                            </ul>
                         </div>
                     ))}
                     </div>
-                </>
+                </section>
             }
             {substitutions &&
-                <>
+                <ul aria-details="substitutions">
                     {substitutions.map((substitution, i) => {
                         const { removals, additions } = substitution;
                         if (isBasicSubstitution(substitution)) {
                             return (
-                                <div key={i}>
+                                <li key={i}>
                                     The {removals[0]} can be substituted for {additions[0]}
-                                </div>
+                                </li>
                             );
                         }
                         return (
@@ -81,13 +85,13 @@ function RecipePage() {
                             </pre>
                         );
                     })}
-                </>
+                </ul>
             }
             {instructions &&
-                <>
+                <section>
                     <h2>Method</h2>
-                    <MultiLineParagraph>{instructions}</MultiLineParagraph>
-                </>
+                    <StrList>{instructions}</StrList>
+                </section>
             }
             <hr />
             <button onClick={deleteAndNavigate}>Delete</button>

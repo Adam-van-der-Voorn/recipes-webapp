@@ -17,6 +17,7 @@ function PercentageInput({ isAnchor, ...props}: Props, ref: ForwardedRef<HTMLInp
                 type="text"
                 placeholder="?"
                 autoComplete="off"
+                aria-label="ingredient quantity as a percentage of the anchor"
             />
             %
         </div>

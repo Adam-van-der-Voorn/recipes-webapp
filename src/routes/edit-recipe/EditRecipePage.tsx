@@ -74,7 +74,7 @@ function EditRecipePage() {
     };
 
     return (
-        <div className="EditRecipePage">
+        <div className="EditRecipePage" aria-details="edit an existing recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
         </div>
     );

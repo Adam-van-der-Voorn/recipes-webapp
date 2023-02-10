@@ -10,7 +10,7 @@ function RecipeCard({ recipeId, recipeName }: Props) {
     const navigate = useNavigate();
 
     return (
-        <div className="RecipeCard" onClick={() => navigate(`/view-${recipeId}`)}>
+        <div role="button" className="RecipeCard" onClick={() => navigate(`/view-${recipeId}`)}>
             {recipeName}
         </div>
     );

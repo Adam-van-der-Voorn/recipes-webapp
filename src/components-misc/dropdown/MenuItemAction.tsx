@@ -10,12 +10,12 @@ type Props = {
 export default function MenuItemAction({text, action}: Props) {
     const { setDropdownOpen } = useContext(DropdownContext)
     return (
-        <div className="menu-button" onClick={() => {
+        <li role="button" className="menu-button" onClick={() => {
             action();
             setDropdownOpen(false);
         }}>
-            <span className="text">{text}</span>
-        </div>
+            <span>{text}</span>
+        </li>
     );
 
 }

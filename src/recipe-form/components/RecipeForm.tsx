@@ -32,64 +32,63 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
     };
 
     return (
-        <div className="RecipeForm">
-            <form onSubmit={handleSubmit(onSubmit)} >
-                <input {...register("name")}
-                    className="title h-1"
-                    placeholder="Untitled"
+        <form className="RecipeForm" onSubmit={handleSubmit(onSubmit)}>
+            <input {...register("name")}
+                className="title h-1"
+                placeholder="Untitled"
+                autoComplete="off"
+                aria-label="recipie name"
+            />
+            <FormErrorMessage error={errors.name} />
+
+            <div className="field-container inline">
+                <label htmlFor="timeframe">Timeframe:</label>
+                <input {...register("timeframe")}
+                    type="text"
+                    placeholder="-"
                     autoComplete="off"
                 />
-                <FormErrorMessage error={errors.name} />
+                <FormErrorMessage error={errors.timeframe} />
+            </div>
 
-                <div className="field-container inline">
-                    <label htmlFor="timeframe">Timeframe:</label>
-                    <input {...register("timeframe")}
-                        type="text"
-                        placeholder="-"
-                        autoComplete="off"
-                    />
-                    <FormErrorMessage error={errors.timeframe} />
-                </div>
+            <div className="field-container inline">
+                <label htmlFor="makes">Makes:</label>
+                <input {...register("makes")}
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                />
+                <FormErrorMessage error={errors.makes} />
+            </div>
 
-                <div className="field-container inline">
-                    <label htmlFor="makes">Makes:</label>
-                    <input {...register("makes")}
-                        type="text"
-                        placeholder="-"
-                        autoComplete="off"
-                    />
-                    <FormErrorMessage error={errors.makes} />
-                </div>
+            <div className="field-container inline">
+                <label htmlFor='servings'>Serves:</label>
+                <input {...register("servings")}
+                    type="text"
+                    placeholder="-"
+                    autoComplete="off"
+                />
+                <FormErrorMessage error={errors.servings} />
+            </div>
 
-                <div className="field-container inline">
-                    <label htmlFor='servings'>Serves:</label>
-                    <input {...register("servings")}
-                        type="text"
-                        placeholder="-"
-                        autoComplete="off"
-                    />
-                    <FormErrorMessage error={errors.servings} />
-                </div>
+            <div className="field-container stacked">
+                <label htmlFor="notes">Extra notes</label>
+                <TextAreaAutoHeight {...register("notes")} defaultHeight={'112px'} />
+                <FormErrorMessage error={errors.notes} />
+            </div>
 
-                <div className="field-container stacked">
-                    <label htmlFor="notes">Extra notes</label>
-                    <TextAreaAutoHeight {...register("notes")} defaultHeight={'112px'} />
-                    <FormErrorMessage error={errors.notes} />
-                </div>
+            <IngredientsField {...{control, register, getValues, setValue}} />
 
-                <IngredientsField {...{control, register, getValues, setValue}} />
+            <SubstitutionsField {...{control, setValue}} />
 
-                <SubstitutionsField {...{control, setValue}} />
-
-                <div className="field-container stacked">
-                    <label htmlFor="instructions" className="h-2">Instructions</label>
-                    <TextAreaAutoHeight {...register("instructions")} defaultHeight={'112px'} />
-                    <FormErrorMessage error={errors.instructions} />
-                </div>
-                
-                <input type="submit" />
-            </form >
-        </div>
+            <div className="field-container stacked">
+                <label htmlFor="instructions" className="h-2">Instructions</label>
+                <TextAreaAutoHeight {...register("instructions")} defaultHeight={'112px'} />
+                <FormErrorMessage error={errors.instructions} />
+            </div>
+            
+            <input type="submit" />
+        </form >
     );
 }
 
