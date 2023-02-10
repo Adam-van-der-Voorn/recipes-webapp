@@ -1,9 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@500&display=swap');
 
-body {
-    margin: 0px;
-    padding: 0px;
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
 }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+	line-height: 1;
+}
+
+/* end reset */
 
 #app-content {
     width: min(80rem, 100vw);
@@ -34,21 +85,22 @@ p, span, a, div, label {
     font-size: var(--font-size-normal);
 }
 
-h1 {
+h1, .h-1 {
     font-size: var(--font-size-h1);
 }
 
-h2 {
+h2, .h-2 {
     font-size: var(--font-size-h2);
 }
 
-h3 {
+h3, .h-3 {
     font-size: var(--font-size-h3);
 }
 
-h1, h2, h3 {
+h1, .h-1, h2, .h-2, h3, .h-3 {
     margin-top: 1.3ch;
     margin-bottom: 0.7ch;
+    font-weight: bolder;
 }
 
 dialog {

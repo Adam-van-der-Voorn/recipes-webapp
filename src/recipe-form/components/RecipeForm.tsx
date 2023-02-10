@@ -35,7 +35,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
         <div className="RecipeForm">
             <form onSubmit={handleSubmit(onSubmit)} >
                 <input {...register("name")}
-                    className="title"
+                    className="title h-1"
                     placeholder="Untitled"
                     autoComplete="off"
                 />
@@ -82,7 +82,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                 <SubstitutionsField {...{control, setValue}} />
 
                 <div className="field-container stacked">
-                    <label htmlFor="instructions">Instructions</label>
+                    <label htmlFor="instructions" className="h-2">Instructions</label>
                     <TextAreaAutoHeight {...register("instructions")} defaultHeight={'112px'} />
                     <FormErrorMessage error={errors.instructions} />
                 </div>

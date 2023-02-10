@@ -31,10 +31,6 @@ form {
         "error";
 }
 
-.field-container.stacked > label {
-    margin-bottom: 1ch;
-}
-
 .field-container > input[type=text] {
     grid-area: input;
 }
@@ -53,7 +49,6 @@ input[type=text] {
     height: 3ch;
     background-color: transparent;
     padding: 0rem;
-    font-size: var(--font-size-normal);
     border: none;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -123,16 +118,9 @@ input[type="checkbox"]:focus {
 
 input.title {
     flex: 0 0 auto;
-    font-weight: bolder;
     border: none;
     border-bottom: 2px solid transparent;
     padding: 0;
-    
-    /* following should match h1 */
-    font-size: var(--font-size-h1);
-    margin-top: 1.3ch;
-    margin-bottom: 0.7ch;
-
     box-sizing: border-box;
 }
 
