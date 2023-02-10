@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { RecipesContext } from "../../App";
 import MultiLineParagraph from "../../components-misc/MultiLineParagraph";
 import MyError from "../../components-misc/MyError";
 import { Recipe, Substitution } from "../../types/recipeTypes";
+import "./RecipePage.css"
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
@@ -44,15 +45,22 @@ function RecipePage() {
             {ingredients &&
                 <>
                     <h2>Ingredients</h2>
+                    <div id="ingredient-lists-view" style={{ marginBottom: "18px"}}>
                     {ingredients.lists.map((sublist, i) => (
-                        <div key={`list-${i}`}>
-                            <h3>{sublist.name}</h3>
-                            {sublist.ingredients.map((ingredient, ii) => {
-                                const optional = ingredient.optional ? <>(optional)</> : <></>;
-                                return <div key={`ingredient-${ii}/${i}`}>{ingredient.quantity.value} {ingredient.quantity.unit}{'\t'}{ingredient.name} {optional}</div>;
-                            })}
+                        <div key={`list-${i}`} className="ingredient-list-view">
+                            {ingredients.lists.length > 1 && <h3>{sublist.name}</h3>}
+                            <div className="tabbed" style={{ gridTemplateColumns: "auto auto",}}>
+                                {sublist.ingredients.map((ingredient, ii) => {
+                                    const optional = ingredient.optional ? <span>(optional)</span> : null;
+                                    return <Fragment key={`ingredient-${ii}/${i}`}>
+                                        <div>{ingredient.name}</div>
+                                        <div>{ingredient.quantity.value} {ingredient.quantity.unit} {optional}</div>
+                                    </Fragment>;
+                                })}
+                            </div>
                         </div>
                     ))}
+                    </div>
                 </>
             }
             {substitutions &&
@@ -96,7 +104,7 @@ function RecipePage() {
 
 const isBasicSubstitution = (substitution: Substitution) => {
     return substitution.removals.length === 1 &&
-        substitution.additions.length === 1
+        substitution.additions.length === 1;
 };
 
 export default RecipePage;
