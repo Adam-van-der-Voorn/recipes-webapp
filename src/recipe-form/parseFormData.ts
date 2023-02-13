@@ -36,7 +36,12 @@ export default function parseFormData(formData: RecipeInput): Recipe {
             }))
         };
         if (formData.ingredients.anchor) {
-            recipe.ingredients.anchor = formData.ingredients.anchor;
+            // seems hook-form makes all fields string on submit
+            // program defensively anyway
+            const anchor = typeof formData.ingredients.anchor === 'string'
+                ? parseInt(formData.ingredients.anchor)
+                : formData.ingredients.anchor
+            recipe.ingredients.anchor = anchor;
         }
     }
 
