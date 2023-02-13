@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { isNumStrict } from '../util/numberInputs';
 
 const unitValPattern = /^\d+(\.\d+)? *[aA-zZ]+[aA-zZ ]*$/;
 const decimalValPattern = /^\d+(\.\d+)?$/;
@@ -11,8 +12,8 @@ const isLastIngredient = (context: any) => {
 };
 
 export const yupQuantitySchema = Yup.string()
-    .test('is-unitval', 'Must be a number, followed by a unit', (el, context) => {
-        return (!el || unitValPattern.test(el));
+    .test('is-num-unit-optional', 'Must be a number, optionally followed by a unit', (el, context) => {
+        return (!el || unitValPattern.test(el) || isNumStrict(el));
     })
     .max(30, 'please make this shorter');
 
@@ -45,8 +46,8 @@ const yupIngredientsSchema = Yup.object().shape({
                                 return isLastIngredient(context) || el.trim() !== '';
                             })
                             .max(30, 'please make this shorter')
-                            .test('is-unitval', 'Must be a number, followed by a unit', (el, context) => {
-                                return (!el || unitValPattern.test(el));
+                            .test('is-num-unit-optional', 'Must be a number, optionally followed by a unit', (el, context) => {
+                                return (!el || unitValPattern.test(el) || isNumStrict(el));
                             }),
                         percentage: Yup.string()
                             .test('is-num-or-whitespace', 'Must be a valid percentage.', (el, context) => {

@@ -2,6 +2,7 @@ import { Recipe, Substitution } from "../types/recipeTypes";
 import StrList from "../components-misc/StrList";
 import "./RecipeView.css";
 import { Fragment } from "react";
+import quantityToString from "../util/quantityToString";
 
 const isBasicSubstitution = (substitution: Substitution) => {
     return substitution.removals.length === 1 &&
@@ -17,7 +18,7 @@ function RecipeView({ recipe }: Props) {
     return <>
         <h1>{name}</h1>
         {servings && <div>Serves {servings}</div>}
-        {makes && <div>Makes {makes.value} {makes.unit}</div>}
+        {makes && <div>Makes {quantityToString(makes)}</div>}
         {timeframe && <div>Timeframe: {timeframe}</div>}
         {notes &&
             <section aria-details="recipie notes">
@@ -36,7 +37,7 @@ function RecipeView({ recipe }: Props) {
                                     const optional = ingredient.optional ? <span>(optional)</span> : null;
                                     return <Fragment key={`ingredient-${ii}/${i}`}>
                                         <li>{ingredient.name}</li>
-                                        <li>{ingredient.quantity.value} {ingredient.quantity.unit} {optional}</li>
+                                        <li>{quantityToString(ingredient.quantity)} {optional}</li>
                                     </Fragment>;
                                 })}
                             </ul>

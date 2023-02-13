@@ -2,23 +2,24 @@ import convert, { Unit } from "convert-units";
 import { UnitVal } from "../types/recipeTypes";
 import { isSameMeasure } from "../util/units";
 
-export const getQuantityFromPercentage = (anchorQuantity: UnitVal, subjectPercentage: number, subjectQuantity: UnitVal | undefined): UnitVal | undefined=> {
-    const newValRelativeToAnchor = anchorQuantity.value * (subjectPercentage / 100);
-    if (subjectQuantity) {
-        if (anchorQuantity.unit === subjectQuantity.unit) {
-            return { value: newValRelativeToAnchor, unit: subjectQuantity.unit };
-        }
-        else if (isSameMeasure(anchorQuantity.unit, subjectQuantity.unit)) {
-            const newValOriginalUnit = convert(newValRelativeToAnchor)
-                .from(anchorQuantity.unit as Unit)
-                .to(subjectQuantity.unit as Unit);
-            return { value: newValOriginalUnit, unit: subjectQuantity.unit };
-        }
-        else {
-            return undefined;
-        }
+export const getQuantityFromPercentage = (anchorQuantity: UnitVal | number, subjectPercentage: number, subjectUnit: string | undefined): UnitVal | number | undefined => {
+    const proportion = subjectPercentage / 100;
+
+    if (typeof anchorQuantity === 'number') {
+        return anchorQuantity * proportion;
     }
-    else {
-        return { value: newValRelativeToAnchor, unit: anchorQuantity.unit };
+
+    const newValRelativeToAnchor = anchorQuantity.value * proportion;
+    if (!subjectUnit || anchorQuantity.unit === subjectUnit) {
+        return { value: newValRelativeToAnchor, unit: anchorQuantity.unit }
     }
+
+    if (isSameMeasure(anchorQuantity.unit, subjectUnit)) {
+        const newValOriginalUnit = convert(newValRelativeToAnchor)
+            .from(anchorQuantity.unit as Unit)
+            .to(subjectUnit as Unit);
+        return { value: newValOriginalUnit, unit: subjectUnit };
+    }
+    
+    return undefined;
 };

@@ -6,7 +6,7 @@ export type UnitVal = {
 
 export type Ingredient = {
     name: string;
-    quantity: UnitVal;
+    quantity: UnitVal | number;
     optional: boolean;
     kjs?: number;
 };
@@ -31,7 +31,7 @@ export type Recipe = {
     name: string;
     timeframe?: string;
     servings?: number;
-    makes?: UnitVal;
+    makes?: UnitVal | number;
     notes?: string;
     ingredients?: IngredientsList;
     instructions?: string;

@@ -1,18 +1,12 @@
 import { useContext } from "react";
 import { RecipesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
-import { UnitVal, Recipe } from "../../types/recipeTypes";
+import { Recipe } from "../../types/recipeTypes";
 import MyError from "../../components-misc/MyError";
 import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
-
-const unitValToString = (unitVal: UnitVal | undefined) => {
-    if (unitVal !== undefined) {
-        return `${unitVal.value} ${unitVal.unit}`;
-    }
-    else return '';
-};
+import quantityToString from "../../util/quantityToString";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
@@ -46,7 +40,7 @@ function EditRecipePage() {
                             return {
                                 id: uuid4(),
                                 name: ingredient.name,
-                                quantity: unitValToString(ingredient.quantity),
+                                quantity: quantityToString(ingredient.quantity),
                                 optional: ingredient.optional,
                                 percentage: ''
                             };
@@ -65,7 +59,7 @@ function EditRecipePage() {
     const initialValues = {
         name: recipe.name,
         timeframe: recipe.timeframe || '',
-        makes: unitValToString(recipe.makes),
+        makes: quantityToString(recipe.makes),
         notes: recipe.notes || '',
         ingredients: ingredients,
         servings: recipe.servings?.toString(10) || '',

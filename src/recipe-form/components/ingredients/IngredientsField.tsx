@@ -91,10 +91,14 @@ function IngredientsField({ setValue, control, register }: Props) {
         setPercentage(subjectPercentage, subListIdx, localIdx);
 
         const anchorField = aggregatedIngredients[currentAnchorIdx];
-        const anchorQuantity: UnitVal | undefined = parseUnitValInput(anchorField.quantity);
+        const anchorQuantity: UnitVal | undefined | number = parseUnitValInput(anchorField.quantity);
         if (anchorQuantity) {
             const subjectQuantity = parseUnitValInput(subjectField.quantity);
-            const newQuantity = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectQuantity);
+            const subjectUnit = typeof subjectQuantity === 'number'
+                ? undefined
+                : subjectQuantity?.unit;
+
+            const newQuantity = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectUnit);
             if (newQuantity) {
                 setQuantity(newQuantity, subListIdx, localIdx);
             }
@@ -107,13 +111,14 @@ function IngredientsField({ setValue, control, register }: Props) {
         setValue("ingredients.anchor", newAnchorIdx);
     }
 
-    const setQuantity = (quantity: UnitVal, subListIdx: number, localIdx: number) => {
-        const rounded = +(quantity.value).toFixed(2);
-        setValue(
-            `ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`,
-            `${rounded} ${quantity.unit}`,
-            { shouldValidate: true }
-        );
+    const setQuantity = (quantity: UnitVal | number, subListIdx: number, localIdx: number) => {
+        const s: string = typeof quantity === 'number'
+            ? `${quantity}`
+            : `${quantity.value} ${quantity.unit}`
+
+        setValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`, s, {
+            shouldValidate: true
+        });
     };
 
     const setPercentage = (percentage: number, subListIdx: number, localIdx: number) => {
