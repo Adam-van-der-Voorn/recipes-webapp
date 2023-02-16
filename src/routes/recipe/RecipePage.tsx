@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { RecipesContext } from "../../App";
 import MyError from "../../components-misc/MyError";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
+import { RecipesContext } from "../../contexts/RecipesContext";
 
 function RecipePage() {
     const recipeId = useParams().recipeId;

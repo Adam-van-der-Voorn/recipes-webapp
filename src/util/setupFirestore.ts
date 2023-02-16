@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore, enableIndexedDbPersistence } from "firebase/firestore";
 
 export default function setupFirebase() {
@@ -18,13 +19,14 @@ export default function setupFirebase() {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     enableIndexedDbPersistence(db)
-        .catch((err) => {
-            if (err.code === 'failed-precondition') {
-                console.error("FireStore IndexedDB - failed precondition: Multiple tabs open, persistence can only be enabled in one tab at a a time.");
-            }
-            else if (err.code === 'unimplemented') {
-                console.error("FireStore IndexedDB: The current browser does not support all of the features required to enable persistence");
-            }
-        });
-    return { firebaseApp: app, db: db };
+    .catch((err) => {
+        if (err.code === 'failed-precondition') {
+            console.error("FireStore IndexedDB - failed precondition: Multiple tabs open, persistence can only be enabled in one tab at a a time.");
+        }
+        else if (err.code === 'unimplemented') {
+            console.error("FireStore IndexedDB: The current browser does not support all of the features required to enable persistence");
+        }
+    });
+    const auth = getAuth()
+    return { firebaseApp: app, db, auth };
 }

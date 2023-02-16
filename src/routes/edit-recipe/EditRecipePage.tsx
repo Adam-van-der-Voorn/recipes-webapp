@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { RecipesContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
 import MyError from "../../components-misc/MyError";
@@ -7,6 +6,7 @@ import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 import quantityToString from "../../util/quantityToString";
+import { RecipesContext } from "../../contexts/RecipesContext";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;

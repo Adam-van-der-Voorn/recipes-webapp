@@ -2,8 +2,9 @@ import { setDoc, doc, onSnapshot, collection, Firestore, deleteDoc } from "fireb
 import { useState, useRef, useEffect } from "react";
 import { Recipe } from "../../types/recipeTypes";
 import { v4 as uuid4 } from 'uuid';
+import { User } from "firebase/auth";
 
-export default function useRecipeStorage(db: Firestore) {
+export default function useRecipeStorage(db: Firestore, user: User) {
     const [recipes, setRecipes] = useState<Map<string, Recipe>>(new Map());
     const pendingWrites = useRef(new Map<string, (id: string, recipe: Recipe) => void>());
 
@@ -12,7 +13,7 @@ export default function useRecipeStorage(db: Firestore) {
         if (onAvalible) {
             pendingWrites.current.set(id + '-added', onAvalible)
         }
-        return setDoc(doc(db, `recipies/${id}`), recipe)
+        return setDoc(doc(db, `users/${user.uid}/recipies/${id}`), recipe)
             .then(() => {
                 console.log("Recipe written to server with ID", id);
             })
@@ -22,7 +23,7 @@ export default function useRecipeStorage(db: Firestore) {
         if (onAvalible) {
             pendingWrites.current.set(id + '-modified', onAvalible)
         }
-        return setDoc(doc(db, `recipies/${id}`), editedRecipe)
+        return setDoc(doc(db, `users/${user.uid}/recipies/${id}`), editedRecipe)
             .then(() => {
                 console.log('Recipe edited on server with ID', id);
             })
@@ -32,14 +33,14 @@ export default function useRecipeStorage(db: Firestore) {
         if (onAvalible) {
             pendingWrites.current.set(id + '-removed', onAvalible)
         }
-        return deleteDoc(doc(db, `recipies/${id}`))
+        return deleteDoc(doc(db, `users/${user.uid}/recipies/${id}`))
             .then(() => {
                 console.log('Recipe deleted on server with ID', id);
             })
     };
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, 'recipies'), { includeMetadataChanges: true },
+        const unsubscribe = onSnapshot(collection(db, `users/${user.uid}/recipies`), { includeMetadataChanges: true },
             (querySnapshot) => {
                 // extract recipes
                 const recipes: Map<string, Recipe> = new Map(querySnapshot.docs.map(doc => {
@@ -75,7 +76,7 @@ export default function useRecipeStorage(db: Firestore) {
             console.log('Unsubscribed from recipe snapshots');
             unsubscribe();
         };
-    }, [db]);
+    }, [db, user.uid]);
 
     return {
         "recipes": recipes,

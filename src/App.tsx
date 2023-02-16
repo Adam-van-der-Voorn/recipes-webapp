@@ -1,30 +1,19 @@
-import React, { createContext } from "react";
 import { Outlet } from "react-router-dom";
-import { Recipe } from "./types/recipeTypes";
-import useRecipeStorage from "./util/hooks/useRecipeStorage";
+import AuthGate from "./auth/AuthGate";
+import { RecipesContextProvider } from "./contexts/RecipesContext";
 import setupFirebase from "./util/setupFirestore";
 
-const { db } = setupFirebase();
-
-type RecipesContextType = {
-    recipes: Map<string, Recipe>;
-    addRecipe: (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => void;
-    editRecipe: (editedRecipe: Recipe, id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
-    deleteRecipe: (id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
-};
-
-export const RecipesContext = createContext<RecipesContextType>({} as RecipesContextType);
+const { db, auth } = setupFirebase();
 
 function App() {
-
-    const recipeStorageInterface: RecipesContextType = useRecipeStorage(db);
-
     return (
-        <RecipesContext.Provider value={recipeStorageInterface}>
-            <div id="app-content">
-                <Outlet />
-            </div>
-        </RecipesContext.Provider>
+        <div id="app-content">
+            <AuthGate auth={auth} db={db}>
+                <RecipesContextProvider db={db}>
+                    <Outlet />
+                </RecipesContextProvider>
+            </AuthGate>
+        </div>
     );
 }
 

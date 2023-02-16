@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { RecipesContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { v4 as uuid4 } from 'uuid';
+import { RecipesContext } from "../../contexts/RecipesContext";
 
 function AddRecipePage() {
     const addRecipe = useContext(RecipesContext).addRecipe;
