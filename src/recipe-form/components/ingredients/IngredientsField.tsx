@@ -5,7 +5,6 @@ import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
-import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";

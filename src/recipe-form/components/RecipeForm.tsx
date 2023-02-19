@@ -2,7 +2,6 @@ import { Recipe } from "../../types/recipeTypes";
 import getFullSchema from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
-import './RecipeForm.css';
 import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";

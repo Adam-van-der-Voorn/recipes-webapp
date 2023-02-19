@@ -1,7 +1,6 @@
 import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, ForwardedRef } from "react";
 import extractFields from "../util/extractFields";
 import cx from 'classnames';
-import './TextAreaAutoHeight.css'
 
 type Props = {
     defaultHeight?: string;

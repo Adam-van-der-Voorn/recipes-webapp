@@ -1,6 +1,5 @@
 import { Recipe, Substitution } from "../types/recipeTypes";
 import StrList from "../components-misc/StrList";
-import "./RecipeView.css";
 import { Fragment } from "react";
 import quantityToString from "../util/quantityToString";
 

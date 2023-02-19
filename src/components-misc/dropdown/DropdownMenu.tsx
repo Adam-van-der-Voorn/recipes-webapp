@@ -3,8 +3,6 @@ import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
 import ValidChild from '../../types/ValidChild';
-import './DropdownMenu.css';
-
 
 type Props = {
     trigger: any;

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { DropdownContext } from './DropdownMenu';
-import './DropdownMenu.css';
 
 type Props = {
     text: string;

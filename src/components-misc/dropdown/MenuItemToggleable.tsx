@@ -1,5 +1,4 @@
 import { MdCheckBox , MdCheckBoxOutlineBlank} from 'react-icons/md';
-import './DropdownMenu.css';
 
 type Props = {
     text: string;

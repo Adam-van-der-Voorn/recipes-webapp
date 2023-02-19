@@ -2,8 +2,6 @@ import { useContext } from 'react';
 import { RecipesContext } from '../../contexts/RecipesContext';
 import RecipeCard from './RecipeCard';
 
-import './RecipeCardContainer.css';
-
 function RecipeCardContainer() {
 
     const { recipes } = useContext(RecipesContext);
