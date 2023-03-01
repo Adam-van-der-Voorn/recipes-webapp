@@ -12,6 +12,7 @@ import { v4 as uuid4 } from 'uuid';
 import Dialog from "../../../components-misc/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
+import style from '../RecipeForm.module.css';
 
 const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: '' };
 
@@ -71,6 +72,10 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
         addSubstitution(result);
     };
 
+    const ingredientListClass = isPercentagesIncluded
+        ? `${style.ingredientList} ${style.showPercentages}`
+        : style.ingredientList
+
     return (
         <>
             {dialogue}
@@ -78,17 +83,17 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                 <div>
                     <input {...register(`ingredients.lists.${listIdx}.name`)}
                         type="text"
-                        className="ingredients-sublist-name h-3"
+                        className={style.subIngredientsName}
                         placeholder="Untitled List"
                         autoComplete="off"
                     />
                     <FormErrorMessage error={errors.ingredients?.lists?.at(listIdx)?.name} />
                 </div>
             }
-            <div className={`ingredient-list ${isPercentagesIncluded ? 'show-percentages' : 'hide-percentages'}`}>
-                <div className="grid-header">Ingredient</div>
-                <div className="grid-header">Quantity</div>
-                {isPercentagesIncluded && <div className="grid-header">Proportion</div>}
+            <div className={ingredientListClass}>
+                <div className={style.ingredientListLabel}>Ingredient</div>
+                <div className={style.ingredientListLabel}>Quantity</div>
+                {isPercentagesIncluded && <div className={style.ingredientListLabel}>Proportion</div>}
                 <div></div> {/* grid filler for inline button menu */}
 
                 {
@@ -109,8 +114,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     aria-label="new ingredient name"
                                     aria-details="Used to add a new ingredient. Other fields will be added once a name is typed."
                                 />
-                            </React.Fragment>
-                            
+                            </React.Fragment>      
                         }
                         return (
                             <React.Fragment key={ingredient.id}>
@@ -137,7 +141,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     />
                                 }
 
-                                <DropdownMenu trigger={<span><MdMoreVert className="icon-button" size={25} tabIndex={0} /></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
+                                <DropdownMenu trigger={<span><MdMoreVert className={`${style.ingredientMenu} icon-button`} tabIndex={0} /></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
                                     <MenuItemToggleable text="Optional" value={ingredient.optional} toggle={b => setValue(`ingredients.lists.${listIdx}.ingredients.${localIdx}.optional`, b)} />
                                     {!isAnchor && isPercentagesIncluded &&
                                         <MenuItemAction text="Set to anchor" action={() => onAnchorChange(globalIdx)} />
@@ -146,7 +150,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     <MenuItemAction text="Provide substitution" action={() => openDialogue({ input: ingredient.name, onClose: handleNewSubstitution })} />
                                 </DropdownMenu>
 
-                                <div className="ingredient-errors">
+                                <div className={style.ingredientErrors}>
                                     <FormErrorMessage error={listErrors?.name} />
                                     <FormErrorMessage error={listErrors?.quantity} />
                                     <FormErrorMessage error={listErrors?.percentage} />

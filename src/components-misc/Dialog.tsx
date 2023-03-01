@@ -1,7 +1,6 @@
 import { forwardRef, HTMLProps, useImperativeHandle, useRef, ForwardedRef, useEffect } from "react";
 import ValidChild from "../types/ValidChild";
 import isWithinBounds from "../util/isWithinBounds";
-import './TextAreaAutoHeight.css';
 
 type Props = {
     closeOnBackgroudClick?: boolean;

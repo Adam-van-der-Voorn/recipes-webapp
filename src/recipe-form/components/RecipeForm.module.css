@@ -1,0 +1,146 @@
+.form {
+    --column-gap: 1.5rem;
+}
+
+.recipeName {
+    padding: 0;
+    border-bottom-color: transparent !important;
+    /* may need width media query? down to xlarge*/
+    font-size: var(--font-size-xxlarge);
+    margin-top: 1ch;
+    margin-bottom: 0.4ch;
+    font-weight: bolder;
+    width: 100%;
+    padding-bottom: 0.25ch !important;
+    padding-left: 0 !important;
+}
+
+.recipeName:focus {
+    border-bottom-color: var(--neutral-3) !important;
+}
+
+.meta {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    grid-auto-rows: auto;
+    column-gap: var(--column-gap);
+    align-items: baseline;
+}
+
+.metaLabel {
+    margin-bottom: 0.75rem;
+}
+
+.ingredientsHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.ingredientsHeader > h2 {
+    flex: 1 1 auto;
+}
+
+.ingredientsHeaderMenu {
+    scale: 1.6;
+    justify-self: flex-end;
+    flex: 0 0 auto;
+}
+
+.subIngredientsName {
+    font-weight: bolder;
+    padding-left: 0 !important;
+    width: 100%;
+    margin-top: 0.5ch;
+    margin-bottom: 0.25ch;
+
+}
+
+.ingredientListLabel {
+    font-size: var(--font-size-small);
+    color: var(--neutral-2);
+}
+
+.ingredientList {
+    --percent-symbol-width: 1.3ch;
+    --quantity-input-width: 10ch;
+    --proportion-input-width: 5ch;
+    display: inline-grid;
+    grid-auto-rows: auto;
+    column-gap: 1.6rem;
+    row-gap: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    --num-ingredient-columns: 3;
+    grid-template-columns: 1fr var(--quantity-input-width) auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ingredientList.showPercentages {
+    --num-ingredient-columns: 4;
+    grid-template-columns: 1fr var(--quantity-input-width) min-content auto;
+}
+
+.ingredientList > input[type="text"] {
+    width: 100%;
+}
+
+.percentageInput {
+    display: inline-block;
+    width: calc(var(--proportion-input-width) + var(--percent-symbol-width));
+}
+
+
+.percentageInput > [type="text"] {
+    width: var(--proportion-input-width);
+}
+
+.percentInputSymbol {
+    color: var(--neutral-4);
+}
+
+.ingredientErrors {
+    grid-column: span var(--num-ingredient-columns);
+}
+
+.ingredientMenu {
+    scale: 1.2;
+}
+
+.substitutionsGrid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-auto-rows: auto;
+    column-gap: var(--column-gap);
+    row-gap: 0.8ch;
+    align-items: baseline;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.substitutionsRemoveButton {
+    scale: 1.2;
+}
+
+.multiLine {
+    padding: 0;
+    resize: none;
+    appearance: none;
+    outline: none;
+    padding-right: 0.25rem;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 0;
+    border-bottom: 0.25rem solid var(--neutral-7);
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    line-height: 2rem;
+}
+
+.error {
+    font-size: var(--font-size-small);
+    color: var(--error-red);
+    margin-bottom: 1rem;
+}

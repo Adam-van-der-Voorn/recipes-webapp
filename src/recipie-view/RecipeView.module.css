@@ -1,0 +1,71 @@
+.main {
+    display: grid;
+    column-gap: 4rem;
+    grid-template-areas: "ingredients instructions";
+    grid-template:
+        "ingredients instructions" auto
+        / 2fr 3fr;
+}
+
+@media (max-width: 35rem) {
+    .main {
+        grid-template:
+        "ingredients" auto
+        "instructions" auto
+        / 1fr;
+    }
+}
+
+.instructions {
+    /* background-color: aqua; */
+    grid-area: instructions;
+
+}
+
+.ingredients {
+    /* background-color: rgb(194, 182, 206); */
+    grid-area: ingredients;
+}
+
+.h2 {
+    font-size: var(--font-size-large);
+}
+
+.meta {
+    line-height: 2ch;
+    margin-bottom: 1rem;
+}
+
+.notes {
+    line-height: 2ch;
+    white-space: pre-line;
+}
+
+.substitution {
+    line-height: 2ch;
+}
+
+
+
+.ingredientList {
+    grid-template-columns: auto auto;
+    display: inline-grid;
+    grid-auto-rows: auto;
+    column-gap: 2rem;
+    row-gap: 0.25rem;
+}
+
+.ingredientListName {
+    grid-column: span 2;
+    margin-top: 1.5rem;
+    font-size: var(--font-size-large);
+}
+
+.ingredientName {
+    line-height: 2ch;
+}
+
+.instruction {
+    line-height: 2ch;
+    margin-bottom: 0.75rem;
+}

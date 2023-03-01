@@ -1,9 +1,0 @@
-#ingredient-lists-view {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.ingredient-list-view {
-    margin-right: 10rem;
-}

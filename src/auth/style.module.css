@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.form {
+    width: min(30rem, 100%);
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.75rem;
+    margin-left: 0.25rem;
+    font-size: var(--font-size-small);
+    color: var(--neutral-1)
+}
+
+.title {
+    margin-bottom: 5rem;
+}
+
+.input {
+    display: block;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    /* background-color: var(--neutral-8) !important; */
+}
+
+.inputContainer {
+    margin-bottom: 3.5rem
+}
+
+.error {
+    margin-left: 0.25rem;
+    margin-bottom: 1rem;
+    color: var(--error-red);
+    display: block;
+}
+
+.errorContainer {
+    margin-top: 2rem;
+}
+
+.submit {
+    width: calc(100%);
+    height: 4rem;
+    font-size: var(--font-size-h3);
+}

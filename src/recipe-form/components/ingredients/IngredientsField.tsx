@@ -1,17 +1,17 @@
 import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { parseUnitValInput } from "../../parseUnitValInputs";
 import { UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
-import './IngredientsField.css';
 import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
 import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
 import getPercentageFromVal from "../../../util/getPercentageFromVal";
 import { RecipeInput } from "../../../types/RecipeInputTypes";
 import { v4 as uuid4 } from 'uuid';
 import useFieldList from "../../../util/hooks/useFieldList";
+import style from "../RecipeForm.module.css";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -22,8 +22,8 @@ type FormHelpers = {
 type Props = {} & FormHelpers;
 
 function IngredientsField({ setValue, control, register }: Props) {
-    const lists = useWatch({control, name: "ingredients.lists"});
-    const currentAnchorIdx = useWatch({control, name: "ingredients.anchor"});
+    const lists = useWatch({ control, name: "ingredients.lists" });
+    const currentAnchorIdx = useWatch({ control, name: "ingredients.anchor" });
     const { replace, push } = useFieldList("ingredients.lists", setValue, lists);
     const [isPercentagesIncluded, setIsPercentagesIncluded] = useState(false);
     const [hasMultipleLists, setHasMultipleLists] = useState(lists.length > 1);
@@ -31,12 +31,12 @@ function IngredientsField({ setValue, control, register }: Props) {
     const aggregatedIngredients = lists.flatMap(list => list.ingredients);
 
     useEffect(() => {
-        setAllPercentages(currentAnchorIdx)
-    // in this case, we do want to only run on mount
-    // further changes to the percentage fields will
-    // be done via user input
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        setAllPercentages(currentAnchorIdx);
+        // in this case, we do want to only run on mount
+        // further changes to the percentage fields will
+        // be done via user input
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const localToGlobalIdx = (subListIdx: number, localIdx: number) => {
         let numPrecedingIngredients = 0;
@@ -65,7 +65,7 @@ function IngredientsField({ setValue, control, register }: Props) {
                 setPercentageBasedOffIngredient(subListIdx, localIdx, anchorIdx);
             }
         }
-    }
+    };
 
     const onQuantityBlur = (subListIdx: number, localIdx: number) => (ev: any) => {
         const quantity = parseUnitValInput(ev.target.value);
@@ -74,7 +74,7 @@ function IngredientsField({ setValue, control, register }: Props) {
         }
         const globalIdx = localToGlobalIdx(subListIdx, localIdx);
         if (globalIdx === currentAnchorIdx) {
-            setAllPercentages(currentAnchorIdx)
+            setAllPercentages(currentAnchorIdx);
         }
         else {
             setPercentageBasedOffIngredient(subListIdx, localIdx, currentAnchorIdx);
@@ -106,15 +106,15 @@ function IngredientsField({ setValue, control, register }: Props) {
     };
 
     const onAnchorChange = (newAnchorIdx: number) => {
-        console.log("anchor change, new idx", newAnchorIdx)
+        console.log("anchor change, new idx", newAnchorIdx);
         setAllPercentages(newAnchorIdx);
         setValue("ingredients.anchor", newAnchorIdx);
-    }
+    };
 
     const setQuantity = (quantity: UnitVal | number, subListIdx: number, localIdx: number) => {
         const s: string = typeof quantity === 'number'
             ? `${quantity}`
-            : `${quantity.value} ${quantity.unit}`
+            : `${quantity.value} ${quantity.unit}`;
 
         setValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`, s, {
             shouldValidate: true
@@ -136,21 +136,21 @@ function IngredientsField({ setValue, control, register }: Props) {
             if (!confirmation()) {
                 return;
             }
-            console.log("merging", aggregatedIngredients)
+            console.log("merging", aggregatedIngredients);
             replace([{ id: uuid4(), name: "Main", ingredients: aggregatedIngredients }]);
         }
-        setHasMultipleLists(_hasMultipleLists)
+        setHasMultipleLists(_hasMultipleLists);
     };
 
     return (
         <>
-            <header className="h-2">
-                <h2 style={{display: "inline-block", margin: 0}}>Ingredients</h2>
-                <DropdownMenu trigger={<span><MdMoreVert className="icon-button inline" size={28} /></span>} position={'right top'} offset={['0.8rem', '0rem']}>
+            <div className={style.ingredientsHeader}>
+                <h2>Ingredients</h2>
+                <DropdownMenu trigger={<span><MdMoreVert className={style.ingredientsHeaderMenu}/></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
                     <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
                     <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>
-            </header>
+            </div>
             {
                 lists.map((list, idx) => (
                     <IngredientsSubField key={list.id}
@@ -161,12 +161,15 @@ function IngredientsField({ setValue, control, register }: Props) {
                         onQuantityBlur={onQuantityBlur}
                         onPercentageBlur={onPercentageBlur}
                         onAnchorChange={onAnchorChange}
-                        {...{register, setValue, control}}
+                        {...{ register, setValue, control }}
                     />
                 ))
             }
             {hasMultipleLists &&
-                <button type="button" onClick={() => push({ id: uuid4(), name: '', ingredients: [] })}>
+                <button type="button"
+                    onClick={() => push({ id: uuid4(), name: '', ingredients: [] })}
+                    className={style.addIngredientButton}
+                >
                     Add ingredient list
                 </button >
             }

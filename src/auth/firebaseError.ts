@@ -3,6 +3,8 @@ export enum FireBaseErr {
     WRONG_PASSWORD,
     TOO_MANY_REQUESTS,
     EMAIL_ALREADY_IN_USE,
+    USER_NOT_FOUND,
+    NETWORK_REQUEST_FAILED,
 }
 
 const map = {
@@ -17,6 +19,14 @@ const map = {
     "email-already-in-use": {
         key: FireBaseErr.EMAIL_ALREADY_IN_USE, 
         message: "Email already in use",
+    },
+    "user-not-found": {
+        key: FireBaseErr.USER_NOT_FOUND,
+        message: "User not found"
+    },
+    "network-request-failed": {
+        key: FireBaseErr.NETWORK_REQUEST_FAILED,
+        message: "Could not connect to network. Are you connected to the internet?"
     }
 }
 

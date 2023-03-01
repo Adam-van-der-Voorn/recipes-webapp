@@ -17,7 +17,7 @@
     cursor: pointer;
 }
 
-.menu-button > .checkbox {
+.menu-button-checkbox {
     float: right;
     position: relative;
     top: 0.1ch;

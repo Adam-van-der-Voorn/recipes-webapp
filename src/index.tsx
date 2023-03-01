@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import './palette.css';
 import './style.css';
-import './button.css';
-import './icon-button.css'
 import * as ServiceWorkerRegistration from './serviceWorkerRegistration'
 import App from './App';
 import AddRecipePage from './routes/add-recipe/AddRecipePage';

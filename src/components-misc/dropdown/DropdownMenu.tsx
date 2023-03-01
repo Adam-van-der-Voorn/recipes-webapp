@@ -1,9 +1,8 @@
-import React from 'react';
 import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
 import ValidChild from '../../types/ValidChild';
-import './DropdownMenu.css';
+import style from './style.module.css';
 
 
 type Props = {
@@ -38,7 +37,7 @@ export default function DropdownMenu({ trigger, position, offset, children }: Pr
             onClose={() => setIsOpen(false)}
         >
             <DropdownContext.Provider value={{setDropdownOpen: setIsOpen}}>
-                <menu className="dropdown-menu" style={offsetStyle}>
+                <menu className={style['dropdown-menu']} style={offsetStyle}>
                     {children}
                 </menu>
             </DropdownContext.Provider>

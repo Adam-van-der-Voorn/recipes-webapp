@@ -57,7 +57,7 @@ body {
 /* end reset */
 
 #app-content {
-    width: min(80rem, 100vw);
+    width: min(80rem, 100%);
     margin: auto;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -71,9 +71,9 @@ html {
     font-family: 'Karla', Helvetica, Arial, sans-serif;
     --font-size-small: 1.6rem;
     --font-size-normal: 1.8rem;
-    --font-size-h1: 3.8rem;
-    --font-size-h2: 2.6rem;
-    --font-size-h3: 2.0rem;
+    --font-size-xxlarge: 3.8rem;
+    --font-size-xlarge: 2.8rem;
+    --font-size-large: 2.2rem;
 }
 
 button, input, select, textarea {
@@ -86,18 +86,14 @@ p, span, a, div, label {
 }
 
 h1, .h-1 {
-    font-size: var(--font-size-h1);
+    font-size: var(--font-size-xxlarge);
 }
 
 h2, .h-2 {
-    font-size: var(--font-size-h2);
+    font-size: var(--font-size-xlarge);
 }
 
-h3, .h-3 {
-    font-size: var(--font-size-h3);
-}
-
-h1, .h-1, h2, .h-2, h3, .h-3 {
+h1, .h-1, h2, .h-2 {
     margin-top: 1.3ch;
     margin-bottom: 0.7ch;
     font-weight: bolder;
@@ -115,9 +111,107 @@ dialog {
     padding: 2rem;
 }
 
-.tabbed {
-    /* grid-template-columns should be set inline */
-    display: inline-grid;
-    grid-auto-rows: auto;
-    column-gap: 2rem;
+/* TEXT INPUT */
+
+input[type=text], input[type=password] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    padding: 0rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border-bottom-width: 0.25rem;
+    border-bottom-style: solid;
+    border-color: var(--neutral-7);
+    box-sizing: border-box;
+}
+
+input[type=text].in-string, input[type=password].in-string {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    outline: none;
+}
+
+/* ICON BUTTONS */
+
+.icon-button {
+    -webkit-mask-image: url('./svg/circle.svg');
+    mask-image: url('./svg/circle.svg');
+
+}
+
+.icon-button:hover, .icon-button:focus {
+    background-color: var(--neutral-8);
+    outline: none;
+    cursor: pointer;
+}
+
+.icon-button:active {
+    background-color: var(--neutral-5);
+}
+
+/* BUTTONS */
+
+button, input[type=submit] {
+    border: 1px solid var(--neutral-4);
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+button:hover, input[type=submit]:hover {
+    background-color:var(--neutral-5)
+}
+
+button.primary, input[type=submit] {
+    background-color: rgb(119, 160, 255);
+    border-color: rgb(66, 115, 229);
+    border-width: 2px;
+}
+
+button.primary:hover, input[type=submit]:hover {
+    background-color: rgb(66, 115, 229);
+    border-color: rgb(42, 89, 198);
+    color: rgb(162, 190, 255);
+}
+
+/* CHECKBOXES */
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid gray;
+    /* Adjusts the position of the checkboxes on the text baseline */
+    vertical-align: -2px;
+    /* Set here so that Windows' High-Contrast Mode can override */
+    color: green;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"]::before {
+    content: "✔";
+    position: absolute;
+    font-size: 1.2em;
+    right: -3px;
+    top: -0.55em;
+    visibility: hidden;
+}
+
+input[type="checkbox"]:checked::before {
+    /* Use `visibility` instead of `display` to avoid recalculating layout */
+    visibility: visible;
+}
+
+input[type="checkbox"]:focus {
+    border: 1px solid black;
 }
