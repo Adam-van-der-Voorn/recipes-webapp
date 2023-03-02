@@ -5,7 +5,12 @@ import './RecipeSetPage.css';
 
 function RecipeSetPage() {
     return (
-        <div className="RecipeCardContainer">
+        <div style={{
+            height: "100%",
+            display: "grid",
+            gridTemplateColumns: "auto",
+            gridTemplateRows: "auto 1fr"
+        }}>
             <Link to="/add-recipe">add a recipe!</Link>
             <RecipeCardContainer />
         </div>

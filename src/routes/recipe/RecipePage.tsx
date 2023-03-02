@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import MyError from "../../components-misc/MyError";
+import MyError from "../../components-misc/placeholders/Error";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { RecipesContext } from "../../contexts/RecipesContext";
-import NotFound from "../../components-misc/NotFound";
+import NotFound from "../../components-misc/placeholders/NotFound";
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
@@ -17,9 +17,10 @@ function RecipePage() {
         return <MyError message="Oops! Something went wrong." />;
     }
 
-    const recipe: Recipe | undefined = recipes.get(recipeId);
+    const recipe: Recipe | undefined = recipes.data?.get(recipeId);
 
     if (recipe === undefined) {
+        console.error("Recipe not found. Recipie data: ", recipes.data)
         return <NotFound message="This recipie does not exist :(" />;
     }
     const deleteAndNavigate = () => {

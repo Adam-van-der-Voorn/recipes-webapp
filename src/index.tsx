@@ -10,7 +10,7 @@ import AddRecipePage from './routes/add-recipe/AddRecipePage';
 import EditRecipePage from './routes/edit-recipe/EditRecipePage';
 import RecipeSetPage from './routes/home/RecipeSetPage';
 import RecipePage from './routes/recipe/RecipePage';
-import NotFound from './components-misc/NotFound';
+import NotFound from './components-misc/placeholders/NotFound';
 
 ReactDOM.render(
     <React.StrictMode>

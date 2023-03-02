@@ -3,9 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import { Recipe } from "../../types/recipeTypes";
 import { v4 as uuid4 } from 'uuid';
 import { User } from "firebase/auth";
+import Recipies from "../../types/Recipes";
 
 export default function useRecipeStorage(db: Firestore, user: User) {
-    const [recipes, setRecipes] = useState<Map<string, Recipe>>(new Map());
+    const [recipes, setRecipes] = useState<Recipies>({ status: "prefetch" });
     const pendingWrites = useRef(new Map<string, (id: string, recipe: Recipe) => void>());
 
     const addRecipe = (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => {
@@ -66,9 +67,16 @@ export default function useRecipeStorage(db: Firestore, user: User) {
                 
                 const source = querySnapshot.metadata.fromCache ? "local cache" : "server";
                 console.log(`Recipes snapshot (from ${source}):`, { recipes: recipes, changes: changeData});
-                setRecipes(recipes);
+                setRecipes({
+                    status: "ok",
+                    data: recipes,
+                });
             },
             (error) => {
+                setRecipes({
+                    status: "error",
+                    message: "Could not get your recipes"
+                })
                 console.error("Recipes snapshot failed:", error);
             });
         console.log('Subscribed to recipe snapshots');

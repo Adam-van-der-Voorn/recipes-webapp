@@ -3,6 +3,7 @@ import { Auth, onAuthStateChanged, User } from "firebase/auth";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { Firestore } from "firebase/firestore";
+import Loading from "../components-misc/placeholders/Loading";
 
 type AuthContextType = {
     user: User;
@@ -18,7 +19,7 @@ type Props = {
 function AuthGate({ auth, db, children }: PropsWithChildren<Props>) {
 
     // non-null indicates user is signed in
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | "pre-auth" | null>("pre-auth");
 
     // determines if an unauthenticated user should see a login or sign up screen
     const [isLogin, setIsLogin] = useState(true);
@@ -27,6 +28,10 @@ function AuthGate({ auth, db, children }: PropsWithChildren<Props>) {
         console.log("Auth state changed. User:", user);
         setUser(user);
     });
+
+    if (user === "pre-auth") {
+        return <Loading message="Trying to log you in..." />
+    }
 
     if (user) {
         return (

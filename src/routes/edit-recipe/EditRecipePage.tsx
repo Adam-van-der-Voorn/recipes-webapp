@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
-import MyError from "../../components-misc/MyError";
+import MyError from "../../components-misc/placeholders/Error";
 import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 import quantityToString from "../../util/quantityToString";
 import { RecipesContext } from "../../contexts/RecipesContext";
-import NotFound from "../../components-misc/NotFound";
+import NotFound from "../../components-misc/placeholders/NotFound";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
@@ -25,7 +25,7 @@ function EditRecipePage() {
         });
     };
 
-    const recipe: Recipe | undefined = recipes.get(recipeId);
+    const recipe: Recipe | undefined = recipes.data?.get(recipeId);
     if (recipe === undefined) {
         return <NotFound message="This recipie does not exist :(" />;
     }
