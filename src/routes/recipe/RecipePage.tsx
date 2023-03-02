@@ -4,6 +4,7 @@ import MyError from "../../components-misc/MyError";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { RecipesContext } from "../../contexts/RecipesContext";
+import NotFound from "../../components-misc/NotFound";
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
@@ -18,34 +19,24 @@ function RecipePage() {
 
     const recipe: Recipe | undefined = recipes.get(recipeId);
 
-    let content;
     if (recipe === undefined) {
-        content = null;
+        return <NotFound message="This recipie does not exist :(" />;
     }
-    else {
-        const deleteAndNavigate = () => {
-            let confirmation = window.confirm(`Are you sure you want to delete recipe '${recipe.name}'`);
-            if (confirmation) {
-                deleteRecipe(recipeId, () => {
-                    navigate(`/`);
-                });
-            }
-        };
+    const deleteAndNavigate = () => {
+        let confirmation = window.confirm(`Are you sure you want to delete recipe '${recipe.name}'`);
+        if (confirmation) {
+            deleteRecipe(recipeId, () => {
+                navigate(`/`);
+            });
+        }
+    };
 
-        content = <>
-            <RecipeView recipe={recipe} />
-            <hr />
-            <button onClick={() => navigate(`/edit-${recipeId}`)}>Edit</button>
-            <button onClick={deleteAndNavigate}>Delete</button>     
-        </>;
-    }
-
-
-    return (
-        <div className="RecipePage">
-            {content}
-        </div>
-    );
+    return <div className="RecipePage">
+        <RecipeView recipe={recipe} />
+        <hr />
+        <button onClick={() => navigate(`/edit-${recipeId}`)}>Edit</button>
+        <button onClick={deleteAndNavigate}>Delete</button>
+    </div>;
 }
 
 export default RecipePage;

@@ -10,6 +10,7 @@ import AddRecipePage from './routes/add-recipe/AddRecipePage';
 import EditRecipePage from './routes/edit-recipe/EditRecipePage';
 import RecipeSetPage from './routes/home/RecipeSetPage';
 import RecipePage from './routes/recipe/RecipePage';
+import NotFound from './components-misc/NotFound';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -21,7 +22,7 @@ ReactDOM.render(
                     <Route path="view-:recipeId" element={<RecipePage />} />
                     <Route path="edit-:recipeId" element={<EditRecipePage />} />
                 </Route>
-                <Route path="*" element={<div>BAD PATH !!!!</div>} />
+                <Route path="*" element={<NotFound message="Page not found" />} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>,

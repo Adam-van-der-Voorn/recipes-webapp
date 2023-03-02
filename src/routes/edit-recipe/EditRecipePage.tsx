@@ -7,6 +7,7 @@ import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 import quantityToString from "../../util/quantityToString";
 import { RecipesContext } from "../../contexts/RecipesContext";
+import NotFound from "../../components-misc/NotFound";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
@@ -26,7 +27,7 @@ function EditRecipePage() {
 
     const recipe: Recipe | undefined = recipes.get(recipeId);
     if (recipe === undefined) {
-        return null;
+        return <NotFound message="This recipie does not exist :(" />;
     }
 
     const ingredients: IngredientListsInput = recipe.ingredients
