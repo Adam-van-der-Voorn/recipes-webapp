@@ -8,19 +8,21 @@ import * as ServiceWorkerRegistration from './serviceWorkerRegistration'
 import App from './App';
 import AddRecipePage from './routes/add-recipe/AddRecipePage';
 import EditRecipePage from './routes/edit-recipe/EditRecipePage';
-import RecipeSetPage from './routes/home/RecipeSetPage';
+import HomePage from './routes/home/HomePage';
 import RecipePage from './routes/recipe/RecipePage';
 import NotFound from './components-misc/placeholders/NotFound';
+import ImportFromSitePage from './routes/site-import/ImportFromSitePage';
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />}>
-                    <Route index element={<RecipeSetPage />} />
+                    <Route index element={<HomePage />} />
                     <Route path="add-recipe" element={<AddRecipePage />} />
                     <Route path="view-:recipeId" element={<RecipePage />} />
                     <Route path="edit-:recipeId" element={<EditRecipePage />} />
+                    <Route path="site-import" element={<ImportFromSitePage />} />
                 </Route>
                 <Route path="*" element={<NotFound message="Page not found" />} />
             </Routes>

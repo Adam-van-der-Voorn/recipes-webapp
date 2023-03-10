@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import RecipeCardContainer from "./RecipeCardContainer";
 
-import './RecipeSetPage.css';
+import './HomePage.css';
 
-function RecipeSetPage() {
+function HomePage() {
     return (
         <div style={{
             height: "100%",
@@ -12,9 +12,11 @@ function RecipeSetPage() {
             gridTemplateRows: "auto 1fr"
         }}>
             <Link to="/add-recipe">add a recipe!</Link>
+            <Link to="/site-import">import recipie from link</Link>
+
             <RecipeCardContainer />
         </div>
     );
 }
 
-export default RecipeSetPage;
+export default HomePage;
