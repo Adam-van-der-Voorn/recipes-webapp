@@ -30,7 +30,7 @@ const yupIngredientsSchema = Yup.object().shape({
         .of(
             Yup.object().shape({
                 name: Yup.string()
-                    .max(60, 'Please make this shorter.')
+                    .max(200, 'Please make this shorter.')
                     .required("A name is required."),
                 ingredients: Yup.array().of(
                     Yup.object().shape({
@@ -83,12 +83,7 @@ export default function getFullSchema() {
             .max(10000, 'Please make this shorter.'),
         ingredients: yupIngredientsSchema,
         servings: Yup.string()
-            .test('is-num-or-whitespace', 'Must be a number of servings', (el, context) => {
-                if (el === undefined) {
-                    return false;
-                }
-                return (el.trim() === '' || decimalValPattern.test(el));
-            }),
+            .max(150, 'Please make this shorter.'),
         instructions: Yup.string()
             .max(10000, 'Please make this shorter.'),
         substitutions: yupSubstitutionsSchema,

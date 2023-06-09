@@ -9,7 +9,7 @@ export default function parseFormData(formData: RecipeInput): Recipe {
     };
 
     if (formData.servings !== '') {
-        recipe.servings = parseFloat(formData.servings);
+        recipe.servings = formData.servings;
     }
 
     if (formData.timeframe !== '') {

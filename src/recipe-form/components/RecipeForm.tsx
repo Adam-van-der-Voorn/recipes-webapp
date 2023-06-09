@@ -49,7 +49,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                     autoComplete="off"
                 />
 
-                <label htmlFor="makes" className={style.metaLabel}>Makes</label>
+                <label htmlFor="makes" className={style.metaLabel}>Yields</label>
                 <input {...register("makes")}
                     type="text"
                     placeholder="-"

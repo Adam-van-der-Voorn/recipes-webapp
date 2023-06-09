@@ -30,7 +30,7 @@ export type IngredientsSubList = {
 export type Recipe = {
     name: string;
     timeframe?: string;
-    servings?: number;
+    servings?: string;
     makes?: UnitVal | number;
     notes?: string;
     ingredients?: IngredientsList;

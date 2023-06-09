@@ -3,7 +3,6 @@ import { Auth, signInWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { object, string } from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormErrorMessage from "../recipe-form/components/FormErrorMessage";
 import { parseFirebaseError } from "./firebaseError";
 import style from './style.module.css';
 

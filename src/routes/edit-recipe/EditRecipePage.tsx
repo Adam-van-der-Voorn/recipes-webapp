@@ -63,7 +63,7 @@ function EditRecipePage() {
         makes: quantityToString(recipe.makes),
         notes: recipe.notes || '',
         ingredients: ingredients,
-        servings: recipe.servings?.toString(10) || '',
+        servings: recipe.servings || '',
         instructions: recipe.instructions || '',
         substitutions: substitutions,
     };
