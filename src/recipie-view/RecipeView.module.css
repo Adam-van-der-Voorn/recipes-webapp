@@ -7,7 +7,7 @@
         / 2fr 3fr;
 }
 
-@media (max-width: 35rem) {
+@media (max-width: 40rem) {
     .main {
         grid-template:
         "ingredients" auto
@@ -52,7 +52,7 @@
     display: inline-grid;
     grid-auto-rows: auto;
     column-gap: 2rem;
-    row-gap: 0.25rem;
+    row-gap: 0.5rem;
 }
 
 .ingredientListName {
@@ -62,10 +62,14 @@
 }
 
 .ingredientName {
-    line-height: 2ch;
+    line-height: 1.9ch;
 }
 
 .instruction {
-    line-height: 2ch;
-    margin-bottom: 0.75rem;
+    line-height: 1.9ch;
+    margin-bottom: 0.5rem;
+}
+
+.instructionMarker {
+
 }

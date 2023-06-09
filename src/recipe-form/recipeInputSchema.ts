@@ -18,12 +18,12 @@ export const yupQuantitySchema = Yup.string()
     .max(30, 'please make this shorter');
 
 export const yupIngredientNameSchema = Yup.string()
-    .max(60, 'Please make this shorter.');
+    .max(200, 'Please make this shorter.');
 
 const yupRecipeNameSchema = Yup.string()
     .required("Required")
     .trim()
-    .max(150, 'Please make this shorter.');
+    .max(200, 'Please make this shorter.');
 
 const yupIngredientsSchema = Yup.object().shape({
     lists: Yup.array()
@@ -39,7 +39,7 @@ const yupIngredientsSchema = Yup.object().shape({
                             .test('required', 'Ingredient name is required.', (el, context) => {
                                 return isLastIngredient(context) || el.trim() !== '';
                             })
-                            .max(60, 'Please make this shorter.'),
+                            .max(200, 'Please make this shorter.'),
                         quantity: Yup.string()
                             .default('')
                             .test('required', 'Ingredient quantity is required.', (el, context) => {

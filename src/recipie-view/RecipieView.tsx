@@ -39,7 +39,9 @@ function RecipeView({ recipe }: Props) {
                     <h2 className={style.h2}>Method</h2>
                     <ol>
                         {instructions.split("\n")
-                            .map((line, i) => <li key={i} className={style.instruction}>{line}</li>)
+                            .map((line, i) => <li key={i} className={style.instruction}>
+                                <span className={style.instructionMarker}>{i + 1}. </span><span>{line}</span>
+                            </li>)
                         }
                     </ol>
                 </section>
