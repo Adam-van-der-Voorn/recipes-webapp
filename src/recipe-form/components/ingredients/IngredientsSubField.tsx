@@ -73,8 +73,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
     };
 
     const ingredientListClass = isPercentagesIncluded
-        ? `ingredientList showPercentages`
-        : `ingredientList`
+        ? `ingredientFormList showPercentages`
+        : `ingredientFormList`
 
     return (
         <>

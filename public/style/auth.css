@@ -5,7 +5,7 @@
     margin-top: 5rem;
 }
 
-.form {
+.authForm {
     width: min(30rem, 100%);
 }
 
@@ -30,13 +30,6 @@
 
 .inputContainer {
     margin-bottom: 3.5rem
-}
-
-.error {
-    margin-left: 0.25rem;
-    margin-bottom: 1rem;
-    color: var(--error-red);
-    display: block;
 }
 
 .errorContainer {

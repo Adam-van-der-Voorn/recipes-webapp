@@ -1,4 +1,4 @@
-.form {
+.recipeForm {
     --column-gap: 1.5rem;
 }
 
@@ -61,7 +61,7 @@
     color: var(--neutral-2);
 }
 
-.ingredientList {
+.ingredientFormList {
     --percent-symbol-width: 1.3ch;
     --quantity-input-width: 10ch;
     --proportion-input-width: 5ch;
@@ -77,12 +77,12 @@
     box-sizing: border-box;
 }
 
-.ingredientList.showPercentages {
+.ingredientFormList.showPercentages {
     --num-ingredient-columns: 4;
     grid-template-columns: 1fr var(--quantity-input-width) min-content auto;
 }
 
-.ingredientList > input[type="text"] {
+.ingredientFormList > input[type="text"] {
     width: 100%;
 }
 
@@ -137,10 +137,4 @@
     margin-top: 0.5rem;
     margin-bottom: 2rem;
     line-height: 2rem;
-}
-
-.error {
-    font-size: var(--font-size-small);
-    color: var(--error-red);
-    margin-bottom: 1rem;
 }

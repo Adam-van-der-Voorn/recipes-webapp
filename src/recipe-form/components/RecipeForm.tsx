@@ -32,7 +32,7 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="form">
+        <form onSubmit={handleSubmit(onSubmit)} className="recipeForm">
             <input {...register("name")}
                 type="text"
                 className="recipeName"

@@ -47,7 +47,7 @@ function LoginForm({ auth }: PropsWithChildren<Props>) {
 
     return <div className="container">
         {/* <h1 className="title">Log in</h1> */}
-        <form onSubmit={handleSubmit(onSubmit)} className={"form"}>
+        <form onSubmit={handleSubmit(onSubmit)} className="authForm">
             <div className="inputContainer">
                 <label htmlFor="email" className={"label"}>Email</label>
                 <input {...register("email")}

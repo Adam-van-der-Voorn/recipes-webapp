@@ -47,7 +47,7 @@
 
 
 
-.ingredientList {
+.ingredientViewList {
     grid-template-columns: auto auto;
     display: inline-grid;
     grid-auto-rows: auto;

@@ -15,7 +15,7 @@ function IngredientsView({ ingredients, substitutions }: Props) {
             ? <h2 className="h2">{ingredients.lists[0].name}</h2>
             : <h2 className="h2">Ingredients</h2>
         }
-        <ul className="ingredientList">
+        <ul className="ingredientViewList">
             {ingredients.lists.map((sublist, i) => {
                 const isFirstList = i === 0;
                 return <Fragment key={`ingredients-${i}`}>
