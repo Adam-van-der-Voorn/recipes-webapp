@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 type Props = {
@@ -10,9 +10,9 @@ function RecipeCard({ recipeId, recipeName }: Props) {
     const navigate = useNavigate();
 
     return (
-        <div role="button" className="RecipeCard" onClick={() => navigate(`/view-${recipeId}`)}>
+        <Link to={`/view/${recipeId}`} className="RecipeCard">
             {recipeName}
-        </div>
+        </Link>
     );
 }
 

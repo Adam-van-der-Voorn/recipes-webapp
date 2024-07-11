@@ -25,7 +25,7 @@ function AuthGate({ auth, db, children }: PropsWithChildren<Props>) {
     const [isLogin, setIsLogin] = useState(true);
 
     onAuthStateChanged(auth, (user) => {
-        console.log("Auth state changed. User:", user);
+        console.log("Auth state changed. User:", user?.email);
         setUser(user);
     });
 

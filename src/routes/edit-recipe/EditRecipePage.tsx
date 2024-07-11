@@ -21,7 +21,7 @@ function EditRecipePage() {
 
     const doSubmit = (recipe: Recipe) => {
         editRecipe(recipe, recipeId, (id) => {
-            navigate(`/view-${id}`, { replace: true });
+            navigate(`/view/${id}`, { replace: true });
         });
     };
 
