@@ -11,7 +11,6 @@ import getPercentageFromVal from "../../../util/getPercentageFromVal";
 import { RecipeInput } from "../../../types/RecipeInputTypes";
 import { v4 as uuid4 } from 'uuid';
 import useFieldList from "../../../util/hooks/useFieldList";
-import style from "../RecipeForm.module.css";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;
@@ -144,9 +143,9 @@ function IngredientsField({ setValue, control, register }: Props) {
 
     return (
         <>
-            <div className={style.ingredientsHeader}>
+            <div className="ingredientsHeader">
                 <h2>Ingredients</h2>
-                <DropdownMenu trigger={<span><MdMoreVert className={style.ingredientsHeaderMenu}/></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
+                <DropdownMenu trigger={<span><MdMoreVert className="ingredientsHeaderMenu"/></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
                     <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
                     <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>
@@ -168,7 +167,7 @@ function IngredientsField({ setValue, control, register }: Props) {
             {hasMultipleLists &&
                 <button type="button"
                     onClick={() => push({ id: uuid4(), name: '', ingredients: [] })}
-                    className={style.addIngredientButton}
+                    className="addIngredientButton"
                 >
                     Add ingredient list
                 </button >

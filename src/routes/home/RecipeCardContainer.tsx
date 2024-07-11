@@ -4,7 +4,7 @@ import MyError from "../../components-misc/placeholders/Error";
 import { RecipesContext } from '../../contexts/RecipesContext';
 import RecipeCard from './RecipeCard';
 
-import './RecipeCardContainer.css';
+
 
 function RecipeCardContainer() {
 

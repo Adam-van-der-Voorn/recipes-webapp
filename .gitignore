@@ -24,3 +24,5 @@ yarn-error.log*
 /planning
 secret.json
 .vscode/settings.json
+
+public/js/*.bundle.js

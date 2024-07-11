@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { UseFormSetValue } from "react-hook-form";
 
-export default function useFieldList<Base, Nested>(listName: string, setValue: UseFormSetValue<Base>, data: any[]) {
-    const push = useCallback((val: Nested) => {
+export default function useFieldList<T>(listName: string, setValue: UseFormSetValue<any>, data: any[]) {
+    const push = useCallback((val: T) => {
         setValue(listName as any, [...data, val] as any)
     }, [setValue, listName, data])
 
@@ -10,11 +10,11 @@ export default function useFieldList<Base, Nested>(listName: string, setValue: U
         setValue(listName as any, [...data.slice(0, idx), ...data.slice(idx + 1)] as any)
     }, [setValue, listName, data])
 
-    const replace = useCallback((val: Nested) => {
+    const replace = useCallback((val: T) => {
         setValue(listName as any, val as any)
     }, [setValue, listName])
 
-    const insert = useCallback((idx: number, val: Nested, ) => {
+    const insert = useCallback((idx: number, val: T, ) => {
         setValue(listName as any, [...data.slice(0, idx), val, ...data.slice(idx)] as any)
     }, [setValue, listName, data])
 

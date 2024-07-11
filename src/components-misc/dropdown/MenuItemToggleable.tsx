@@ -1,5 +1,5 @@
 import { MdCheckBox , MdCheckBoxOutlineBlank} from 'react-icons/md';
-import style from './style.module.css';
+
 
 type Props = {
     text: string;
@@ -11,9 +11,9 @@ export default function MenuItemToggleable({text, value, toggle}: Props) {
     const checkBox = value ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />;
 
     return (
-        <li role="button" className={style['menu-button']} onClick={() => toggle(!value)}>
+        <li role="button" className='menu-button' onClick={() => toggle(!value)}>
             <span>{text}</span>
-            <span className={style['menu-button-checkbox']}>{checkBox}</span>
+            <span className='menu-button-checkbox'>{checkBox}</span>
         </li>
     );
 

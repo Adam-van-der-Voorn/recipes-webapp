@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { object, string } from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { parseFirebaseError } from "./firebaseError";
-import style from './style.module.css';
+
 
 const schema = object().shape({
     email: string()
@@ -45,27 +45,27 @@ function LoginForm({ auth }: PropsWithChildren<Props>) {
             });
     };
 
-    return <div className={style.container}>
-        {/* <h1 className={style.title}>Log in</h1> */}
-        <form onSubmit={handleSubmit(onSubmit)} className={style['form']}>
-            <div className={style.inputContainer}>
-                <label htmlFor="email" className={style['label']}>Email</label>
+    return <div className="container">
+        {/* <h1 className="title">Log in</h1> */}
+        <form onSubmit={handleSubmit(onSubmit)} className={"form"}>
+            <div className="inputContainer">
+                <label htmlFor="email" className={"label"}>Email</label>
                 <input {...register("email")}
                     type="text"
-                    className={style['input']}
+                    className={"input"}
                     inputMode="email"
                     id="username-input"
                 />
             </div>
-            <div className={style.inputContainer}>
-                <label htmlFor="password" className={style['label']}>Password</label>
-                <input {...register("password")} type="password" className={style['input']} id="password-input" />
+            <div className="inputContainer">
+                <label htmlFor="password" className={"label"}>Password</label>
+                <input {...register("password")} type="password" className={"input"} id="password-input" />
             </div>
-            <input className={style.submit} type="submit" value="Log in" />
-            <div className={style.errorContainer}>
-                <em className={style.error}>{topLevelError}</em>
-                <em className={style.error}>{errors.email?.message || ""}</em>
-                <em className={style.error}>{errors.password?.message || ""}</em>
+            <input className="submit" type="submit" value="Log in" />
+            <div className="errorContainer">
+                <em className="error">{topLevelError}</em>
+                <em className="error">{errors.email?.message || ""}</em>
+                <em className="error">{errors.password?.message || ""}</em>
             </div>
         </form>
     </div>;

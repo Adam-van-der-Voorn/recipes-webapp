@@ -1,5 +1,4 @@
 import { Recipe, Substitution } from "../types/recipeTypes";
-import style from "./RecipeView.module.css";
 import quantityToString from "../util/quantityToString";
 import IngredientsView from "./IngredientsView";
 
@@ -19,7 +18,7 @@ function RecipeView({ recipe }: Props) {
         <h1>{name}</h1>
 
         {hasMetaData &&
-            <ul className={style.meta} aria-details="recipie metadata">
+            <ul className="meta" aria-details="recipie metadata">
                 {servings && <li>Serves {servings}</li>}
                 {makes && <li>Yields {quantityToString(makes)}</li>}
                 {timeframe && <li>Time: {timeframe}</li>}
@@ -27,20 +26,20 @@ function RecipeView({ recipe }: Props) {
         }
 
         {notes &&
-            <section aria-details="recipie notes" className={style.notes}>
+            <section aria-details="recipie notes" className="notes">
                 {notes}
             </section>
         }
 
-        <div className={style.main}>
+        <div className="main">
             {ingredients && <IngredientsView ingredients={ingredients} substitutions={substitutions} />}
             {instructions &&
-                <section className={style.instructions}>
-                    <h2 className={style.h2}>Method</h2>
+                <section className="instructions">
+                    <h2 className="h2">Method</h2>
                     <ol>
                         {instructions.split("\n")
-                            .map((line, i) => <li key={i} className={style.instruction}>
-                                <span className={style.instructionMarker}>{i + 1}. </span><span>{line}</span>
+                            .map((line, i) => <li key={i} className="instruction">
+                                <span className="instructionMarker">{i + 1}. </span><span>{line}</span>
                             </li>)
                         }
                     </ol>
@@ -52,12 +51,12 @@ function RecipeView({ recipe }: Props) {
 
         {substitutions &&
             <section>
-                <h2 className={style.h2}>Substitutions</h2>
+                <h2 className="h2">Substitutions</h2>
                 <ul aria-details="substitutions list">
                     {substitutions.map((substitution, i) => {
                         const { removals, additions } = substitution;
                         if (isBasicSubstitution(substitution)) {
-                            return <li className={style.substitution} key={i}>
+                            return <li className="substitution" key={i}>
                                 The {removals[0]} can be substituted for {additions[0]}
                             </li>;
                         }

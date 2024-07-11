@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import './RecipeCard.css';
+
 
 type Props = {
     recipeId: string;

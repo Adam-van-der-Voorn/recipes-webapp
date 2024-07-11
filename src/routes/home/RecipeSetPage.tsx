@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import RecipeCardContainer from "./RecipeCardContainer";
 
-import './RecipeSetPage.css';
+
 
 function RecipeSetPage() {
     return (

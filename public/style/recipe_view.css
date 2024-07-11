@@ -10,9 +10,9 @@
 @media (max-width: 40rem) {
     .main {
         grid-template:
-        "ingredients" auto
-        "instructions" auto
-        / 1fr;
+            "ingredients" auto
+            "instructions" auto
+            / 1fr;
     }
 }
 
@@ -70,6 +70,4 @@
     margin-bottom: 0.5rem;
 }
 
-.instructionMarker {
-
-}
+.instructionMarker {}

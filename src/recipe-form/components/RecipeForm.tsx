@@ -2,7 +2,7 @@ import { Recipe } from "../../types/recipeTypes";
 import getFullSchema from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
-import style from './RecipeForm.module.css';
+
 import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
@@ -32,31 +32,31 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="form">
             <input {...register("name")}
                 type="text"
-                className={style.recipeName}
+                className="recipeName"
                 placeholder="Untitled"
                 autoComplete="off"
                 aria-label="recipie name"
             />
 
-            <section className={style.meta}>
-                <label htmlFor="timeframe" className={style.metaLabel}>Timeframe</label>
+            <section className="meta">
+                <label htmlFor="timeframe" className="metaLabel">Timeframe</label>
                 <input {...register("timeframe")}
                     type="text"
                     placeholder="-"
                     autoComplete="off"
                 />
 
-                <label htmlFor="makes" className={style.metaLabel}>Yields</label>
+                <label htmlFor="makes" className="metaLabel">Yields</label>
                 <input {...register("makes")}
                     type="text"
                     placeholder="-"
                     autoComplete="off"
                 />
 
-                <label htmlFor="servings" className={style.metaLabel}>Serves</label>
+                <label htmlFor="servings" className="metaLabel">Serves</label>
                 <input {...register("servings")}
                     type="text"
                     placeholder="-"
@@ -68,9 +68,9 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
             <FormErrorMessage error={errors.makes} />
             <FormErrorMessage error={errors.servings} />
 
-            <div className={style.notes}>
+            <div className="notes">
                 <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight {...register("notes")} defaultHeight={'0'} className={style.multiLine} />
+                <TextAreaAutoHeight {...register("notes")} defaultHeight={'0'} className="multiLine" />
                 <FormErrorMessage error={errors.notes} />
             </div>
 
@@ -78,9 +78,9 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
             <SubstitutionsField {...{ control, setValue }} />
 
-            <div className={style.instructions}>
+            <div className="instructions">
                 <label htmlFor="instructions" className="h-2">Instructions</label>
-                <TextAreaAutoHeight {...register("instructions")} defaultHeight={'0'} className={style.multiLine} />
+                <TextAreaAutoHeight {...register("instructions")} defaultHeight={'0'} className="multiLine" />
                 <FormErrorMessage error={errors.instructions} />
             </div>
 
