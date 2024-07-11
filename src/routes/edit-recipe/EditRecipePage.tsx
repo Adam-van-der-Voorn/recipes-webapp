@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
-import MyError from "../../components-misc/placeholders/Error";
+import MyError from "../../general/placeholders/Error";
 import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 import quantityToString from "../../util/quantityToString";
 import { RecipesContext } from "../../contexts/RecipesContext";
-import NotFound from "../../components-misc/placeholders/NotFound";
+import NotFound from "../../general/placeholders/NotFound";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import Loading from '../../components-misc/placeholders/Loading';
-import MyError from "../../components-misc/placeholders/Error";
+import Loading from '../../general/placeholders/Loading';
+import MyError from "../../general/placeholders/Error";
 import { RecipesContext } from '../../contexts/RecipesContext';
 import RecipeCard from './RecipeCard';
 

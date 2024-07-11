@@ -5,7 +5,7 @@ import SubstitutionsField from "./substitutions/SubstitutionsField";
 
 import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
-import TextAreaAutoHeight from "../../components-misc/TextAreaAutoHeight";
+import TextAreaAutoHeight from "../../general/TextAreaAutoHeight";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RecipeInput } from "../../types/RecipeInputTypes";

@@ -3,7 +3,7 @@ import { Auth, onAuthStateChanged, User } from "firebase/auth";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { Firestore } from "firebase/firestore";
-import Loading from "../components-misc/placeholders/Loading";
+import Loading from "../general/placeholders/Loading";
 
 type AuthContextType = {
     user: User;

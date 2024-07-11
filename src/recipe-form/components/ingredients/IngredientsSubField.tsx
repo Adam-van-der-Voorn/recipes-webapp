@@ -1,15 +1,15 @@
 import { Control, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
 import React from "react";
 import { MdMoreVert } from 'react-icons/md';
-import MenuItemToggleable from "../../../components-misc/dropdown/MenuItemToggleable";
-import DropdownMenu from "../../../components-misc/dropdown/DropdownMenu";
-import MenuItemAction from "../../../components-misc/dropdown/MenuItemAction";
+import MenuItemToggleable from "../../../general/dropdown/MenuItemToggleable";
+import DropdownMenu from "../../../general/dropdown/DropdownMenu";
+import MenuItemAction from "../../../general/dropdown/MenuItemAction";
 import FormErrorMessage from "../FormErrorMessage";
 import PercentageInput from "./PercentageInput";
 import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes";
 import useFieldList from "../../../util/hooks/useFieldList";
 import { v4 as uuid4 } from 'uuid';
-import Dialog from "../../../components-misc/Dialog";
+import Dialog from "../../../general/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
 

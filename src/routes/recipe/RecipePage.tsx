@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import MyError from "../../components-misc/placeholders/Error";
+import MyError from "../../general/placeholders/Error";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { RecipesContext } from "../../contexts/RecipesContext";
-import NotFound from "../../components-misc/placeholders/NotFound";
+import NotFound from "../../general/placeholders/NotFound";
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
