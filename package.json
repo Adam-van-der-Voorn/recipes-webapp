@@ -12,7 +12,6 @@
     "react-router-dom": "^6.2.2",
     "reactjs-popup": "^2.0.5",
     "uuid": "^8.3.2",
-    "webpack": "^5.92.1",
     "workbox-core": "^5.1.4",
     "workbox-expiration": "^5.1.4",
     "workbox-precaching": "^5.1.4",
