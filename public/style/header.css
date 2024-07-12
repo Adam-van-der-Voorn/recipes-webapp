@@ -14,7 +14,7 @@ header {
     /* this is a bit ugly bit it keeps the title visible
     we could do soe fancy js/or flex stuff if it bothers us*/
     white-space: wrap;
-    
+
     display: grid;
     grid-template-rows: 1fr;
     padding-top: 16px;
@@ -30,13 +30,14 @@ header {
 }
 
 .headerLink {
-	font-size: var(--font-size-normal);
-	margin: 0;
-	color: var(--col-dark-highlight);
-	font-weight: bold;
-	align-self: center;
+    font-size: var(--font-size-normal);
+    margin: 0;
+    color: var(--col-dark-highlight);
+    font-weight: bold;
+    align-self: center;
     position: relative;
-    top: 1px; /* slight adjustment*/
+    top: 1px;
+    /* slight adjustment*/
 }
 
 .headerButton {
@@ -45,6 +46,9 @@ header {
     font-size: var(--font-size-small);
     height: 28px;
     align-self: center;
+    white-space: nowrap;
+    text-overflow: clip;
+    overflow: hidden;
 }
 
 input.headerTextInput {
@@ -62,4 +66,4 @@ input.searchTextInput {
     padding-left: 20px;
     background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat left;
     background-size: 20px;
-  }
+}
