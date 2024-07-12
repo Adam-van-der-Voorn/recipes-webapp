@@ -1,20 +1,27 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import RecipeCardContainer from "./RecipeCardContainer";
 
-
+const headerStyle: React.CSSProperties = {
+    gridTemplateColumns: '1fr minmax(30px, 300px) auto',
+};
 
 function RecipeSetPage() {
-    return (
+    const nav = useNavigate()
+
+    return <>
+        <header style={headerStyle}>
+            <h1 className="headerTitle" style={{ whiteSpace: "nowrap"}}>My Recipes</h1>
+            <input className="headerTextInput searchTextInput" type="text" />
+            <button className="headerButton" onClick={() => nav("/add-recipe")}>Add Recipe</button>
+        </header>
         <div style={{
-            height: "100%",
             display: "grid",
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto 1fr"
         }}>
-            <Link to="/add-recipe">add a recipe!</Link>
             <RecipeCardContainer />
         </div>
-    );
+    </>;
 }
 
 export default RecipeSetPage;

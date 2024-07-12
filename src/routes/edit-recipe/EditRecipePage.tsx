@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
 import MyError from "../../general/placeholders/Error";
 import { v4 as uuid4 } from 'uuid';
@@ -8,6 +8,10 @@ import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInput
 import quantityToString from "../../util/quantityToString";
 import { RecipesContext } from "../../contexts/RecipesContext";
 import NotFound from "../../general/placeholders/NotFound";
+
+const headerStyle: React.CSSProperties = {
+    gridTemplateColumns: 'auto 1fr auto',
+};
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
@@ -68,11 +72,16 @@ function EditRecipePage() {
         substitutions: substitutions,
     };
 
-    return (
+    return <>
+        <header style={headerStyle}>
+            <Link to="/" className="headerLink">Home</Link>
+            <h1 className="headerTitle">Edit Recipe</h1>
+            <button className="headerButton primary" onClick={() => alert("todo")}>Save</button>
+        </header>
         <div className="EditRecipePage" aria-details="edit an existing recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
         </div>
-    );
+    </>
 }
 
 export default EditRecipePage;

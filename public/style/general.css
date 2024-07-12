@@ -75,11 +75,6 @@ body {
 html {
     font-size: 62.5%;
     font-family: 'Karla', Helvetica, Arial, sans-serif;
-    --font-size-small: 1.6rem;
-    --font-size-normal: 1.8rem;
-    --font-size-xxlarge: 3.8rem;
-    --font-size-xlarge: 2.8rem;
-    --font-size-large: 2.2rem;
 }
 
 button, input, select, textarea {
@@ -111,7 +106,7 @@ dialog {
     width: min(75rem, 100%);
     margin: auto;
     border-radius: 0.3rem;
-    border: 1px solid var(--neutral-4);
+    border: 1px solid var(--col-neutral-4);
     box-sizing: border-box;
     box-shadow: 0rem 2rem 3rem rgba(0, 0, 0, 0.3);
     padding: 2rem;
@@ -129,7 +124,7 @@ input[type=text], input[type=password] {
     padding-right: 0.25rem;
     border-bottom-width: 0.25rem;
     border-bottom-style: solid;
-    border-color: var(--neutral-7);
+    border-color: var(--col-neutral-7);
     box-sizing: border-box;
 }
 
@@ -151,19 +146,19 @@ input[type=text]:focus, input[type=password]:focus {
 }
 
 .icon-button:hover, .icon-button:focus {
-    background-color: var(--neutral-8);
+    background-color: var(--col-neutral-8);
     outline: none;
     cursor: pointer;
 }
 
 .icon-button:active {
-    background-color: var(--neutral-5);
+    background-color: var(--col-neutral-5);
 }
 
 /* BUTTONS */
 
 button, input[type=submit] {
-    border: 1px solid var(--neutral-4);
+    border: 1px solid var(--col-neutral-4);
     border-radius: 0.3rem;
     box-sizing: border-box;
     padding-top: 0.5rem;
@@ -173,7 +168,7 @@ button, input[type=submit] {
 }
 
 button:hover, input[type=submit]:hover {
-    background-color: var(--neutral-5)
+    background-color: var(--col-neutral-5)
 }
 
 button.primary, input[type=submit] {

@@ -1,10 +1,14 @@
 import { useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MyError from "../../general/placeholders/Error";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { RecipesContext } from "../../contexts/RecipesContext";
 import NotFound from "../../general/placeholders/NotFound";
+
+const headerStyle: React.CSSProperties = {
+    gridTemplateColumns: 'auto 1fr auto auto',
+};
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
@@ -20,7 +24,7 @@ function RecipePage() {
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
 
     if (recipe === undefined) {
-        console.error("Recipe not found. Recipie data: ", recipes.data)
+        console.error("Recipe not found. Recipie data: ", recipes.data);
         return <NotFound message="This recipie does not exist :(" />;
     }
     const deleteAndNavigate = () => {
@@ -33,10 +37,13 @@ function RecipePage() {
     };
 
     return <div className="RecipePage">
+        <header style={headerStyle}>
+            <Link to="/" className="headerLink">Home</Link>
+            <h1 className="headerTitle">{recipe.name}</h1>
+            <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
+            <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
+        </header>
         <RecipeView recipe={recipe} />
-        <hr />
-        <button onClick={() => navigate(`/edit-${recipeId}`)}>Edit</button>
-        <button onClick={deleteAndNavigate}>Delete</button>
     </div>;
 }
 

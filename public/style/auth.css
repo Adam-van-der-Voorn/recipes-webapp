@@ -14,7 +14,7 @@
     margin-bottom: 0.75rem;
     margin-left: 0.25rem;
     font-size: var(--font-size-small);
-    color: var(--neutral-1)
+    color: var(--col-neutral-1)
 }
 
 .title {
@@ -25,7 +25,7 @@
     display: block;
     margin-bottom: 0.5rem;
     width: 100%;
-    /* background-color: var(--neutral-8) !important; */
+    /* background-color: var(--col-neutral-8) !important; */
 }
 
 .inputContainer {

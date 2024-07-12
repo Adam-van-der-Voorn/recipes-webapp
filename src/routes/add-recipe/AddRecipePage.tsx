@@ -1,9 +1,13 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { v4 as uuid4 } from 'uuid';
 import { RecipesContext } from "../../contexts/RecipesContext";
+
+const headerStyle: React.CSSProperties = {
+    gridTemplateColumns: 'auto 1fr auto',
+};
 
 function AddRecipePage() {
     const addRecipe = useContext(RecipesContext).addRecipe;
@@ -33,11 +37,16 @@ function AddRecipePage() {
         substitutions: [],
     };
 
-    return (
+    return <>
+        <header style={headerStyle}>
+            <Link to="/" className="headerLink">Home</Link>
+            <h1 className="headerTitle">New Recipe</h1>
+            <button className="headerButton primary" onClick={() => alert("todo")}>Save</button>
+        </header>
         <div className="AddRecipePage" aria-details="add a new recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
         </div>
-    );
+    </>
 }
 
 export default AddRecipePage;

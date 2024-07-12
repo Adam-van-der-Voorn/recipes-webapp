@@ -1,9 +1,9 @@
 .dropdown-menu {
     position: relative;
-    border: var(--neutral-3) 1px solid;
+    border: var(--col-neutral-3) 1px solid;
     border-style: solid;
     border-radius: 0.3rem;
-    background-color: var(--neutral-9);
+    background-color: var(--col-neutral-9);
 }
 
 .menu-button {
@@ -13,7 +13,7 @@
 }
 
 .menu-button:hover {
-    background-color: var(--neutral-6);
+    background-color: var(--col-neutral-6);
     cursor: pointer;
 }
 

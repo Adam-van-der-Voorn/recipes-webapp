@@ -15,8 +15,6 @@ function RecipeView({ recipe }: Props) {
     const { name, servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipe;
     const hasMetaData = servings || makes || timeframe;
     return <>
-        <h1>{name}</h1>
-
         {hasMetaData &&
             <ul className="meta" aria-details="recipie metadata">
                 {servings && <li>Serves {servings}</li>}
