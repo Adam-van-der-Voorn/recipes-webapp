@@ -32,9 +32,11 @@ header {
 .headerLink {
 	font-size: var(--font-size-normal);
 	margin: 0;
-	color: rgb(5, 45, 16);
+	color: var(--col-dark-highlight);
 	font-weight: bold;
 	align-self: center;
+    position: relative;
+    top: 1px; /* slight adjustment*/
 }
 
 .headerButton {

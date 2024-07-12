@@ -14,6 +14,9 @@
     --col-text-backing: white;
     --col-error-red: red;
 
+    --col-background: rgb(252, 211, 227);
+    --col-dark-highlight: rgb(0, 89, 35);
+
     /* FONT */
     --font-size-small: 1.6rem;
     --font-size-normal: 1.8rem;

@@ -2,14 +2,17 @@
     display: flex;
     flex-flow: row wrap;
     align-content: flex-start;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 10px;
+    padding-top: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .RecipeCard {
-    border: 1px solid black;
-    border-radius: 8px;
-    width: 15rem;
-    padding: 1rem;
+    /* border: 1px solid black; */
+    border-radius: 3px;
+    width: fit-content;
+    padding: 8px;
     flex: 1 1 auto;
+    background-color: var(--col-text-backing);
 }

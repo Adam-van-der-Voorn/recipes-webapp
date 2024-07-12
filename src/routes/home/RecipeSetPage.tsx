@@ -14,13 +14,7 @@ function RecipeSetPage() {
             <input className="headerTextInput searchTextInput" type="text" />
             <button className="headerButton" onClick={() => nav("/add-recipe")}>Add Recipe</button>
         </header>
-        <div style={{
-            display: "grid",
-            gridTemplateColumns: "auto",
-            gridTemplateRows: "auto 1fr"
-        }}>
-            <RecipeCardContainer />
-        </div>
+        <RecipeCardContainer />
     </>;
 }
 
