@@ -78,9 +78,9 @@ function EditRecipePage() {
             <h1 className="headerTitle">Edit Recipe</h1>
             <button className="headerButton primary" onClick={() => alert("todo")}>Save</button>
         </header>
-        <div className="EditRecipePage" aria-details="edit an existing recipie">
+        <main className="recipeFormBody" aria-details="edit an existing recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
-        </div>
+        </main>
     </>
 }
 

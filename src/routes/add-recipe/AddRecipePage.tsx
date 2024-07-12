@@ -43,9 +43,9 @@ function AddRecipePage() {
             <h1 className="headerTitle">New Recipe</h1>
             <button className="headerButton primary" onClick={() => alert("todo")}>Save</button>
         </header>
-        <div className="AddRecipePage" aria-details="add a new recipie">
+        <main className="recipeFormBody" aria-details="add a new recipie">
             <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
-        </div>
+        </main>
     </>
 }
 

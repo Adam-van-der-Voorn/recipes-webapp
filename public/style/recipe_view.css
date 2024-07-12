@@ -16,6 +16,15 @@
     }
 }
 
+.recipePageBody {
+    margin-top: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 8px;
+    border-radius: 3px;
+    background: var(--col-text-backing);
+}
+
 .instructions {
     /* background-color: aqua; */
     grid-area: instructions;
@@ -44,8 +53,6 @@
 .substitution {
     line-height: 2ch;
 }
-
-
 
 .ingredientViewList {
     grid-template-columns: auto auto;

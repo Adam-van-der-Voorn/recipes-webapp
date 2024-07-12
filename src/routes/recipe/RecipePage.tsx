@@ -43,7 +43,9 @@ function RecipePage() {
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
-        <RecipeView recipe={recipe} />
+        <main className="recipePageBody">
+            <RecipeView recipe={recipe} />
+        </main>
     </div>;
 }
 
