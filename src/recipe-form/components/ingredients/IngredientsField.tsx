@@ -145,7 +145,7 @@ function IngredientsField({ setValue, control, register }: Props) {
         <>
             <div className="ingredientsHeader">
                 <h2>Ingredients</h2>
-                <DropdownMenu trigger={<span><MdMoreVert className="ingredientsHeaderMenu"/></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
+                <DropdownMenu trigger={<span><MdMoreVert className="ingredientsHeaderMenu icon-button"/></span>} position={'left top'} offset={['-0.8rem', '0rem']}>
                     <MenuItemToggleable text="Use baker's percentages" value={isPercentagesIncluded} toggle={b => setIsPercentagesIncluded(b)} />
                     <MenuItemToggleable text="Use multiple lists" value={hasMultipleLists} toggle={b => handleMultipleListsChange(b)} />
                 </DropdownMenu>

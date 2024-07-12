@@ -144,8 +144,8 @@ input[type=text]:focus, input[type=password]:focus {
 /* ICON BUTTONS */
 
 .icon-button {
-    -webkit-mask-image: url('./svg/circle.svg');
-    mask-image: url('./svg/circle.svg');
+    -webkit-mask-image: url('/svg/circle.svg');
+    mask-image: url('/svg/circle.svg');
 
 }
 
