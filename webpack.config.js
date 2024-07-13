@@ -4,7 +4,6 @@ const path = require('path');
 const base = {
     entry: {
         "main": './src/index.tsx',
-        "service-worker": "./src/service-worker.ts"
     },
     output: {
         filename: '[name].bundle.js',

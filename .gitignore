@@ -25,4 +25,4 @@ yarn-error.log*
 secret.json
 .vscode/settings.json
 
-public/js/*.bundle.js
+public/js/*.bundle.*

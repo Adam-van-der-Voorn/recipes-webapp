@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import * as ServiceWorkerRegistration from './serviceWorkerRegistration';
 import Root from './routes/Root';
 import ErrorPage from './routes/general/ErrorPage';
 import AddRecipePage from './routes/add-recipe/AddRecipePage';
@@ -43,4 +42,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-ServiceWorkerRegistration.register();
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+ }
+ 
