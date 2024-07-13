@@ -25,4 +25,9 @@ yarn-error.log*
 secret.json
 .vscode/settings.json
 
-public/js/*.bundle.*
+
+dist/js/*.bundle.*
+
+# bundled service worker file (cannot change fn)
+dist/service-worker.js
+

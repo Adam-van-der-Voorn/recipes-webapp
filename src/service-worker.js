@@ -57,14 +57,20 @@ function onActivate(event) {
 }
 
 async function cacheThenNetwork(request) {
+    if (process.env.NODE_ENV === "development") {
+        // should be compiled away by webpack at build time
+        console.log(LOG_TAG, "dev mode, bypassing cache for", request.url)
+        return fetch(request);
+    }
+
     const cache = await caches.open(CACHE_NAME);
     const cachedResponse = await cache.match(request);
+
     if (cachedResponse) {
         console.log(LOG_TAG, "cache hit for", request.url)
         return cachedResponse;
     }
-    else {
-        console.log(LOG_TAG, "cache miss for", request.url)
-        return fetch(request);
-    }
+    
+    console.log(LOG_TAG, "cache miss for", request.url)
+    return fetch(request);
 }

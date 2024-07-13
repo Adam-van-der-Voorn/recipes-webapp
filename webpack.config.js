@@ -3,11 +3,17 @@ const path = require('path');
 
 const base = {
     entry: {
-        "main": './src/index.tsx',
+        "main": {
+            import: './src/index.tsx',
+            filename: 'js/main.bundle.js'
+        },
+        "service-worker": {
+            import: './src/service-worker.js',
+            // service worker bundle _must_ have this fn
+            filename: 'service-worker.js'
+        }
     },
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'public', 'js'),
         // needed as default hash fn has now been deemed insecure
         hashFunction: 'xxhash64',
     },
