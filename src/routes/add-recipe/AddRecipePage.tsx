@@ -9,6 +9,8 @@ const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
 };
 
+const FORM_ID = "add-recipe"
+
 function AddRecipePage() {
     const addRecipe = useContext(RecipesContext).addRecipe;
     const navigate = useNavigate();
@@ -18,13 +20,6 @@ function AddRecipePage() {
         addRecipe(recipe, (id) => {
             navigate(`/view/${id}`, { replace: true });
         });
-    };
-
-    const onClickSave = (ev: any) => {
-        if (!formRef.current) {
-            return;
-        }
-        formRef.current.submit()
     };
 
     const initialValues = {
@@ -47,12 +42,12 @@ function AddRecipePage() {
 
     return <>
         <header style={headerStyle}>
-            <Link to="/" className="headerLink">Home asd</Link>
+            <Link to="/" className="headerLink">Home</Link>
             <h1 className="headerTitle">New Recipe</h1>
-            <button className="headerButton primary" onClick={onClickSave}>Save</button>
+            <input type="submit" value="Save" form={FORM_ID} className="headerButton primary" />
         </header>
         <main className="recipeFormBody" aria-details="add a new recipie">
-            <RecipeForm ref={formRef} onSubmit={doSubmit} initialValues={initialValues} />
+            <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
         </main>
     </>
 }

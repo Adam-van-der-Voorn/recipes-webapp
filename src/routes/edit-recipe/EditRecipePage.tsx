@@ -13,6 +13,8 @@ const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
 };
 
+const FORM_ID = "edit-recipie"
+
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
     const { editRecipe, recipes } = useContext(RecipesContext);
@@ -76,10 +78,10 @@ function EditRecipePage() {
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
             <h1 className="headerTitle">Edit Recipe</h1>
-            <button className="headerButton primary" onClick={() => alert("todo")}>Save</button>
+            <input type="submit" value="Save" form={FORM_ID} className="headerButton primary" />
         </header>
         <main className="recipeFormBody" aria-details="edit an existing recipie">
-            <RecipeForm doSubmit={doSubmit} initialValues={initialValues} />
+            <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
         </main>
     </>
 }

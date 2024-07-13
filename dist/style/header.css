@@ -40,7 +40,7 @@ header {
     /* slight adjustment*/
 }
 
-.headerButton {
+button.headerButton, input[type="submit"].headerButton {
     padding-top: 0;
     padding-bottom: 0;
     font-size: var(--font-size-small);

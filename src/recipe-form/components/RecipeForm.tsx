@@ -11,11 +11,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RecipeInput } from "../../types/RecipeInputTypes";
 
 type Props = {
-    doSubmit: (recipe: Recipe) => void;
+    id?: string,
+    onSubmit: (recipe: Recipe) => void;
     initialValues: RecipeInput;
 };
 
-function RecipeForm({ doSubmit, initialValues }: Props) {
+function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
     const formHelper = useForm<RecipeInput>({
         resolver: yupResolver(getFullSchema()),
@@ -28,11 +29,11 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
 
     const onSubmit: SubmitHandler<RecipeInput> = data => {
         const parsed = parseFormData(data);
-        doSubmit(parsed);
+        doSubmitAction(parsed);
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="recipeForm">
+        <form id={id} onSubmit={handleSubmit(onSubmit)} className="recipeForm">
             <input {...register("name")}
                 type="text"
                 className="recipeName"
@@ -83,8 +84,6 @@ function RecipeForm({ doSubmit, initialValues }: Props) {
                 <TextAreaAutoHeight {...register("instructions")} defaultHeight={'0'} className="multiLine" />
                 <FormErrorMessage error={errors.instructions} />
             </div>
-
-            <input type="submit" />
         </form >
     );
 }
