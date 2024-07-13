@@ -38,21 +38,6 @@ importers:
       uuid:
         specifier: ^8.3.2
         version: 8.3.2
-      workbox-core:
-        specifier: ^5.1.4
-        version: 5.1.4
-      workbox-expiration:
-        specifier: ^5.1.4
-        version: 5.1.4
-      workbox-precaching:
-        specifier: ^5.1.4
-        version: 5.1.4
-      workbox-routing:
-        specifier: ^5.1.4
-        version: 5.1.4
-      workbox-strategies:
-        specifier: ^5.1.4
-        version: 5.1.4
       yup:
         specifier: ^0.32.11
         version: 0.32.11
@@ -1373,21 +1358,6 @@ packages:
 
   wildcard@2.0.1:
     resolution: {integrity: sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==}
-
-  workbox-core@5.1.4:
-    resolution: {integrity: sha512-+4iRQan/1D8I81nR2L5vcbaaFskZC2CL17TLbvWVzQ4qiF/ytOGF6XeV54pVxAvKUtkLANhk8TyIUMtiMw2oDg==}
-
-  workbox-expiration@5.1.4:
-    resolution: {integrity: sha512-oDO/5iC65h2Eq7jctAv858W2+CeRW5e0jZBMNRXpzp0ZPvuT6GblUiHnAsC5W5lANs1QS9atVOm4ifrBiYY7AQ==}
-
-  workbox-precaching@5.1.4:
-    resolution: {integrity: sha512-gCIFrBXmVQLFwvAzuGLCmkUYGVhBb7D1k/IL7pUJUO5xacjLcFUaLnnsoVepBGAiKw34HU1y/YuqvTKim9qAZA==}
-
-  workbox-routing@5.1.4:
-    resolution: {integrity: sha512-8ljknRfqE1vEQtnMtzfksL+UXO822jJlHTIR7+BtJuxQ17+WPZfsHqvk1ynR/v0EHik4x2+826Hkwpgh4GKDCw==}
-
-  workbox-strategies@5.1.4:
-    resolution: {integrity: sha512-VVS57LpaJTdjW3RgZvPwX0NlhNmscR7OQ9bP+N/34cYMDzXLyA6kqWffP6QKXSkca1OFo/v6v7hW7zrrguo6EA==}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -2859,25 +2829,6 @@ snapshots:
       string-width: 5.1.2
 
   wildcard@2.0.1: {}
-
-  workbox-core@5.1.4: {}
-
-  workbox-expiration@5.1.4:
-    dependencies:
-      workbox-core: 5.1.4
-
-  workbox-precaching@5.1.4:
-    dependencies:
-      workbox-core: 5.1.4
-
-  workbox-routing@5.1.4:
-    dependencies:
-      workbox-core: 5.1.4
-
-  workbox-strategies@5.1.4:
-    dependencies:
-      workbox-core: 5.1.4
-      workbox-routing: 5.1.4
 
   wrap-ansi@7.0.0:
     dependencies:
