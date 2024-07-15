@@ -1,21 +1,20 @@
 import { useContext } from 'react';
-import Loading from '../../general/placeholders/Loading';
 import MyError from "../../general/placeholders/Error";
-import { RecipesContext } from '../../contexts/RecipesContext';
+import { GlobalContext } from '../../contexts/GlobalContext';
 import RecipeCard from './RecipeCard';
-
+import useRecipeStorage from '../../util/hooks/useRecipeStorage';
 
 
 function RecipeCardContainer() {
-
-    const { recipes } = useContext(RecipesContext);
+    const { db, user } = useContext(GlobalContext);
+    const { recipes } = useRecipeStorage(db, user)
 
     if (recipes.status === "prefetch") {
-        return <Loading message="Loading recipes..." />
+        return null
     }
 
     if (recipes.status === "error") {
-        return <MyError message={`Something went wrong :( ${recipes.message ?? "<no error message>"}`} />
+        return <MyError message={`Something went wrong :( ${recipes.message ?? ""}`} />
     }
 
     const recipeMap = recipes.data!; // we should have recipies due to guard statements above

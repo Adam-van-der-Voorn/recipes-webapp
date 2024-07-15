@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import RecipeCardContainer from "./RecipeCardContainer";
 import { useWindowDimensions } from "../../util/hooks/useWindowDimensions";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
+import AuthGate from "../../auth/AuthGate";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const minSearchbarSizePx = 30;
 
 function RecipeSetPage() {
     const nav = useNavigate();
+    const { auth, user } = useContext(GlobalContext);
     const { windowWidth } = useWindowDimensions();
     const searchBarRef = useRef<HTMLInputElement>(null);
     const [displayTitle, setDisplayTitle] = useState(false);
@@ -23,7 +26,7 @@ function RecipeSetPage() {
 
     const gridTemplateColumns = displayTitle
         ? `1fr minmax(${minSearchbarSizePx}px, 300px) auto`
-        : `minmax(${minSearchbarSizePx}px, 1fr) auto`
+        : `minmax(${minSearchbarSizePx}px, 1fr) auto`;
 
     const headerStyle: React.CSSProperties = {
         gridTemplateColumns
@@ -31,14 +34,19 @@ function RecipeSetPage() {
 
     return <>
         <header style={headerStyle}>
-            { displayTitle
+            {displayTitle
                 ? <h1 className="headerTitle" style={{ whiteSpace: "nowrap" }}>My Recipes</h1>
                 : null
             }
             <input ref={searchBarRef} className="headerTextInput searchTextInput" type="text" />
-            <button className="headerButton" onClick={() => nav("/add-recipe")}>Add Recipe</button>
+            <button className="headerButton"
+                onClick={() => nav("/add-recipe")}
+            >Add Recipe
+            </button>
         </header>
-        <RecipeCardContainer />
+        <AuthGate user={user} auth={auth}>
+            <RecipeCardContainer />
+        </AuthGate>
     </>;
 }
 

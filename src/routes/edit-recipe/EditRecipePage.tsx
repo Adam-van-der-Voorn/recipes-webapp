@@ -6,8 +6,9 @@ import { v4 as uuid4 } from 'uuid';
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
 import quantityToString from "../../util/quantityToString";
-import { RecipesContext } from "../../contexts/RecipesContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
+import useRecipeStorage from "../../util/hooks/useRecipeStorage";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
@@ -17,7 +18,9 @@ const FORM_ID = "edit-recipie"
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
-    const { editRecipe, recipes } = useContext(RecipesContext);
+    const { db, user } = useContext(GlobalContext)
+    const { editRecipe, recipes } = useRecipeStorage(db, user);
+
     const navigate = useNavigate();
 
     if (recipeId === undefined) {

@@ -2,14 +2,27 @@ import { setDoc, doc, onSnapshot, collection, Firestore, deleteDoc } from "fireb
 import { useState, useRef, useEffect } from "react";
 import { Recipe } from "../../types/recipeTypes";
 import { v4 as uuid4 } from 'uuid';
-import { User } from "firebase/auth";
 import Recipies from "../../types/Recipes";
+import { UserState } from "../../types/user";
+import { isAuthed } from "../auth";
+import { User } from "firebase/auth";
 
-export default function useRecipeStorage(db: Firestore, user: User) {
+export type RecipesStorageInterface = {
+    recipes: Recipies;
+    addRecipe: (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => void;
+    editRecipe: (editedRecipe: Recipe, id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
+    deleteRecipe: (id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
+};
+
+export default function useRecipeStorage(db: Firestore, user: UserState) {
     const [recipes, setRecipes] = useState<Recipies>({ status: "prefetch" });
     const pendingWrites = useRef(new Map<string, (id: string, recipe: Recipe) => void>());
 
     const addRecipe = (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => {
+        if (!isAuthed(user)) {
+            console.warn("attempt to add recipe with non-authed user")
+            return;
+        }
         const id: string = uuid4();
         if (onAvalible) {
             pendingWrites.current.set(id + '-added', onAvalible)
@@ -21,6 +34,10 @@ export default function useRecipeStorage(db: Firestore, user: User) {
     };
 
     const editRecipe = (editedRecipe: Recipe, id: string, onAvalible?: (id: string, recipe: Recipe) => void) => {
+        if (!isAuthed(user)) {
+            console.warn("attempt to edit recipe with non-authed user")
+            return;
+        }
         if (onAvalible) {
             pendingWrites.current.set(id + '-modified', onAvalible)
         }
@@ -31,6 +48,10 @@ export default function useRecipeStorage(db: Firestore, user: User) {
     };
 
     const deleteRecipe = (id: string, onAvalible?: (id: string, recipe: Recipe) => void) => {
+        if (!isAuthed(user)) {
+            console.warn("attempt to delete recipe with non-authed user")
+            return;
+        }
         if (onAvalible) {
             pendingWrites.current.set(id + '-removed', onAvalible)
         }
@@ -39,8 +60,13 @@ export default function useRecipeStorage(db: Firestore, user: User) {
                 console.log('Recipe deleted on server with ID', id);
             })
     };
-
+    
+    // for the dep array- we want to re-sub when the user id changes 
+    const maybeUid: string | undefined = (user as User)?.uid;
     useEffect(() => {
+        if (!isAuthed(user)) {
+            return;
+        }
         const unsubscribe = onSnapshot(collection(db, `users/${user.uid}/recipies`), { includeMetadataChanges: true },
             (querySnapshot) => {
                 // extract recipes
@@ -84,7 +110,7 @@ export default function useRecipeStorage(db: Firestore, user: User) {
             console.log('Unsubscribed from recipe snapshots');
             unsubscribe();
         };
-    }, [db, user.uid]);
+    }, [db, user, maybeUid]);
 
     return {
         "recipes": recipes,

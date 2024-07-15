@@ -3,8 +3,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import MyError from "../../general/placeholders/Error";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
-import { RecipesContext } from "../../contexts/RecipesContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
+import useRecipeStorage from "../../util/hooks/useRecipeStorage";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
@@ -12,7 +13,8 @@ const headerStyle: React.CSSProperties = {
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
-    const { recipes, deleteRecipe } = useContext(RecipesContext);
+    const { db, user } = useContext(GlobalContext);
+    const { recipes, deleteRecipe } = useRecipeStorage(db, user) 
 
     const navigate = useNavigate();
 

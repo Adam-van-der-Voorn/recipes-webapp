@@ -76,6 +76,18 @@ html {
     box-sizing: border-box;
 }
 
+.routeErrorPage {
+    height: 100%;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.routeErrorPage i {
+    opacity: 60%;
+}
+
 html {
     font-size: 62.5%;
     font-family: 'Karla', Helvetica, Arial, sans-serif;

@@ -1,37 +1,18 @@
-import { createContext, PropsWithChildren, useState } from "react";
-import { Auth, onAuthStateChanged, User } from "firebase/auth";
+import { PropsWithChildren } from "react";
+import { Auth, User } from "firebase/auth";
 import AuthForm from "./AuthForm";
-
-type AuthContextType = {
-    user: User;
-};
-
-export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 type Props = {
     auth: Auth;
+    user: "pre-auth" | User | null
 };
 
-function AuthGate({ auth, children }: PropsWithChildren<Props>) {
-
-    // non-null indicates user is signed in
-    const [user, setUser] = useState<User | "pre-auth" | null>("pre-auth");
-
-    onAuthStateChanged(auth, (user) => {
-        console.log("Auth state changed. User:", user?.email);
-        setUser(user);
-    });
-
+function AuthGate({ user, auth, children }: PropsWithChildren<Props>) {
     if (user === "pre-auth") {
         return null;
     }
-
-    if (user) {
-        return (
-            <AuthContext.Provider value={{ user: user }}>
-                {children}
-            </AuthContext.Provider>
-        );
+    else if (user) {
+        return <>{children}</>
     }
     else {
         return <AuthForm auth={auth} />;
