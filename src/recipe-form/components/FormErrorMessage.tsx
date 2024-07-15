@@ -1,17 +1,21 @@
 import { FieldError } from "react-hook-form";
 
 type Props = {
-    error?: FieldError;
-};
+    error?: FieldError | string;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
 
-function FormErrorMessage({ error }: Props) {
+function FormErrorMessage({ error, ...props }: Props) {
     if (!error) {
         return null;
     }
 
+    const message = typeof error === 'string'
+        ? error
+        : error.message
+
     return (
-        <em className="error">
-            {error.message}
+        <em className="error" {...props}>
+            {message}
         </em>
     );
 }

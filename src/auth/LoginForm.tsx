@@ -1,9 +1,10 @@
-import React, { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { Auth, signInWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { object, string } from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { parseFirebaseError } from "./firebaseError";
+import FormErrorMessage from "../recipe-form/components/FormErrorMessage";
 
 
 const schema = object().shape({
@@ -14,25 +15,28 @@ const schema = object().shape({
         .required("Password is required")
 });
 
-type LoginInput = {
+export type LoginInput = {
     email: string,
     password: string,
 };
 
 type Props = {
     auth: Auth;
+    switchToSignUp: (formState: LoginInput) => void
+    initEmail?: string,
+    initPassword?: string,
 };
 
-function LoginForm({ auth }: PropsWithChildren<Props>) {
+function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithChildren<Props>) {
 
     const formHelper = useForm<LoginInput>({
         resolver: yupResolver(schema),
         mode: 'onBlur',
         reValidateMode: 'onChange',
-        defaultValues: { email: '', password: '' }
+        defaultValues: { email: initEmail ?? '', password: initPassword ?? '' }
     });
 
-    const { register, handleSubmit, formState: { errors } } = formHelper;
+    const { register, handleSubmit, formState: { errors }, getValues } = formHelper;
     const [topLevelError, setTopLevelError] = useState<string | undefined>(undefined);
 
     const onSubmit: SubmitHandler<LoginInput> = data => {
@@ -41,12 +45,13 @@ function LoginForm({ auth }: PropsWithChildren<Props>) {
         return signInWithEmailAndPassword(auth, data.email, data.password)
             .catch(e => {
                 const defaultMessage = "Something went wrong when trying to log you in. Please try again later.";
-                setTopLevelError(parseFirebaseError(e, defaultMessage).message);
+                const message = parseFirebaseError(e, defaultMessage).message;
+                setTopLevelError(message);
             });
     };
 
-    return <div className="container">
-        {/* <h1 className="title">Log in</h1> */}
+    return <>
+        <h1 className="authFormTitle">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="authForm">
             <div className="inputContainer">
                 <label htmlFor="email" className={"label"}>Email</label>
@@ -61,14 +66,17 @@ function LoginForm({ auth }: PropsWithChildren<Props>) {
                 <label htmlFor="password" className={"label"}>Password</label>
                 <input {...register("password")} type="password" className={"input"} id="password-input" />
             </div>
-            <input className="submit" type="submit" value="Log in" />
-            <div className="errorContainer">
-                <em className="error">{topLevelError}</em>
-                <em className="error">{errors.email?.message || ""}</em>
-                <em className="error">{errors.password?.message || ""}</em>
+            <div className="authFormFooter">
+                <input type="submit" value="Log in" />
+                <button className="switchLogInSignUp" onClick={() => switchToSignUp(getValues())}>Sign up instead</button>
             </div>
         </form>
-    </div>;
+        <div className="authFormErrorContainer">
+            <FormErrorMessage className="authFormError" error={topLevelError} />
+            <FormErrorMessage className="authFormError" error={errors.email} />
+            <FormErrorMessage className="authFormError" error={errors.password} />
+        </div>
+    </>;
 }
 
 export default LoginForm;
