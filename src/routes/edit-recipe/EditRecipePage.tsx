@@ -8,16 +8,17 @@ import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInput
 import quantityToString from "../../util/quantityToString";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
+import AuthGate from "../../auth/AuthGate";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
 };
 
-const FORM_ID = "edit-recipie"
+const FORM_ID = "edit-recipie";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
-    const { editRecipe, recipes } = useContext(GlobalContext)
+    const { editRecipe, recipes } = useContext(GlobalContext);
 
     const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ function EditRecipePage() {
     };
 
     if (recipes.status === "prefetch") {
-        return null
+        return null;
     }
 
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
@@ -85,10 +86,12 @@ function EditRecipePage() {
             <h1 className="headerTitle">Edit Recipe</h1>
             <input type="submit" value="Save" form={FORM_ID} className="headerButton primary" />
         </header>
-        <main className="recipeFormBody" aria-details="edit an existing recipie">
-            <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
-        </main>
-    </>
+        <AuthGate>
+            <main className="recipeFormBody" aria-details="edit an existing recipie">
+                <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
+            </main>
+        </AuthGate>
+    </>;
 }
 
 export default EditRecipePage;

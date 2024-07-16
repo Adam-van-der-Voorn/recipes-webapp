@@ -44,7 +44,7 @@ function RecipeSetPage() {
             >Add Recipe
             </button>
         </header>
-        <AuthGate user={user} auth={auth}>
+        <AuthGate>
             <RecipeCardContainer />
         </AuthGate>
     </>;

@@ -5,6 +5,7 @@ import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
+import AuthGate from "../../auth/AuthGate";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
@@ -24,7 +25,7 @@ function RecipePage() {
     if (recipes.status === "prefetch") {
         return null;
     }
-    
+
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
 
     if (recipe === undefined) {
@@ -47,9 +48,11 @@ function RecipePage() {
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
-        <main className="recipePageBody">
-            <RecipeView recipe={recipe} />
-        </main>
+        <AuthGate>
+            <main className="recipePageBody">
+                <RecipeView recipe={recipe} />
+            </main>
+        </AuthGate>
     </div>;
 }
 

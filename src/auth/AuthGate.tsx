@@ -1,13 +1,12 @@
-import { PropsWithChildren } from "react";
-import { Auth, User } from "firebase/auth";
+import { PropsWithChildren, useContext } from "react";
 import AuthForm from "./AuthForm";
+import { GlobalContext } from "../contexts/GlobalContext";
 
-type Props = {
-    auth: Auth;
-    user: "pre-auth" | User | null
-};
+type Props = {};
 
-function AuthGate({ user, auth, children }: PropsWithChildren<Props>) {
+function AuthGate({ children }: PropsWithChildren<Props>) {
+    const { auth, user } = useContext(GlobalContext);
+
     if (user === "pre-auth") {
         return null;
     }

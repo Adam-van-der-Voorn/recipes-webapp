@@ -4,15 +4,17 @@ import { Recipe } from "../../types/recipeTypes";
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { v4 as uuid4 } from 'uuid';
 import { GlobalContext } from "../../contexts/GlobalContext";
+import AuthGate from "../../auth/AuthGate";
+import { isAuthed } from "../../util/auth";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
 };
 
-const FORM_ID = "add-recipe"
+const FORM_ID = "add-recipe";
 
 function AddRecipePage() {
-    const { addRecipe } = useContext(GlobalContext);
+    const { user, addRecipe } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     const doSubmit = (recipe: Recipe) => {
@@ -43,12 +45,18 @@ function AddRecipePage() {
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
             <h1 className="headerTitle">New Recipe</h1>
-            <input type="submit" value="Save" form={FORM_ID} className="headerButton primary" />
+            <input type="submit"
+            value="Save"
+            form={FORM_ID}
+            className="headerButton primary"
+            disabled={user === "pre-auth" || user === null} />
         </header>
-        <main className="recipeFormBody" aria-details="add a new recipie">
-            <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
-        </main>
-    </>
+        <AuthGate>
+            <main className="recipeFormBody" aria-details="add a new recipie">
+                <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
+            </main>
+        </AuthGate>
+    </>;
 }
 
 export default AddRecipePage;
