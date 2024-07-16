@@ -1,11 +1,9 @@
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Recipe } from "../../types/recipeTypes";
 import RecipeForm from "../../recipe-form/components/RecipeForm";
 import { v4 as uuid4 } from 'uuid';
 import { GlobalContext } from "../../contexts/GlobalContext";
-import useRecipeStorage from "../../util/hooks/useRecipeStorage";
-import { User } from "firebase/auth";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
@@ -14,8 +12,7 @@ const headerStyle: React.CSSProperties = {
 const FORM_ID = "add-recipe"
 
 function AddRecipePage() {
-    const { db, user } = useContext(GlobalContext);
-    const { addRecipe } = useRecipeStorage(db, user)
+    const { addRecipe } = useContext(GlobalContext);
     const navigate = useNavigate();
 
     const doSubmit = (recipe: Recipe) => {

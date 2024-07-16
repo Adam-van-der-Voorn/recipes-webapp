@@ -5,7 +5,6 @@ import { Recipe } from "../../types/recipeTypes";
 import RecipeView from "../../recipie-view/RecipieView";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
-import useRecipeStorage from "../../util/hooks/useRecipeStorage";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
@@ -13,16 +12,19 @@ const headerStyle: React.CSSProperties = {
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
-    const { db, user } = useContext(GlobalContext);
-    const { recipes, deleteRecipe } = useRecipeStorage(db, user) 
+    const { recipes, deleteRecipe } = useContext(GlobalContext);
 
     const navigate = useNavigate();
 
-    if (recipeId === undefined) {
+    if (recipeId === undefined || recipes.status == "error") {
         console.error(`RecipePage: no recipe provided as param`);
         return <MyError message="Oops! Something went wrong." />;
     }
 
+    if (recipes.status === "prefetch") {
+        return null;
+    }
+    
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
 
     if (recipe === undefined) {

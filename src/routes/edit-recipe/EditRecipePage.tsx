@@ -8,7 +8,6 @@ import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInput
 import quantityToString from "../../util/quantityToString";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
-import useRecipeStorage from "../../util/hooks/useRecipeStorage";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
@@ -18,12 +17,11 @@ const FORM_ID = "edit-recipie"
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
-    const { db, user } = useContext(GlobalContext)
-    const { editRecipe, recipes } = useRecipeStorage(db, user);
+    const { editRecipe, recipes } = useContext(GlobalContext)
 
     const navigate = useNavigate();
 
-    if (recipeId === undefined) {
+    if (recipeId === undefined || recipes.status === "error") {
         console.error(`EditRecipePage: no recipe provided as param`);
         return <MyError message="Oops! Something went wrong." />;
     }
@@ -33,6 +31,10 @@ function EditRecipePage() {
             navigate(`/view/${id}`, { replace: true });
         });
     };
+
+    if (recipes.status === "prefetch") {
+        return null
+    }
 
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
     if (recipe === undefined) {

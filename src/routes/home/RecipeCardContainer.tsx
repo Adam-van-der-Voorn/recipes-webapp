@@ -2,12 +2,10 @@ import { useContext } from 'react';
 import MyError from "../../general/placeholders/Error";
 import { GlobalContext } from '../../contexts/GlobalContext';
 import RecipeCard from './RecipeCard';
-import useRecipeStorage from '../../util/hooks/useRecipeStorage';
 
 
 function RecipeCardContainer() {
-    const { db, user } = useContext(GlobalContext);
-    const { recipes } = useRecipeStorage(db, user)
+    const { recipes } = useContext(GlobalContext);
 
     if (recipes.status === "prefetch") {
         return null

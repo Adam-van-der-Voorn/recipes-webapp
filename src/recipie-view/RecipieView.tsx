@@ -12,7 +12,7 @@ type Props = {
 };
 
 function RecipeView({ recipe }: Props) {
-    const { name, servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipe;
+    const { servings, makes, timeframe, notes, ingredients, substitutions, instructions } = recipe;
     const hasMetaData = servings || makes || timeframe;
     return <>
         {hasMetaData &&
