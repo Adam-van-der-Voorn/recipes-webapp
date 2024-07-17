@@ -1,5 +1,5 @@
 // @ts-nocheck
-const path = require('path');
+import path from 'node:path';
 
 const base = {
     entry: {
@@ -9,7 +9,7 @@ const base = {
         },
         "service-worker": {
             import: './src/service-worker.js',
-            // service worker bundle _must_ have this fn
+            // service worker bundle _must_ have this filename
             filename: 'service-worker.js'
         }
     },
@@ -37,9 +37,12 @@ const base = {
     optimization: {
         // minimize: false
     },
+    performance: {
+        hints: false,
+    }
 }
 
-module.exports = (env, argv) => {
+export default (env, argv) => {
     console.log("using args: ", argv)
     return base;
 };
