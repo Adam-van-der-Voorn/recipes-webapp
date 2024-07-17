@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE_NAME = `vdv-recipes-${VERSION}`;
 const LOG_TAG = `${VERSION}-sw:`
 const STATIC_RESOURCES_TO_CACHE = [
@@ -57,7 +57,7 @@ function onActivate(event) {
 }
 
 async function cacheThenNetwork(request) {
-    if (process.env.NODE_ENV === "development") {
+    if (process?.env?.NODE_ENV === "development") {
         // should be compiled away by webpack at build time
         console.log(LOG_TAG, "dev mode, bypassing cache for", request.url)
         return fetch(request);
