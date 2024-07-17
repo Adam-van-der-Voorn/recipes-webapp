@@ -71,7 +71,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="notes">
                 <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight {...register("notes")} defaultHeight={'0'} className="multiLine" />
+                <TextAreaAutoHeight {...register("notes")} className="multiLine" />
                 <FormErrorMessage error={errors.notes} />
             </div>
 
@@ -81,7 +81,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="instructions">
                 <label htmlFor="instructions" className="h-2">Instructions</label>
-                <TextAreaAutoHeight {...register("instructions")} defaultHeight={'0'} className="multiLine" />
+                <TextAreaAutoHeight {...register("instructions")} className="multiLine" />
                 <FormErrorMessage error={errors.instructions} />
             </div>
         </form >

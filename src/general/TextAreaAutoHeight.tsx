@@ -2,12 +2,12 @@ import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, Forwarde
 import extractFields from "../util/extractFields";
 
 type Props = {
-    defaultHeight?: string;
+    defaultHeight?: number;
     name: string;
 } & HTMLProps<HTMLTextAreaElement>;
 
 // works with border-box only
-function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props, ref: ForwardedRef<HTMLTextAreaElement>) {
+function TextAreaAutoHeight({ defaultHeight = 0, ...props }: Props, ref: ForwardedRef<HTMLTextAreaElement>) {
 
     const innerRef = useRef<HTMLTextAreaElement>(null);
 
@@ -18,8 +18,25 @@ function TextAreaAutoHeight({ defaultHeight = '0', ...props }: Props, ref: Forwa
             console.error("TextAreaAutoHeight: ref is null");
             return;
         }
-        innerRef.current.style.height = defaultHeight;
-        innerRef.current.style.height = (innerRef.current.scrollHeight + 3) + "px"; // why the 3? border adjustment I think
+        // count new lines
+        const text = innerRef.current.value;
+        let lines = 1;
+        for (const char of text) {
+            if (char === '\n') {
+                lines ++
+            }
+        }
+
+        const lineHeightStr = getComputedStyle(innerRef.current).lineHeight; // 20px
+        const lineHeightPx = parseFloat(lineHeightStr);
+        if (lineHeightPx) {
+            const adjustedHeight = ((lines * lineHeightPx) + 3);  // why the 3? border adjustment I think
+            const final = Math.max(adjustedHeight, defaultHeight);
+            innerRef.current.style.height = final + "px"
+        }
+        else {
+            innerRef.current.style.height = defaultHeight + "px"
+        }
     };
 
     const [newProps, propsOnChange] = extractFields(props, 'onChange');

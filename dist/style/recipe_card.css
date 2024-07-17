@@ -13,6 +13,6 @@
     border-radius: 3px;
     width: fit-content;
     padding: 8px;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     background-color: var(--col-text-backing);
 }
