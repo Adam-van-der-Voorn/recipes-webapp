@@ -57,7 +57,7 @@ export default function useRecipeStorage(db: Firestore, userId: string | null) {
                 console.log('Recipe deleted on server with ID', id);
             })
     };
-    
+
     // for the dep array- we want to re-sub when the user id changes 
     useEffect(() => {
         if (!userId) {
@@ -86,7 +86,7 @@ export default function useRecipeStorage(db: Firestore, userId: string | null) {
                         writeCallback(change.id, change.data as Recipe);
                     }
                 });
-                
+
                 const source = querySnapshot.metadata.fromCache ? "local cache" : "server";
                 console.log(`Recipes snapshot (from ${source}):`, { recipes: recipes, changes: changeData});
                 setRecipes({

@@ -1,16 +1,20 @@
 import convert, { Unit } from "convert-units";
-import { parseUnitValInputs } from "../recipe-form/parseUnitValInputs";
-import { UnitVal } from "../types/recipeTypes";
 import { IngredientInput } from "../types/RecipeInputTypes";
 import { isSameMeasure, isConvertableUnit } from "./units";
+import { parseIngredientQuantity } from "../recipe-form/parseUnitValInputs";
 
 export default function getPercentageFromVal(subject: IngredientInput, anchor: IngredientInput): number | undefined {
-    const quantities: Array<number | UnitVal> = parseUnitValInputs(anchor.quantity, subject.quantity);
-    if (quantities.length !== 2) {
+    const anchorQuantity = parseIngredientQuantity(anchor.quantity)
+    const subjectQuantity = parseIngredientQuantity(subject.quantity)
+
+    const anchorIsString = typeof anchorQuantity === 'string';
+    const subjectIsString = typeof subjectQuantity === 'string';
+
+    if (anchorIsString || subjectIsString) {
+        // we can't do anything with strings :(
         return undefined;
     }
 
-    const [anchorQuantity, subjectQuantity] = quantities;
     const anchorIsNum = typeof anchorQuantity === 'number';
     const subjectIsNum = typeof subjectQuantity === 'number';
     if (anchorIsNum || subjectIsNum) {

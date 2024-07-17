@@ -72,7 +72,7 @@ function EditRecipePage() {
     const initialValues = {
         name: recipe.name,
         timeframe: recipe.timeframe || '',
-        makes: quantityToString(recipe.makes),
+        makes: recipe.makes || '',
         notes: recipe.notes || '',
         ingredients: ingredients,
         servings: recipe.servings || '',

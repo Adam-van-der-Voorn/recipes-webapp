@@ -18,7 +18,7 @@ function RecipeView({ recipe }: Props) {
         {hasMetaData &&
             <ul className="meta" aria-details="recipie metadata">
                 {servings && <li>Serves {servings}</li>}
-                {makes && <li>Yields {quantityToString(makes)}</li>}
+                {makes && <li>Yields {makes}</li>} 
                 {timeframe && <li>Time: {timeframe}</li>}
             </ul>
         }

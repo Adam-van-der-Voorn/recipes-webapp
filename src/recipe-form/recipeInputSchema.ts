@@ -42,13 +42,7 @@ const yupIngredientsSchema = Yup.object().shape({
                             .max(200, 'Please make this shorter.'),
                         quantity: Yup.string()
                             .default('')
-                            .test('required', 'Ingredient quantity is required.', (el, context) => {
-                                return isLastIngredient(context) || el.trim() !== '';
-                            })
-                            .max(30, 'please make this shorter')
-                            .test('is-num-unit-optional', 'Must be a number, optionally followed by a unit', (el, context) => {
-                                return (!el || unitValPattern.test(el) || isNumStrict(el));
-                            }),
+                            .max(30, 'please make this shorter'),
                         percentage: Yup.string()
                             .test('is-num-or-whitespace', 'Must be a valid percentage.', (el, context) => {
                                 if (el === undefined) {
@@ -78,12 +72,13 @@ export default function getFullSchema() {
         name: yupRecipeNameSchema,
         timeframe: Yup.string()
             .max(150, 'Please make this shorter.'),
-        makes: yupQuantitySchema,
+        makes: Yup.string()
+            .max(150, 'Please make this shorter.'),
+        servings: Yup.string()
+            .max(150, 'Please make this shorter.'),
         notes: Yup.string()
             .max(10000, 'Please make this shorter.'),
         ingredients: yupIngredientsSchema,
-        servings: Yup.string()
-            .max(150, 'Please make this shorter.'),
         instructions: Yup.string()
             .max(10000, 'Please make this shorter.'),
         substitutions: yupSubstitutionsSchema,

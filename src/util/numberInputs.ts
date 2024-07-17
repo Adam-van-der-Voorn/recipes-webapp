@@ -7,7 +7,7 @@ export function isNumStrict(s: string): boolean {
 
 /**
  * does not accept tailing letters, such as 123f
- * eg 12asd -> undefined
+ * eg 12asd -> null
  */
 export function parseNumStrict(s: string): number | null{
     const num = +s;

@@ -27,6 +27,7 @@ secret.json
 
 
 dist/js/*.bundle.*
+ts-out
 
 # bundled service worker file (cannot change fn)
 dist/service-worker.js

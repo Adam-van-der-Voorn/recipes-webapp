@@ -1,7 +1,7 @@
 import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { parseUnitValInput } from "../../parseUnitValInputs";
-import { UnitVal } from "../../../types/recipeTypes";
+import { parseIngredientQuantity } from "../../parseUnitValInputs";
+import { IngredientQuantity, UnitVal } from "../../../types/recipeTypes";
 import IngredientsSubField from "./IngredientsSubField";
 import { MdMoreVert } from 'react-icons/md';
 import DropdownMenu from "../../../general/dropdown/DropdownMenu";
@@ -34,7 +34,7 @@ function IngredientsField({ setValue, control, register }: Props) {
         // in this case, we do want to only run on mount
         // further changes to the percentage fields will
         // be done via user input
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line reacthooks/exhaustive-deps
     }, []);
 
     const localToGlobalIdx = (subListIdx: number, localIdx: number) => {
@@ -67,7 +67,7 @@ function IngredientsField({ setValue, control, register }: Props) {
     };
 
     const onQuantityBlur = (subListIdx: number, localIdx: number) => (ev: any) => {
-        const quantity = parseUnitValInput(ev.target.value);
+        const quantity = parseIngredientQuantity(ev.target.value);
         if (quantity) {
             setQuantity(quantity, subListIdx, localIdx);
         }
@@ -90,12 +90,13 @@ function IngredientsField({ setValue, control, register }: Props) {
         setPercentage(subjectPercentage, subListIdx, localIdx);
 
         const anchorField = aggregatedIngredients[currentAnchorIdx];
-        const anchorQuantity: UnitVal | undefined | number = parseUnitValInput(anchorField.quantity);
-        if (anchorQuantity) {
-            const subjectQuantity = parseUnitValInput(subjectField.quantity);
-            const subjectUnit = typeof subjectQuantity === 'number'
-                ? undefined
-                : subjectQuantity?.unit;
+        const anchorQuantity: IngredientQuantity = parseIngredientQuantity(anchorField.quantity);
+        const isMathable = typeof anchorQuantity !== 'string';
+        if (isMathable) {
+            const subjectQuantity = parseIngredientQuantity(subjectField.quantity);
+            const subjectUnit = typeof subjectQuantity !== 'number' && typeof subjectQuantity !== 'string'
+                ? subjectQuantity.unit
+                : undefined
 
             const newQuantity = getQuantityFromPercentage(anchorQuantity, subjectPercentage, subjectUnit);
             if (newQuantity) {
@@ -110,10 +111,17 @@ function IngredientsField({ setValue, control, register }: Props) {
         setValue("ingredients.anchor", newAnchorIdx);
     };
 
-    const setQuantity = (quantity: UnitVal | number, subListIdx: number, localIdx: number) => {
-        const s: string = typeof quantity === 'number'
-            ? `${quantity}`
-            : `${quantity.value} ${quantity.unit}`;
+    const setQuantity = (quantity: IngredientQuantity, subListIdx: number, localIdx: number) => {
+        let s: string;
+        if (typeof quantity === 'string') {
+            s = quantity;
+        }
+        else if (typeof quantity === 'number') {
+            s = `${quantity}`;
+        }
+        else {
+            s = `${quantity.value} ${quantity.unit}`
+        }
 
         setValue(`ingredients.lists.${subListIdx}.ingredients.${localIdx}.quantity`, s, {
             shouldValidate: true

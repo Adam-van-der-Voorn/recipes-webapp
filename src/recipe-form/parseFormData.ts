@@ -1,6 +1,6 @@
 import { Recipe } from "../types/recipeTypes";
 import { RecipeInput } from "../types/RecipeInputTypes";
-import { parseUnitValInput } from "./parseUnitValInputs";
+import { parseIngredientQuantity } from "./parseUnitValInputs";
 
 export default function parseFormData(formData: RecipeInput): Recipe {
     // parse form data
@@ -17,7 +17,7 @@ export default function parseFormData(formData: RecipeInput): Recipe {
     }
 
     if (formData.makes !== '') {
-        recipe.makes = parseUnitValInput(formData.makes)!;
+        recipe.makes = formData.makes.trim();
     }
 
     if (formData.notes !== '') {
@@ -30,7 +30,7 @@ export default function parseFormData(formData: RecipeInput): Recipe {
                 name: sublist.name,
                 ingredients: sublist.ingredients.map((ingredient, idx) => ({
                     name: ingredient.name,
-                    quantity: parseUnitValInput(ingredient.quantity)!,
+                    quantity: parseIngredientQuantity(ingredient.quantity),
                     optional: ingredient.optional
                 }))
             }))
