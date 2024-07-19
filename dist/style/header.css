@@ -3,7 +3,7 @@ header {
     top: 0;
 
     margin: 0;
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
 
     background-color: var(--col-text-backing);
