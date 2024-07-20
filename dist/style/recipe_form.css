@@ -34,7 +34,6 @@
     grid-auto-rows: auto;
     column-gap: var(--column-gap);
     align-items: baseline;
-    line-height: 2ch;
     margin-bottom: 1rem;
 }
 
@@ -134,7 +133,7 @@
     scale: 1.2;
 }
 
-.multiLine {
+textarea {
     padding: 0;
     resize: none;
     appearance: none;
@@ -142,10 +141,8 @@
     padding-right: 0.25rem;
     display: block;
     width: 100%;
-    box-sizing: border-box;
     border: 0;
     border-bottom: 0.25rem solid var(--col-neutral-7);
     margin-top: 0.5rem;
     margin-bottom: 2rem;
-    line-height: 2rem;
 }

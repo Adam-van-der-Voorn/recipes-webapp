@@ -1,13 +1,14 @@
-import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, ForwardedRef } from "react";
+import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, ForwardedRef, useMemo } from "react";
 import extractFields from "../util/extractFields";
 
 type Props = {
-    defaultHeight?: number;
     name: string;
+    lineHeight: number;
+    defaultHeight?: number;
 } & HTMLProps<HTMLTextAreaElement>;
 
 // works with border-box only
-function TextAreaAutoHeight({ defaultHeight = 0, ...props }: Props, ref: ForwardedRef<HTMLTextAreaElement>) {
+function TextAreaAutoHeight({ lineHeight, defaultHeight = 0, ...props }: Props, ref: ForwardedRef<HTMLTextAreaElement>) {
 
     const innerRef = useRef<HTMLTextAreaElement>(null);
 
@@ -23,19 +24,19 @@ function TextAreaAutoHeight({ defaultHeight = 0, ...props }: Props, ref: Forward
         let lines = 1;
         for (const char of text) {
             if (char === '\n') {
-                lines ++
+                lines++;
             }
         }
 
-        const lineHeightStr = getComputedStyle(innerRef.current).lineHeight; // 20px
+        const lineHeightStr = getComputedStyle(innerRef.current).lineHeight;
         const lineHeightPx = parseFloat(lineHeightStr);
         if (lineHeightPx) {
             const adjustedHeight = ((lines * lineHeightPx) + 3);  // why the 3? border adjustment I think
             const final = Math.max(adjustedHeight, defaultHeight);
-            innerRef.current.style.height = final + "px"
+            innerRef.current.style.height = final + "px";
         }
         else {
-            innerRef.current.style.height = defaultHeight + "px"
+            innerRef.current.style.height = defaultHeight + "px";
         }
     };
 
@@ -52,9 +53,15 @@ function TextAreaAutoHeight({ defaultHeight = 0, ...props }: Props, ref: Forward
         adjust();
     });
 
+    const style: React.CSSProperties = useMemo(() => ({
+        boxSizing: "border-box",
+        overflow: "hidden",
+        lineHeight
+    }), [lineHeight]);
+
     return <textarea ref={innerRef}
         {...newProps}
-        style={{ overflow: "hidden" }}
+        style={style}
         onChange={combinedOnChange}
     />;
 }

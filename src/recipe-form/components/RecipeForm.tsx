@@ -16,6 +16,14 @@ type Props = {
     initialValues: RecipeInput;
 };
 
+const standardLineHeightStr = getComputedStyle(document.documentElement)
+    .getPropertyValue("--line-height-default");
+let standardLineHeight = parseFloat(standardLineHeightStr);
+if (isNaN(standardLineHeight)) {
+    console.log("--line-height-default is NaN falling back to 1.2 for textarea")
+    standardLineHeight = 1.2;
+}
+
 function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
     const formHelper = useForm<RecipeInput>({
@@ -71,7 +79,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="notes">
                 <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight {...register("notes")} className="multiLine" />
+                <TextAreaAutoHeight lineHeight={standardLineHeight} {...register("notes")} />
                 <FormErrorMessage error={errors.notes} />
             </div>
 
@@ -81,7 +89,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="instructions">
                 <label htmlFor="instructions" className="h-2">Instructions</label>
-                <TextAreaAutoHeight {...register("instructions")} className="multiLine" />
+                <TextAreaAutoHeight lineHeight={standardLineHeight} {...register("instructions")} />
                 <FormErrorMessage error={errors.instructions} />
             </div>
         </form >

@@ -39,24 +39,21 @@
 }
 
 .recipeViewMeta {
-	line-height: 2.3rem;
 	margin-bottom: 1.7rem;
 }
 
 .notes {
-    line-height: 2ch;
     white-space: pre-line;
 }
 
 .substitution {
-    line-height: 2ch;
 }
 
 .ingredientViewList {
     grid-template-columns: auto auto;
     display: inline-grid;
     grid-auto-rows: auto;
-    column-gap: 2rem;
+    column-gap: 20px;
     row-gap: 0.5rem;
     margin-bottom: 1.7rem;
 }
@@ -66,11 +63,9 @@
 }
 
 .ingredientName {
-    line-height: 1.9ch;
 }
 
 .instruction {
-    line-height: 1.9ch;
     margin-bottom: 0.5rem;
 }
 

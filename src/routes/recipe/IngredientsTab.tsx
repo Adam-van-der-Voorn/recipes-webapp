@@ -35,8 +35,8 @@ type MetaDataProps = {
 
 function MetaData({ servings, makes, timeframe }: MetaDataProps) {
     return <ul className="recipeViewMeta" aria-details="recipie metadata">
-        {servings && <li>Serves {servings}</li>}
-        {makes && <li>Yields {makes}</li>}
+        {servings && <li>Serves: {servings}</li>}
+        {makes && <li>Yields: {makes}</li>}
         {timeframe && <li>Timeframe: {timeframe}</li>}
     </ul>;
 }
