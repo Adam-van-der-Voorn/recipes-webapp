@@ -15,7 +15,10 @@ const STATIC_RESOURCES_TO_CACHE = [
     "/style/recipe_view.css",
     "/style/values.css",
     "/style/reset.css",
+    "/style/error.css",
+    "/style/fonts.css",
     "/svg/circle.svg",
+    "/typeface/karla/Karla.woff2",
     "/favicon.ico",
     "/index.html",
 ];

@@ -1,0 +1,8 @@
+
+
+@font-face {
+    font-family: "Karla";
+    src: url("/typeface/karla/Karla.woff2") format(woff2) tech(variations);
+    font-weight: 200 800;
+    font-style: normal;
+}

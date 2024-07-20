@@ -1,0 +1,11 @@
+.routeErrorPage {
+    height: 100%;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.routeErrorPage i {
+    opacity: 60%;
+}
