@@ -42,7 +42,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
                 aria-label="recipie name"
             />
 
-            <section className="meta">
+            <section className="recipeFormMeta">
                 <label htmlFor="timeframe" className="metaLabel">Timeframe</label>
                 <input {...register("timeframe")}
                     type="text"

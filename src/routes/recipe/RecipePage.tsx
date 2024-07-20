@@ -1,19 +1,23 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import MyError from "../../general/placeholders/Error";
 import { Recipe } from "../../types/recipeTypes";
-import RecipeView from "../../recipie-view/RecipieView";
+import InstructionsTab from "./InstructionsTab";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
 import AuthGate from "../../auth/AuthGate";
+import IngredientsTab from "./IngredientsTab";
+import { c } from "../../util/buildClassName";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
+    boxShadow: "none", // as the tab bar is underneath
 };
 
 function RecipePage() {
     const recipeId = useParams().recipeId;
     const { recipes, deleteRecipe } = useContext(GlobalContext);
+    const [tab, setTab] = useState<"ingredients" | "instuctions">("ingredients");
 
     const navigate = useNavigate();
 
@@ -48,9 +52,31 @@ function RecipePage() {
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
+        <div role="tablist" className="tabBar">
+            <button role="tab"
+                className={c("tab", tab === "ingredients" ? "active" : null)}
+                onClick={() => setTab("ingredients")}
+            >Ingredients
+            </button>
+            <button role="tab"
+                className={c("tab", tab === "instuctions" ? "active" : null)}
+                onClick={() => setTab("instuctions")}
+            >Instructions
+            </button>
+        </div>
         <AuthGate>
             <main className="recipePageBody">
-                <RecipeView recipe={recipe} />
+                {tab === "ingredients"
+                    ? <IngredientsTab ingredients={recipe.ingredients}
+                        substitutions={recipe.substitutions}
+                        makes={recipe.makes}
+                        servings={recipe.servings}
+                        timeframe={recipe.timeframe}
+                    />
+                    : <InstructionsTab instructions={recipe.instructions}
+                        notes={recipe.notes}
+                    />
+                }
             </main>
         </AuthGate>
     </div>;
