@@ -57,14 +57,13 @@ function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithC
                 <label htmlFor="email" className={"label"}>Email</label>
                 <input {...register("email")}
                     type="text"
-                    className={"input"}
                     inputMode="email"
                     id="username-input"
                 />
             </div>
             <div className="inputContainer">
                 <label htmlFor="password" className={"label"}>Password</label>
-                <input {...register("password")} type="password" className={"input"} id="password-input" />
+                <input {...register("password")} type="password" id="password-input" />
             </div>
             <div className="authFormFooter">
                 <input type="submit" value="Log in" />

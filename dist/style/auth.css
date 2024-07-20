@@ -49,11 +49,10 @@
     margin-bottom: 5rem;
 }
 
-.input {
+.authForm input[type="text"],input[type="password"]  {
     display: block;
     margin-bottom: 0.5rem;
     width: 100%;
-    /* background-color: var(--col-neutral-8) !important; */
 }
 
 .inputContainer {
