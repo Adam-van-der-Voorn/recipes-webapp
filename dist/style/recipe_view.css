@@ -26,9 +26,7 @@
 }
 
 .recipePageTabPanel {
-    margin-top: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin: 12px;
     padding: 16px;
     border-radius: 3px;
     background: var(--col-text-backing);
