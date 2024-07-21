@@ -14,7 +14,7 @@ const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',
 };
 
-const FORM_ID = "edit-recipie";
+const FORM_ID = "edit-recipe";
 
 function EditRecipePage() {
     const recipeId = useParams().recipeId;
@@ -39,7 +39,7 @@ function EditRecipePage() {
 
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
     if (recipe === undefined) {
-        return <NotFound message="This recipie does not exist :(" />;
+        return <NotFound message="This recipe does not exist :(" />;
     }
 
     const ingredients: IngredientListsInput = recipe.ingredients
@@ -87,7 +87,7 @@ function EditRecipePage() {
             <input type="submit" value="Save" form={FORM_ID} className="headerButton primary" />
         </header>
         <AuthGate>
-            <main className="recipeFormBody" aria-details="edit an existing recipie">
+            <main className="recipeFormBody" aria-details="edit an existing recipe">
                 <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
             </main>
         </AuthGate>

@@ -32,8 +32,8 @@ function RecipePage() {
     const recipe: Recipe | undefined = recipes.data?.get(recipeId);
 
     if (recipe === undefined) {
-        console.error("Recipe not found. Recipie data: ", recipes.data);
-        return <NotFound message="This recipie does not exist :(" />;
+        console.error("Recipe not found. Recipe data: ", recipes.data);
+        return <NotFound message="This recipe does not exist :(" />;
     }
     const deleteAndNavigate = () => {
         let confirmation = window.confirm(`Are you sure you want to delete recipe '${recipe.name}'`);

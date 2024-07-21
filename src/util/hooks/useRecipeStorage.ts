@@ -2,17 +2,17 @@ import { setDoc, doc, onSnapshot, collection, Firestore, deleteDoc } from "fireb
 import { useState, useRef, useEffect } from "react";
 import { Recipe } from "../../types/recipeTypes";
 import { v4 as uuid4 } from 'uuid';
-import Recipies from "../../types/Recipes";
+import Recipes from "../../types/Recipes";
 
 export type RecipesStorageInterface = {
-    recipes: Recipies;
+    recipes: Recipes;
     addRecipe: (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => void;
     editRecipe: (editedRecipe: Recipe, id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
     deleteRecipe: (id: string, onAvalible?: (id: string, recipe: Recipe) => void) => void;
 };
 
 export default function useRecipeStorage(db: Firestore, userId: string | null) {
-    const [recipes, setRecipes] = useState<Recipies>({ status: "prefetch" });
+    const [recipes, setRecipes] = useState<Recipes>({ status: "prefetch" });
     const pendingWrites = useRef(new Map<string, (id: string, recipe: Recipe) => void>());
 
     const addRecipe = (recipe: Recipe, onAvalible?: (id: string, recipe: Recipe) => void) => {

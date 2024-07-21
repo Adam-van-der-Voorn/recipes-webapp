@@ -47,7 +47,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
                 className="recipeName"
                 placeholder="Untitled"
                 autoComplete="off"
-                aria-label="recipie name"
+                aria-label="recipe name"
             />
 
             <section className="recipeFormMeta">

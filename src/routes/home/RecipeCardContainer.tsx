@@ -15,12 +15,12 @@ function RecipeCardContainer() {
         return <MyError message={`Something went wrong :( ${recipes.message ?? ""}`} />;
     }
 
-    const recipeMap = recipes.data!; // we should have recipies due to guard statements above
+    const recipeMap = recipes.data!; // we should have recipes due to guard statements above
     const cards: JSX.Element[] = Array.from(recipeMap).map(([id, recipe]) => {
         return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
     });
 
-    return <main className="recipeFlexContainer" aria-details='list of saved recipies'>
+    return <main className="recipeFlexContainer" aria-details='list of saved recipes'>
             {cards}
     </main>
 }

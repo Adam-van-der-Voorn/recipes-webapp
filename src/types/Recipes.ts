@@ -1,10 +1,10 @@
 import { Recipe } from "./recipeTypes";
 
-type Recipies = {
+type Recipes = {
     data?: Map<string, Recipe>,
     status: "prefetch" | "ok" | "error",
     fromCache?: boolean,
     message?: string,
 }
 
-export default Recipies;
+export default Recipes;
