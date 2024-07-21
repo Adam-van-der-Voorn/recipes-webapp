@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import RecipeCardContainer from "./RecipeCardContainer";
+import MyRecipesPageContent from "./MyRecipesPageContent";
 import { useWindowDimensions } from "../../util/hooks/useWindowDimensions";
 import { useLayoutEffect, useRef, useState } from "react";
 import AuthGate from "../../auth/AuthGate";
@@ -43,7 +43,7 @@ function MyRecipesPage() {
             </button>
         </header>
         <AuthGate>
-            <RecipeCardContainer />
+            <MyRecipesPageContent />
         </AuthGate>
     </div>;
 }

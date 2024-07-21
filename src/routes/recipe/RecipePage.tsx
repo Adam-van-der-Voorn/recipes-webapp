@@ -1,13 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import MyError from "../../general/placeholders/Error";
-import { Recipe } from "../../types/recipeTypes";
-import InstructionsTab from "./InstructionsTab";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import NotFound from "../../general/placeholders/NotFound";
 import AuthGate from "../../auth/AuthGate";
-import IngredientsTab from "./IngredientsTab";
-import { c } from "../../util/buildClassName";
+import { RecipePageContent } from "./RecipePageContent";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
@@ -16,27 +11,23 @@ const headerStyle: React.CSSProperties = {
 function RecipePage() {
     const recipeId = useParams().recipeId;
     const { recipes, deleteRecipe } = useContext(GlobalContext);
-    const [tab, setTab] = useState<"ingredients" | "instuctions">("ingredients");
 
     const navigate = useNavigate();
 
-    if (recipeId === undefined || recipes.status == "error") {
-        console.error(`RecipePage: no recipe provided as param`);
-        return <MyError message="Oops! Something went wrong." />;
+    let recipeName = "";
+    if (recipeId) {
+        recipeName = recipes.data?.get(recipeId)?.name ?? "";
+    }
+    else {
+        console.warn("no recipe is provided as a URL param");
     }
 
-    if (recipes.status === "prefetch") {
-        return null;
-    }
-
-    const recipe: Recipe | undefined = recipes.data?.get(recipeId);
-
-    if (recipe === undefined) {
-        console.error("Recipe not found. Recipe data: ", recipes.data);
-        return <NotFound message="This recipe does not exist :(" />;
-    }
     const deleteAndNavigate = () => {
-        let confirmation = window.confirm(`Are you sure you want to delete recipe '${recipe.name}'`);
+        if (!recipeId) {
+            return;
+        }
+        const iden = recipeName ?? recipeId;
+        let confirmation = window.confirm(`Are you sure you want to delete recipe '${iden}'`);
         if (confirmation) {
             deleteRecipe(recipeId, () => {
                 navigate(`/`);
@@ -47,36 +38,12 @@ function RecipePage() {
     return <div className="page viewRecipePage">
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
-            <h1 className="headerTitle">{recipe.name}</h1>
+            <h1 className="headerTitle">{recipeName ?? ""}</h1>
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
         <AuthGate>
-            <main>
-                {tab === "ingredients"
-                    ? <IngredientsTab ingredients={recipe.ingredients}
-                        substitutions={recipe.substitutions}
-                        makes={recipe.makes}
-                        servings={recipe.servings}
-                        timeframe={recipe.timeframe}
-                    />
-                    : <InstructionsTab instructions={recipe.instructions}
-                        notes={recipe.notes}
-                    />
-                }
-            </main>
-            <div role="tablist" className="tabBar">
-                <button role="tab"
-                    className={c("tab", tab === "ingredients" ? "active" : null)}
-                    onClick={() => setTab("ingredients")}
-                >Ingredients
-                </button>
-                <button role="tab"
-                    className={c("tab", tab === "instuctions" ? "active" : null)}
-                    onClick={() => setTab("instuctions")}
-                >Instructions
-                </button>
-            </div>
+            <RecipePageContent recipeId={recipeId} recipes={recipes} />
         </AuthGate>
 
     </div>;

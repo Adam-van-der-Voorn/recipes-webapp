@@ -2,13 +2,14 @@ import { useContext } from 'react';
 import MyError from "../../general/placeholders/Error";
 import { GlobalContext } from '../../contexts/GlobalContext';
 import RecipeCard from './RecipeCard';
+import Loading from '../../general/placeholders/Loading';
 
 
-function RecipeCardContainer() {
+function MyRecipesPageContent() {
     const { recipes } = useContext(GlobalContext);
 
     if (recipes.status === "prefetch") {
-        return null;
+        return <Loading message="Loading your recipes ..." />;
     }
 
     if (recipes.status === "error") {
@@ -25,4 +26,4 @@ function RecipeCardContainer() {
     </main>
 }
 
-export default RecipeCardContainer;
+export default MyRecipesPageContent;
