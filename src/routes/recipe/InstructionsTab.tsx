@@ -7,7 +7,9 @@ type Props = {
 
 function InstructionsTab({ notes, instructions }: Props) {
     if (instructions === undefined && notes === undefined) {
-        return <p>This recipie has no instructions, good luck! 👍</p>;
+        return <div role="tabpanel" className="recipePageTabPanel">
+            <p>This recipie has no instructions, good luck! 👍</p>
+        </div>;
     }
     return <div role="tabpanel" className="recipePageTabPanel">
         {notes &&
