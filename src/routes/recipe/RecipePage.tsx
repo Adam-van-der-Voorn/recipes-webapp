@@ -11,7 +11,6 @@ import { c } from "../../util/buildClassName";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
-    boxShadow: "none", // as the tab bar is underneath
 };
 
 function RecipePage() {
@@ -45,27 +44,15 @@ function RecipePage() {
         }
     };
 
-    return <div className="RecipePage">
+    return <div className="page viewRecipePage">
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
             <h1 className="headerTitle">{recipe.name}</h1>
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
-        <div role="tablist" className="tabBar">
-            <button role="tab"
-                className={c("tab", tab === "ingredients" ? "active" : null)}
-                onClick={() => setTab("ingredients")}
-            >Ingredients
-            </button>
-            <button role="tab"
-                className={c("tab", tab === "instuctions" ? "active" : null)}
-                onClick={() => setTab("instuctions")}
-            >Instructions
-            </button>
-        </div>
         <AuthGate>
-            <main className="recipePageBody">
+            <main>
                 {tab === "ingredients"
                     ? <IngredientsTab ingredients={recipe.ingredients}
                         substitutions={recipe.substitutions}
@@ -78,7 +65,20 @@ function RecipePage() {
                     />
                 }
             </main>
+            <div role="tablist" className="tabBar">
+                <button role="tab"
+                    className={c("tab", tab === "ingredients" ? "active" : null)}
+                    onClick={() => setTab("ingredients")}
+                >Ingredients
+                </button>
+                <button role="tab"
+                    className={c("tab", tab === "instuctions" ? "active" : null)}
+                    onClick={() => setTab("instuctions")}
+                >Instructions
+                </button>
+            </div>
         </AuthGate>
+
     </div>;
 }
 

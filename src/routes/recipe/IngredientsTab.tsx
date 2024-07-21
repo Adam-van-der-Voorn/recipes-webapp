@@ -14,7 +14,7 @@ type Props = {
 function IngredientsTab({ ingredients, substitutions, servings, makes, timeframe }: Props) {
     const hasMetaData = servings !== undefined || makes !== undefined || timeframe !== undefined;
 
-    return <div role='tabpanel'>
+    return <div role='tabpanel' className="recipePageTabPanel">
         {hasMetaData
             ? <MetaData servings={servings} makes={makes} timeframe={timeframe} />
             : null

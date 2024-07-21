@@ -1,4 +1,4 @@
-.RecipeCardContainer {
+.recipeFlexContainer {
     display: flex;
     flex-flow: row wrap;
     align-content: flex-start;
@@ -9,10 +9,10 @@
 }
 
 .RecipeCard {
-    /* border: 1px solid black; */
     border-radius: 3px;
     width: fit-content;
     padding: 8px;
     flex: 0 0 auto;
     background-color: var(--col-text-backing);
+    overflow-wrap: anywhere;
 }

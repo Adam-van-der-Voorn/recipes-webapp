@@ -9,7 +9,7 @@ function InstructionsTab({ notes, instructions }: Props) {
     if (instructions === undefined && notes === undefined) {
         return <p>This recipie has no instructions, good luck! 👍</p>;
     }
-    return <div role="tabpanel">
+    return <div role="tabpanel" className="recipePageTabPanel">
         {notes &&
             <Notes notes={notes} />
         }

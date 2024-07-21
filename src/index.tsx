@@ -6,7 +6,7 @@ import ErrorPage from './routes/general/ErrorPage';
 import AddRecipePage from './routes/add-recipe/AddRecipePage';
 import EditRecipePage from './routes/edit-recipe/EditRecipePage';
 import RecipePage from './routes/recipe/RecipePage';
-import RecipeSetPage from './routes/home/RecipeSetPage';
+import MyRecipesPage from './routes/home/MyRecipesPage';
 
 const router = createBrowserRouter([
     {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <RecipeSetPage />
+                element: <MyRecipesPage />
             },
             {
                 path: "add-recipe",

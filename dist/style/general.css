@@ -1,7 +1,23 @@
+html, body, #root, .page {
+    height: 100%;
+}
+
 html {
     background-color: var(--col-background);
     font-size: 62.5%;
     font-family: 'Karla', Helvetica, Arial, sans-serif;
+}
+
+.page {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* default: header content
+    override if required */
+    grid-template-rows: auto 1fr;
+}
+
+main {
+    overflow-y: scroll;
 }
 
 button, input, select, textarea {

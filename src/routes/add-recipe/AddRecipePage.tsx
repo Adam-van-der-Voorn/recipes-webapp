@@ -41,7 +41,7 @@ function AddRecipePage() {
         substitutions: [],
     };
 
-    return <>
+    return <div className="page">
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
             <h1 className="headerTitle">New Recipe</h1>
@@ -56,7 +56,7 @@ function AddRecipePage() {
                 <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
             </main>
         </AuthGate>
-    </>;
+    </div>;
 }
 
 export default AddRecipePage;

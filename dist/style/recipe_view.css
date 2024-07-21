@@ -1,21 +1,19 @@
 .tabBar {
-	position: sticky;
-	margin: 0;
-	top: 60px;
-	width: 100%;
-	box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
     border-top: 1px var(--col-neutral-6) solid;
-	background-color: var(--col-text-backing);
-	box-shadow: 0px -100px 8px 104px rgba(0, 0, 0, 0.2);
-	display: grid;
-	grid-template-rows: 1fr;
-	grid-template-columns: 1fr 1fr;
+    background-color: var(--col-text-backing);
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    height: 50px;
 }
 
 .tab {
-	background: transparent;
-	border: none;
-	border-radius: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
 }
 
 .tab.active {
@@ -23,7 +21,11 @@
     color: var(--col-neutral-9);
 }
 
-.recipePageBody {
+.viewRecipePage {
+    grid-template-rows: auto 1fr auto;
+}
+
+.recipePageTabPanel {
     margin-top: 12px;
     margin-left: 12px;
     margin-right: 12px;
@@ -32,21 +34,12 @@
     background: var(--col-text-backing);
 }
 
-.instructions {
-}
-
-.ingredients {
-}
-
 .recipeViewMeta {
-	margin-bottom: 1.7rem;
+    margin-bottom: 1.7rem;
 }
 
 .notes {
     white-space: pre-line;
-}
-
-.substitution {
 }
 
 .ingredientViewList {
@@ -62,11 +55,6 @@
     margin-top: 0;
 }
 
-.ingredientName {
-}
-
 .instruction {
     margin-bottom: 0.5rem;
 }
-
-.instructionMarker {}

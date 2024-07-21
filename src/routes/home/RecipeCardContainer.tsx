@@ -8,11 +8,11 @@ function RecipeCardContainer() {
     const { recipes } = useContext(GlobalContext);
 
     if (recipes.status === "prefetch") {
-        return null
+        return null;
     }
 
     if (recipes.status === "error") {
-        return <MyError message={`Something went wrong :( ${recipes.message ?? ""}`} />
+        return <MyError message={`Something went wrong :( ${recipes.message ?? ""}`} />;
     }
 
     const recipeMap = recipes.data!; // we should have recipies due to guard statements above
@@ -20,11 +20,9 @@ function RecipeCardContainer() {
         return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
     });
 
-    return (
-        <div className="RecipeCardContainer" aria-details='list of saved recipies'>
+    return <main className="recipeFlexContainer" aria-details='list of saved recipies'>
             {cards}
-        </div>
-    );
+    </main>
 }
 
 export default RecipeCardContainer;

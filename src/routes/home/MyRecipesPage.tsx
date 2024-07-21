@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import RecipeCardContainer from "./RecipeCardContainer";
 import { useWindowDimensions } from "../../util/hooks/useWindowDimensions";
-import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import AuthGate from "../../auth/AuthGate";
-import { GlobalContext } from "../../contexts/GlobalContext";
 
 const minSearchbarSizePx = 30;
 
-function RecipeSetPage() {
+function MyRecipesPage() {
     const nav = useNavigate();
-    const { auth, user } = useContext(GlobalContext);
     const { windowWidth } = useWindowDimensions();
     const searchBarRef = useRef<HTMLInputElement>(null);
     const [displayTitle, setDisplayTitle] = useState(false);
@@ -22,7 +20,7 @@ function RecipeSetPage() {
         if (displayTitle && windowWidth < threshold) {
             setDisplayTitle(false);
         }
-    }, [windowWidth]);
+    }, [windowWidth, displayTitle]);
 
     const gridTemplateColumns = displayTitle
         ? `1fr minmax(${minSearchbarSizePx}px, 300px) auto`
@@ -32,7 +30,7 @@ function RecipeSetPage() {
         gridTemplateColumns
     };
 
-    return <>
+    return <div className="page">
         <header style={headerStyle}>
             {displayTitle
                 ? <h1 className="headerTitle" style={{ whiteSpace: "nowrap" }}>My Recipes</h1>
@@ -47,7 +45,7 @@ function RecipeSetPage() {
         <AuthGate>
             <RecipeCardContainer />
         </AuthGate>
-    </>;
+    </div>;
 }
 
-export default RecipeSetPage;
+export default MyRecipesPage;
