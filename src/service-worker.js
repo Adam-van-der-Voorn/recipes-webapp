@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-const VERSION = "v6";
+const VERSION = "v7";
 const CACHE_NAME = `vdv-recipes-${VERSION}`;
 const LOG_TAG = `${VERSION}-sw:`
 const STATIC_RESOURCES_TO_CACHE = [
