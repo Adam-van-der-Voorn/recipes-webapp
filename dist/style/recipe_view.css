@@ -36,6 +36,19 @@
     margin-bottom: 1.7rem;
 }
 
+#quantityScaleInput {
+    width: 5ch;
+}
+
+.ingredientsQuantityScale {
+    margin-top: 2.7rem;
+    margin-bottom: 1.7rem;
+}
+
+.ingredientsQuantityScale > label {
+    margin-right: 1ch;
+}
+
 .notes {
     white-space: pre-line;
 }
