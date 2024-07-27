@@ -9,6 +9,7 @@ import TextAreaAutoHeight from "../../general/TextAreaAutoHeight";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RecipeInput } from "../../types/RecipeInputTypes";
+import { usePreventUnload } from "../../util/hooks/usePreventUnload";
 
 type Props = {
     id?: string,
@@ -33,7 +34,9 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
         defaultValues: initialValues
     });
 
-    const { register, handleSubmit, control, setValue, getValues, formState: { errors } } = formHelper;
+    const { register, handleSubmit, control, setValue, getValues, formState: { errors, isDirty } } = formHelper;
+
+    usePreventUnload(isDirty)
 
     const onSubmit: SubmitHandler<RecipeInput> = data => {
         const parsed = parseFormData(data);
