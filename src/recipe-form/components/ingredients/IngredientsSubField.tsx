@@ -1,5 +1,5 @@
-import { Control, UseFormRegister, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
-import React from "react";
+import { Control, UseFormRegister, UseFormSetValue, useFormState, UseFormTrigger, useWatch } from "react-hook-form";
+import React, { ClipboardEventHandler } from "react";
 import { MdMoreVert } from 'react-icons/md';
 import MenuItemToggleable from "../../../general/dropdown/MenuItemToggleable";
 import DropdownMenu from "../../../general/dropdown/DropdownMenu";
@@ -12,7 +12,7 @@ import { v4 as uuid4 } from 'uuid';
 import Dialog from "../../../general/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
-
+import { parseExternalIngredientText } from "../../parse-external/parseExternalIngredientText";
 
 const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: '' };
 
@@ -20,6 +20,7 @@ type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
     register: UseFormRegister<RecipeInput>;
+    trigger: UseFormTrigger<RecipeInput>
 };
 
 type FakeTag = {
@@ -37,7 +38,7 @@ type Props = {
 } & FormHelpers;
 
 function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed, onPercentageBlur, onQuantityBlur, onAnchorChange, ...formHelpers }: Props) {
-    const { control, setValue, register } = formHelpers;
+    const { control, setValue, register, trigger } = formHelpers;
 
     const [ingredients, substitutions, currentAnchorIdx] = useWatch({
         control, name: [
@@ -72,9 +73,69 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
         addSubstitution(result);
     };
 
+    const onPaste: ClipboardEventHandler<HTMLInputElement> = (event) => {
+        const input = event.target as HTMLInputElement;
+        if (input.value.trim() !== "") {
+            // just regular paste if input contains content
+            return;
+        }
+        const clip: DataTransfer = (event.clipboardData || (window as any).clipboardData);
+        const pastedText = clip.getData("text");
+        const parsed = parseExternalIngredientText(pastedText);
+        if (parsed.length === 0) {
+            // fallback to normal paste if we cannot parse anything out
+            return;
+        }
+
+        event.preventDefault();
+        
+        const inputIndex = getIngredientRowIndex(input);
+        let nextIngredient = parsed.shift()
+        let ingredientsCopy = [...ingredients]
+        let i = inputIndex;
+        while (nextIngredient !== undefined) {
+            const row = {
+                ...defaultFieldValues,
+                name: nextIngredient.ingredient,
+                quantity: nextIngredient.quantity ?? "",
+                id: uuid4()
+            };
+            const isEmpty = !ingredientsCopy[i] || ingredientsCopy[i].name.trim().length === 0;
+            if (isEmpty) {
+                ingredientsCopy[i] = row;
+            }
+            else {
+                // insert
+                const ii = i;
+                ingredientsCopy = [...ingredientsCopy.slice(0, ii), row, ...ingredientsCopy.slice(ii)]
+            }
+            nextIngredient = parsed.shift()
+            i++;
+        }
+        setValue(`ingredients.lists.${listIdx}.ingredients`, ingredientsCopy)
+        trigger(`ingredients.lists.${listIdx}.ingredients`)
+    };
+
+    function getIngredientRowIndex(input: HTMLInputElement) {
+        if (input.name === 'add-new') {
+            return ingredients.length
+        }
+        // ingredients.lists.0.ingredients.0.name
+        const inputIndexStr = input.name.split(".")?.at(4)
+        if (inputIndexStr) {
+            let parsed = parseInt(inputIndexStr)
+            if (!isNaN(parsed)) {
+                return parsed;
+            }
+        }
+
+        console.warn("PasteIngredients: failed to get input index, this indicates a bug. Falling back to 0")
+        return 0;
+    }
+
     const ingredientListClass = isPercentagesIncluded
         ? `ingredientFormList showPercentages`
-        : `ingredientFormList`
+        : `ingredientFormList`;
 
     return (
         <>
@@ -107,6 +168,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                             return <React.Fragment key={ingredient.id}>
                                 <input name="add-new"
                                     onChange={(ev) => push({ id: ingredient.id, ...defaultFieldValues, name: ev.target.value })}
+                                    onPaste={onPaste}
                                     type="text"
                                     className="name new-ingredient"
                                     autoComplete="off"
@@ -114,12 +176,13 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     aria-label="new ingredient name"
                                     aria-details="Used to add a new ingredient. Other fields will be added once a name is typed."
                                 />
-                            </React.Fragment>      
+                            </React.Fragment>;
                         }
                         return (
                             <React.Fragment key={ingredient.id}>
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
                                     type="text"
+                                    onPaste={onPaste}
                                     className="name"
                                     autoComplete="off"
                                     aria-label="ingredient name"

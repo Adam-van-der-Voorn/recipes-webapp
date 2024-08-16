@@ -1,4 +1,4 @@
-import { Control, UseFormRegister, UseFormSetValue, useWatch } from "react-hook-form";
+import { Control, UseFormRegister, UseFormSetValue, UseFormTrigger, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { parseIngredientQuantity } from "../../parseUnitValInputs";
 import { IngredientQuantity, UnitVal } from "../../../types/recipeTypes";
@@ -16,11 +16,12 @@ type FormHelpers = {
     control: Control<RecipeInput, any>;
     setValue: UseFormSetValue<RecipeInput>;
     register: UseFormRegister<RecipeInput>;
+    trigger: UseFormTrigger<RecipeInput>
 };
 
 type Props = {} & FormHelpers;
 
-function IngredientsField({ setValue, control, register }: Props) {
+function IngredientsField({ setValue, control, register, trigger }: Props) {
     const lists = useWatch({ control, name: "ingredients.lists" });
     const currentAnchorIdx = useWatch({ control, name: "ingredients.anchor" });
     const { replace, push } = useFieldList("ingredients.lists", setValue, lists);
@@ -168,7 +169,7 @@ function IngredientsField({ setValue, control, register }: Props) {
                         onQuantityBlur={onQuantityBlur}
                         onPercentageBlur={onPercentageBlur}
                         onAnchorChange={onAnchorChange}
-                        {...{ register, setValue, control }}
+                        {...{ register, setValue, control, trigger }}
                     />
                 ))
             }

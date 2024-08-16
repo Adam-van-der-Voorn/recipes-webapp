@@ -34,7 +34,15 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
         defaultValues: initialValues
     });
 
-    const { register, handleSubmit, control, setValue, getValues, formState: { errors, isDirty } } = formHelper;
+    const { 
+        register,
+        handleSubmit,
+        control,
+        setValue,
+        getValues,
+        formState: { errors, isDirty },
+        trigger
+    } = formHelper;
 
     usePreventUnload(isDirty)
 
@@ -86,7 +94,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
                 <FormErrorMessage error={errors.notes} />
             </div>
 
-            <IngredientsField {...{ control, register, getValues, setValue }} />
+            <IngredientsField {...{ control, register, getValues, setValue, trigger }} />
 
             <SubstitutionsField {...{ control, setValue }} />
 

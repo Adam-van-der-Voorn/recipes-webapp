@@ -17,14 +17,17 @@ export function isConvertableUnit(unit: string) {
     return allUnits.includes(unit as Unit);
 }
 
+
 export function isValidIngredientUnit(unit: string) {
-    return [
-        ...validInMeasure('length'),
-        ...validInMeasure('area'),
-        ...validInMeasure('volume'),
-        ...validInMeasure('mass')
-    ].includes(unit);
+    return ingredientUnits.includes(unit);
 }
+
+export const ingredientUnits = [
+    ...validInMeasure('length'),
+    ...validInMeasure('area'),
+    ...validInMeasure('volume'),
+    ...validInMeasure('mass')
+]
 
 export function validInMeasure(s: Measure) {
     return convert().list(s).flatMap(e => [e.abbr, e.singular, e.plural]);
