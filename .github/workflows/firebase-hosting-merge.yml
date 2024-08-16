@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Print info
+        run: "echo 'npm version: '$(npm -version) '\nnode version: '$(node -v)"
+
       - name: Install pnpm # required as we have no package-lock.json
         run: npm install -g pnpm
 
