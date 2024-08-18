@@ -21,6 +21,6 @@
     "outDir": "ts-out"
   },
   "include": [
-    "src/**/*"
+    "client/src/**/*"
   ],
 }

@@ -33,11 +33,5 @@
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   },
-  "scripts": {
-    "build": "webpack --mode=production",
-    "build:dev": "webpack --mode=development --watch",
-    "serve": "serve -s dist",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
-  },
   "type": "module"
 }
