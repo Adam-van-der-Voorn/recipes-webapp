@@ -1,5 +1,5 @@
 {
-  "name": "recipes",
+  "name": "recipes-client",
   "private": true,
   "dependencies": {
     "classnames": "^2.3.1",

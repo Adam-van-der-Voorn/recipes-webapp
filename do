@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 SCRIPT_LOC=$(dirname $0)
 
