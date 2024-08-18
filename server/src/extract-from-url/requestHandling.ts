@@ -1,6 +1,8 @@
+import { app } from "firebase-admin";
 import { ResponseData } from "../requestHandling.js";
+import { extract } from "./extract.js";
 
-export function getResponseData(method: string, url: URL): ResponseData {
+export async function getResponseData(app: app.App, method: string, url: URL): Promise<ResponseData> {
     if (method !== "GET") {
         return {
             body: { errors: ["invalid request - this resource accepts only GETs"] },
@@ -15,10 +17,11 @@ export function getResponseData(method: string, url: URL): ResponseData {
             statusCode: 400
         };
     }
-    console.log("recipe url:", recipeUrl);
+
+    const result = await extract(recipeUrl, app);
 
     return {
-        body: { errors: ["todo - not implemented"] },
+        body: { IDs: result },
         statusCode: 200
     };
 }
