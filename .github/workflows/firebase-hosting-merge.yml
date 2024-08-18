@@ -24,13 +24,13 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: ./do install
 
       - name: Build project
-        run: pnpm run build
+        run: ./do build
 
       - name: Run unit tests
-        run: pnpm run test
+        run: ./do test
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

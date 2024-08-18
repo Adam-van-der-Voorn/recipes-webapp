@@ -2,7 +2,11 @@
 
 SCRIPT_LOC=$(dirname $0)
 
-# Define a function for each script
+install_js_deps() {
+    cd $SCRIPT_LOC/client
+    pnpm install
+}
+
 build() {
     cd $SCRIPT_LOC/client
     node_modules/.bin/webpack-cli --mode=production
@@ -26,6 +30,9 @@ test() {
 
 # Check the first argument and call the appropriate function
 case "$1" in
+    install)
+        install_js_deps
+        ;;
     build)
         build
         ;;
