@@ -17,20 +17,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Print info
-        run: "echo 'npm version: '$(npm -version) '\nnode version: '$(node -v)"
-
-      - name: Install pnpm # required as we have no package-lock.json
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: ./do install
-
-      - name: Build project
-        run: ./do build
-
-      - name: Run unit tests
-        run: ./do test
+      - name: Run CI tests
+        run: "./do ci"
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

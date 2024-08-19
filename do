@@ -1,11 +1,7 @@
 #!/bin/sh
 
-SCRIPT_LOC=$(dirname $0)
-
-install_js_deps() {
-    cd $SCRIPT_LOC/client
-    pnpm install
-}
+cd $(dirname $0)
+SCRIPT_LOC=$(pwd)
 
 build() {
     cd $SCRIPT_LOC/client
@@ -28,11 +24,17 @@ test() {
     node --experimental-vm-modules node_modules/jest/bin/jest.js
 }
 
+ci() {
+    set -e
+    cd $SCRIPT_LOC/client
+    echo 'npm version: '$(npm -version) '\nnode version: '$(node -v)
+    pnpm install
+    build
+    test
+}
+
 # Check the first argument and call the appropriate function
 case "$1" in
-    install)
-        install_js_deps
-        ;;
     build)
         build
         ;;
@@ -45,8 +47,11 @@ case "$1" in
     test)
         test
         ;;
+    ci)
+        ci
+        ;;
     *)
-        echo "Usage: $0 {build|build:dev|serve|test}"
+        echo "Usage: $0 {build|build:dev|serve|test|ci}"
         exit 1
         ;;
 esac
