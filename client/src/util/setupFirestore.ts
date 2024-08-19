@@ -6,6 +6,9 @@ export default function setupFirebase() {
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
+        // https://firebase.google.com/docs/projects/api-keys
+        // Firebase-related APIs use API keys only to identify the Firebase project or app,
+        // not for authorization to call the API (like some other APIs allow).
         apiKey: "AIzaSyBZaU6DaCaZHqeHFuQwg8enna3LkEkJNu8",
         authDomain: "recipiesapp-85118.firebaseapp.com",
         projectId: "recipiesapp-85118",
