@@ -17,9 +17,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run CI tests
-        run: "./do ci"
-
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:

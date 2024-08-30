@@ -1,14 +1,20 @@
 import { handleRequests } from './routes.js';
 import { setupFirebase } from './firebaseSetup.js';
 import express from 'express';
+import path from 'node:path';
 
-const PORT = process.argv[2];
-const secretServiceAccountPath = process.argv[3];
+// TODO verify params
+const port = process.argv[2];
+const staticDir = process.argv[3];
+const secretServiceAccountPath = process.argv[4];
 
-const BASE_URL = `http://localhost:${PORT}`
+const staticDirResolved = path.resolve(staticDir)
 
 const app = setupFirebase(secretServiceAccountPath);
 
 const exp = express()
-handleRequests(exp, app);
-exp.listen(PORT, () => console.log('Express started on port', PORT));
+handleRequests(exp, app, staticDirResolved);
+exp.listen(port, () => {
+    console.log('Express started on port', port)
+    console.log("serving static resources from", staticDirResolved)
+});
