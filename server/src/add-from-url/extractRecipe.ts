@@ -1,11 +1,7 @@
 
 import { parseHtmlAsync } from 'libxmljs';
 import { findNestedObjKey } from '../util/nestedObjKeys.js';
-
-// temp, replace with real type once we have shared fe/be types
-type Recipe = {
-    name: string
-}
+import { convertSchemaOrgRecipe, Recipe } from './convertSchemaOrgRecipe.js';
 
 type ExtractRecipeRes = {
     error?: "unknown" | "schema.org.unsupported",
@@ -32,7 +28,7 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
         }
 
         console.log("extract recipe:", jsonLdList.length, "schema.org elements found");
-        const recipes = [];
+        const recipes: Recipe[] = [];
         let i = 1;
         for (const el of jsonLdList) {
             const child = el.child(0);
@@ -55,8 +51,22 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
                 continue;
             }
             console.log(`el ${i}:`, 'valid recipe');
-            const recipe = convertSchemaOrgRecipe(schemaOrgRecipe as any);
-            recipes.push(recipe);
+            const converted = convertSchemaOrgRecipe(schemaOrgRecipe as any);
+            
+            // temp solution - add og URL to notes
+            let editedNotes = (converted.recipe.notes ?? "").trimEnd();
+            if (editedNotes !== "") {
+                editedNotes += "\n\n"
+            }
+            editedNotes += "original recipe: " + url.href
+            converted.recipe.notes = editedNotes;
+            //
+
+            recipes.push(converted.recipe);
+            if (converted.warnings.length > 0) {
+                console.warn(`w! ${i}:`, 'conversion warnings for', url.href);
+                converted.warnings.forEach(w => console.warn(`w! ${i}:`, w))
+            }
             i ++
         }
 
@@ -74,27 +84,5 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
     catch (e) {
         console.error("extractRecipe: failure", e);
         return { error: "unknown" };
-    }
-}
-
-type SchemaOrgRecipe = {
-    '@type': 'Recipe',
-    name: string,
-    description: string,
-    image: string[], // links, origonal first and then resizes in decreasing order
-    // multiple options, e.g. ['9', '9 - 10 fritters']
-    // TODO: can also be a https://schema.org/QuantitativeValue
-    recipeYield: string[], 
-    // ISO 8601 duration format
-    // https://www.digi.com/resources/documentation/digidocs/90001488-13/reference/r_iso_8601_duration_format.htm
-    totalTime: string,
-    recipeIngredient: string[]
-    // too complicated for now
-    // recipeInstructions: ...
-};
-
-function convertSchemaOrgRecipe(input: SchemaOrgRecipe): Recipe {
-    return {
-        name: input.name
     }
 }
