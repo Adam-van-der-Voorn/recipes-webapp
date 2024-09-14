@@ -9,6 +9,9 @@ export type ResponseData = {
 };
 
 export const MESSAGE_UNKNOWN_UNEXPECTED_ERROR = 'Unknown, unexpected, error.'
+export const MESSAGE_UNAUTHORISED_NO_JWT = "Unauthorised, expected JWT";
+export const MESSAGE_UNAUTHORISED_INVALID_JWT = "Unauthorised, invalid JWT";
+
 
 export function handleRequests(exp: Express, app: admin.app.App, staticDir: string): void {
     // exp.use ('/api', logRawChunks)
