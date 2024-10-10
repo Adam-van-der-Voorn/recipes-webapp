@@ -44,7 +44,7 @@ function MyRecipesPage() {
             >Add Recipe
             </button>
         </header>
-        <Dialogue open={dialogueOpen} />
+        <Dialogue isOpen={dialogueOpen} close={() => setDialogueOpen(false)} />
         <AuthGate>
             <MyRecipesPageContent />
         </AuthGate>
@@ -52,10 +52,11 @@ function MyRecipesPage() {
 }
 
 type DialogProps = {
-    open: boolean;
+    isOpen: boolean;
+    close: () => void
 };
 
-function Dialogue({ open }: DialogProps) {
+function Dialogue({ isOpen, close }: DialogProps) {
     const { user } = useContext(GlobalContext);
 
     const doStuff = (fbUser: User, url: string) => {
@@ -82,24 +83,23 @@ function Dialogue({ open }: DialogProps) {
         content = "no user";
     }
     else {
+        const closeButtonStyle = {
+            float: "right",
+            fontSize: 'smaller',
+            paddingTop: '2px',
+            paddingBottom: '2px',
+        };
         content = <>
-            <Link to="/add-recipe">manual add</Link>
-            <form onSubmit={(ev) => {
-                ev.preventDefault()
-                const value = (ev.target as any)
-                    .querySelector("#add-from-url")
-                    .value
-                doStuff(user, value)
-            }}>
-                <label htmlFor="add-from-url"></label>
-                <label>Add from URL:</label>
-                <input type="text" name="add-from-url" id="add-from-url" />
-                <input type="submit" value="Add" />
-            </form>
+            <Link to="/add-recipe">Manual</Link>
+            {" · "}
+            <Link to="/add-recipe-from-url">From URL</Link>
+            {/* @ts-ignore */}
+            <button style={closeButtonStyle} onClick={close}>Close</button>
+
         </>;
     }
 
-    return <dialog open={open} style={{ zIndex: 3 }}>
+    return <dialog open={isOpen} style={{ zIndex: 3 }}>
         {content}
     </dialog>;
 }

@@ -7,6 +7,7 @@ import AddRecipePage from './routes/add-recipe/AddRecipePage';
 import EditRecipePage from './routes/edit-recipe/EditRecipePage';
 import RecipePage from './routes/recipe/RecipePage';
 import MyRecipesPage from './routes/home/MyRecipesPage';
+import AddRecipeFromUrlPage from './routes/add-recipe-from-url/AddRecipeFromUrlPage';
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
             {
                 path: "add-recipe",
                 element: <AddRecipePage />,
+            },
+            {
+                path: "add-recipe-from-url",
+                element: <AddRecipeFromUrlPage />,
             },
             {
                 path: "view/:recipeId",
