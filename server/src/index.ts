@@ -1,12 +1,13 @@
-import { handleRequests } from './routes.js';
-import { setupFirebase } from './firebaseSetup.js';
+import { handleRequests } from './routes.ts';
+import { setupFirebase } from './firebaseSetup.ts';
+import { argv } from 'node:process';
 import express from 'express';
 import path from 'node:path';
 
 // TODO verify params
-const port = process.argv[2];
-const staticDir = process.argv[3];
-const secretServiceAccountPath = process.argv[4];
+const port = argv[2];
+const staticDir = argv[3];
+const secretServiceAccountPath = argv[4];
 
 const staticDirResolved = path.resolve(staticDir)
 

@@ -1,4 +1,4 @@
-import { ingredientUnits } from "./ingredientUnits.js";
+import { ingredientUnits } from "./ingredientUnits.ts";
 
 // valid number is made up of [1-9]+(.[1-9]+)?
 // or with fractions [1-9]* *<fraction>?

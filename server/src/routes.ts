@@ -1,6 +1,6 @@
 import admin from 'firebase-admin';
 import express, { Express, NextFunction, Request, Response } from 'express';
-import { addRecipeFromUrl } from './add-from-url/entry.js';
+import { addRecipeFromUrl } from './add-from-url/entry.ts';
 import path from 'node:path';
 
 export type ResponseData = {

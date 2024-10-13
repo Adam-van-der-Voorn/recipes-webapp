@@ -5,25 +5,17 @@ const path = require('node:path');
 
 const projectRoot = process.argv[2];
 const clientRoot = path.resolve(projectRoot, 'client')
-const serverRoot = path.resolve(projectRoot, 'server')
 
 // frontend watch & build 
 const clientWebpackBin = path.resolve(clientRoot, 'node_modules', '.bin', 'webpack-cli')
 let feBuild = spawn(clientWebpackBin, ['--mode=development', '--watch', '--stats=minimal'], { cwd: clientRoot });
 relog(feBuild, "stdout", "wpack: ")
 relog(feBuild, "stderr", "wpack: ")
-
-// backend watch & build
-const serverTscBin = path.resolve(serverRoot, 'node_modules', '.bin', 'tsc')
-let beBuild = spawn(serverTscBin, ['--project', 'tsconfig.json', '--watch'], { cwd: serverRoot });
-relog(beBuild, "stdout", "tsc: ")
-relog(beBuild, "stderr", "tsc: ")
  
 const denoArgs = [
     '--allow-read',
     '--allow-env',
     '--allow-net',
-    '--unstable-sloppy-imports',
     '--watch',
 ]
 

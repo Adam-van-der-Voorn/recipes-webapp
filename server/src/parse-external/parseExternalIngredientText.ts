@@ -1,4 +1,4 @@
-import { parseExternalIngredientLine } from "./parseExternalIngredientLine.js";
+import { parseExternalIngredientLine } from "./parseExternalIngredientLine.ts";
 
 export function parseExternalIngredientText(externalText: string) {
     return externalText

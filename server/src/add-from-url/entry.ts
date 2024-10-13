@@ -1,8 +1,8 @@
 import { Firestore } from "firebase-admin/firestore";
-import { addNewRecipe } from "./addRecipe.js";
+import { addNewRecipe } from "./addRecipe.ts";
 import { Request, Response } from 'express';
-import { MESSAGE_UNAUTHORISED_INVALID_JWT, MESSAGE_UNAUTHORISED_NO_JWT, MESSAGE_UNKNOWN_UNEXPECTED_ERROR } from "../routes.js";
-import { extractRecipe } from "./extractRecipe.js";
+import { MESSAGE_UNAUTHORISED_INVALID_JWT, MESSAGE_UNAUTHORISED_NO_JWT, MESSAGE_UNKNOWN_UNEXPECTED_ERROR } from "../routes.ts";
+import { extractRecipe } from "./extractRecipe.ts";
 import { getAuth } from "firebase-admin/auth";
 
 const MESSAGE_BAD_URL = "Invalid request. The request body must be a JSON object with a 'url' property. The value of 'url' must be a valid URL.";
