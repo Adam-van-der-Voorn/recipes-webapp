@@ -30,6 +30,7 @@ secret.json
 client/dist/js/*.bundle.*
 ts-out
 target
+deploy.sh
 
 # bundled service worker file (cannot change fn)
 client/dist/service-worker.js
