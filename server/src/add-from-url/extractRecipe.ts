@@ -1,5 +1,5 @@
 
-import { parseHtmlAsync } from 'libxmljs';
+import { parse as parseHTML } from 'node-html-parser';
 import { findNestedObjKey } from '../util/nestedObjKeys.js';
 import { convertSchemaOrgRecipe, Recipe } from './convertSchemaOrgRecipe.js';
 
@@ -13,8 +13,8 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
         const response = await fetch(url);
         console.log("extract recipe:", url.hostname, "repsonded with", response.status);
         const body = await response.text();
-        const html = await parseHtmlAsync(body);
-        const jsonLdList = html.find("//script[@type='application/ld+json']");
+        const html = parseHTML(body);
+        const jsonLdList = html.querySelectorAll(`script[type="application/ld+json"]`);
         if (jsonLdList.length === 0) {
             const regex = /"@type": *"Recipe"/;
             const exists = regex.test(body);
@@ -31,12 +31,12 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
         const recipes: Recipe[] = [];
         let i = 1;
         for (const el of jsonLdList) {
-            const child = el.child(0);
+            const child = el.childNodes[0];
             if (!child) {
                 console.log(`el ${i}:`, 'no child element');
                 continue;
             }
-            const text = child.text();
+            const text = child.innerText;
             let json;
             try {
                 json = JSON.parse(text);
