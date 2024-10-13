@@ -18,9 +18,24 @@ const serverTscBin = path.resolve(serverRoot, 'node_modules', '.bin', 'tsc')
 let beBuild = spawn(serverTscBin, ['--project', 'tsconfig.json', '--watch'], { cwd: serverRoot });
 relog(beBuild, "stdout", "tsc: ")
 relog(beBuild, "stderr", "tsc: ")
+ 
+const denoArgs = [
+    '--allow-read',
+    '--allow-env',
+    '--allow-net',
+    '--unstable-sloppy-imports',
+    '--watch',
+]
+
+const serverArgs = [
+    'server/src/index.ts',
+    '3333',
+    'client/dist',
+    '/home/adamv/.secrets/recipiesapp-85118-firebase-adminsdk-3a43h-5a8b539d3a.json',
+]
 
 // server
-let server = spawn("node", ['--watch', 'server/target/index.js', '3333', 'client/dist', '/home/adamv/.secrets/recipiesapp-85118-firebase-adminsdk-3a43h-5a8b539d3a.json'], { cwd: projectRoot });
+let server = spawn("deno", [...denoArgs, ...serverArgs], { cwd: projectRoot });
 relog(server, "stdout", "server: ")
 relog(server, "stderr", "server: ")
 
