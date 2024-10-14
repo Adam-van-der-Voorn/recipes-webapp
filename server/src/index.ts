@@ -1,4 +1,4 @@
-import { handleRequests } from './routes.ts';
+import { handleRequests } from './routes/routes.ts';
 import { setupFirebase } from './firebaseSetup.ts';
 import { argv } from 'node:process';
 import express from 'express';

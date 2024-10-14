@@ -1,6 +1,6 @@
 
 import { parse as parseHTML } from 'node-html-parser';
-import { findNestedObjKey } from '../util/nestedObjKeys.ts';
+import { findNestedObjKey } from '../../../util/nestedObjKeys.ts';
 import { convertSchemaOrgRecipe, Recipe } from './convertSchemaOrgRecipe.ts';
 
 type ExtractRecipeRes = {

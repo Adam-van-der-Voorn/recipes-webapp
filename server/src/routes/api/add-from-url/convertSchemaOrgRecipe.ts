@@ -1,7 +1,7 @@
 
 import { HowToStep, Recipe as SchemaOrgRecipe } from 'schema-dts'
 import { parse as parseIso8601Duration } from 'iso8601-duration'
-import { parseExternalIngredientLine } from '../parse-external/parseExternalIngredientLine.ts';
+import { parseExternalIngredientLine } from '../../../parse-external/parseExternalIngredientLine.ts';
 import he from 'he'
 
 // for now, copy pasted from client/src/types/recipeTypes.ts
