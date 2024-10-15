@@ -3,10 +3,10 @@ import { addNewRecipe } from "./addRecipe.ts";
 import { Request, Response } from 'express';
 import { MESSAGE_UNAUTHORISED_INVALID_JWT, MESSAGE_UNAUTHORISED_NO_JWT, MESSAGE_UNKNOWN_UNEXPECTED_ERROR } from "../../routes.ts";
 import { extractRecipe } from "./extractRecipe.ts";
+import { MESSAGE_NO_SCHEMA_ORG } from "./constants.ts";
 import { getAuth } from "firebase-admin/auth";
 
 const MESSAGE_BAD_URL = "Invalid request. The request body must be a JSON object with a 'url' property. The value of 'url' must be a valid URL.";
-const MESSAGE_NO_SCHEMA_ORG = "The requested URL does not appear to supply a recipe in a machine readable format";
 
 const isJWT = (s: string) => s.startsWith("JWT ") || s.startsWith("jwt ")
 
@@ -53,8 +53,8 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
         console.log("recipe url:", recipeUrlParam);
         recipeUrl = new URL(recipeUrlParam);
     }
-    catch (e: any) {
-        if (e?.code === 'ERR_INVALID_URL') {
+    catch (e: unknown) {
+        if (e instanceof TypeError) {
             console.log('bad recipe url');
             res.status(400)
                 .json({ error: MESSAGE_BAD_URL });

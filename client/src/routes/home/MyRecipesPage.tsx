@@ -1,10 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MyRecipesPageContent from "./MyRecipesPageContent";
 import { useWindowDimensions } from "../../util/hooks/useWindowDimensions";
 import { useContext, useLayoutEffect, useRef, useState } from "react";
 import AuthGate from "../../auth/AuthGate";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { User } from "firebase/auth";
 
 const minSearchbarSizePx = 30;
 

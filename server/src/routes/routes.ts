@@ -1,6 +1,8 @@
 import admin from 'firebase-admin';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { addRecipeFromUrl } from './api/external-recipe/_post.ts';
+import { getRecipeFromUrl } from './api/external-recipe/_get.ts';
+
 import path from 'node:path';
 
 export type ResponseData = {
@@ -17,6 +19,7 @@ export function handleRequests(exp: Express, app: admin.app.App, staticDir: stri
     // exp.use ('/api', logRawChunks)
     exp.use ('/api', logReq)
     exp.use ('/api', express.json());
+    exp.get ('/api/external-recipe', (req, res) => getRecipeFromUrl(req, res));
     exp.post('/api/external-recipe', (req, res) => addRecipeFromUrl(req, res, app.firestore()));
     exp.use ('/api', fallThroughJson)
     exp.use ('/', express.static(staticDir));
@@ -30,7 +33,7 @@ function fallThroughJson(req: Request, res: Response, next: NextFunction) {
 }
 
 function logReq(req: Request, res: Response, next: NextFunction) {
-    console.log("recieved:", req.url);
+    console.log("recieved:", req.method, req.url);
     next()
 }
 
