@@ -3,7 +3,7 @@ import { User } from "firebase/auth";
 export async function addFromUrl(fbUser: User, url: string) {
     const token = await fbUser.getIdToken(/* forceRefresh */ true);
     const body = JSON.stringify({ url });
-    const res = await fetch("/api/add-from-url", {
+    const res = await fetch("/api/external-recipe", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

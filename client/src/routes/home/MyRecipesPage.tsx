@@ -59,25 +59,6 @@ type DialogProps = {
 function Dialogue({ isOpen, close }: DialogProps) {
     const { user } = useContext(GlobalContext);
 
-    const doStuff = (fbUser: User, url: string) => {
-        fbUser.getIdToken(/* forceRefresh */ true)
-            .then((idToken) => {
-                const body = JSON.stringify({ url });
-                fetch("/api/add-from-url", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${idToken}`
-                    },
-                    body
-                });
-            })
-            .catch((error) => {
-                console.error(error);
-                alert(error.toString());
-            });
-    };
-
     let content;
     if (user === "pre-auth" || user === null) {
         content = "no user";
