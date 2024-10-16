@@ -16,3 +16,26 @@ export async function addFromUrl(fbUser: User, url: string) {
         throw new Error(j)
     }
 }
+
+export async function getFromUrl(url: string) {
+    const qp = `url=${encodeURIComponent(url)}`
+    const res = await fetch("/api/external-recipe?" + qp, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    const json = await res.json();
+    if (!res.ok) {
+        throw json
+    }
+
+    // quick validation, we at LEAST need a name
+    const name  = json?.recipe?.name;
+    if (name === undefined || name === "" || name === null) {
+        console.error("bad api response? OK status but no recipe")
+        throw { error: "Unkown client error" }
+    }
+    
+    return json.recipe;
+}

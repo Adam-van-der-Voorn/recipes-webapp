@@ -9,6 +9,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import NotFound from "../../general/placeholders/NotFound";
 import Loading from "../../general/placeholders/Loading";
 import Error from "../../general/placeholders/Error";
+import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe";
 
 const FORM_ID = "edit-recipe";
 
@@ -45,42 +46,15 @@ function EditRecipePageContent({ recipeId }: Props) {
         return <NotFound message="This recipe does not exist :(" />;
     }
 
-    const ingredients: IngredientListsInput = recipe.ingredients
-        ? {
-            lists: recipe.ingredients.lists
-                .map(subIngredientList => {
-                    return {
-                        id: uuid4(),
-                        name: subIngredientList.name,
-                        ingredients: subIngredientList.ingredients.map(ingredient => {
-                            return {
-                                id: uuid4(),
-                                name: ingredient.name,
-                                quantity: quantityToString(ingredient.quantity),
-                                optional: ingredient.optional,
-                                percentage: ''
-                            };
-                        }),
-                    };
-                }),
-            anchor: recipe.ingredients.anchor || 0
-        }
-        : {
-            lists: [],
-            anchor: 0
-        };
-
-    const substitutions: SubstitutionInput[] = recipe.substitutions || [];
-
     const initialValues = {
-        name: recipe.name,
+        name: recipe.name || '',
         timeframe: recipe.timeframe || '',
         makes: recipe.makes || '',
         notes: recipe.notes || '',
-        ingredients: ingredients,
+        ingredients: ingredientInputsFromExistingRecipe(recipe.ingredients),
         servings: recipe.servings || '',
         instructions: recipe.instructions || '',
-        substitutions: substitutions,
+        substitutions: recipe.substitutions || [],
     };
 
     return <main className="recipeFormBody" aria-details="edit an existing recipe">

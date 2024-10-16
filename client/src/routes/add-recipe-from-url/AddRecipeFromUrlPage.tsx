@@ -1,51 +1,39 @@
 import { useContext, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import AuthGate from "../../auth/AuthGate";
-import { addFromUrl } from "../../api/externalRecipe";
+import { getFromUrl } from "../../api/externalRecipe";
 import { User } from "firebase/auth";
 import Loading from "../../general/placeholders/Loading";
 import AuthForm from "../../auth/AuthForm";
+import AddRecipeFromUrlOuter from "./AddRecipeFromUrlOuter";
 
-const headerStyle: React.CSSProperties = {
-    gridTemplateColumns: 'auto 1fr',
+type Props = {
+    user: User;
 };
 
-function AddRecipeFromUrlPage() {
-    const { user, auth } = useContext(GlobalContext);
-
-    if (user === "pre-auth") {
-        return <Loading message="Finding user ..." />;;
-    }
-    else if (user) {
-        return <MainContent user={user} />
-    }
-    else {
-        return <AuthForm auth={auth} />;
-    }
-}
-
-type Props2 = {
-    user: User
-}
-
-function MainContent({ user }: Props2) {
+function MainContent({ user }: Props) {
     const navigate = useNavigate();
     const formRef = useRef<HTMLFormElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const cacheExternalRecipe = (url: string, recipe: Record<string, unknown>) => {
+        const serial = JSON.stringify(recipe);
+        window.sessionStorage.setItem(url, serial);
+    };
+
     const onSubmit = (ev: any) => {
-        ev.preventDefault()
+        ev.preventDefault();
         const val = inputRef?.current?.value;
         if (typeof val == 'string') {
-            addFromUrl(user, val)
-                .then(() => {
-                    navigate("/")
+            getFromUrl(val)
+                .then((recipe) => {
+                    cacheExternalRecipe(val, recipe);
+                    navigate(`edit#${val}`, { relative: "path" });
                 })
                 .catch(e => {
-                    console.error("add recipe failed:", e)
-                    alert("add recipe failed")
-                })
+                    console.error("add recipe failed:", e);
+                    alert("add recipe failed");
+                });
         }
     };
 
@@ -55,21 +43,16 @@ function MainContent({ user }: Props2) {
             const _ = new URL(text);
             // valid url pasted, go on
             if (formRef.current) {
-                formRef.current.request()
+                formRef.current.requestSubmit();
             }
         }
         catch (e) {
             // not a url? that's all good.
         }
-    }
+    };
 
-    return <div className="page">
-        <header style={headerStyle}>
-            <Link to="/" className="headerLink">Home</Link>
-            <h1 className="headerTitle">New Recipe from URL</h1>
-        </header>
-        <main className="recipeFormBody">
-            <form onSubmit={onSubmit} ref={formRef}>
+    return <main className="recipeFormBody">
+        <form onSubmit={onSubmit} ref={formRef}>
             <label htmlFor="add-from-url">URL: </label>
             <input type="text" name="add-from-url"
                 id="add-from-url"
@@ -78,9 +61,19 @@ function MainContent({ user }: Props2) {
                 autoFocus
             />
             <input type="submit" value="Add" />
-            </form>
-        </main>
-    </div>;
+        </form>
+    </main>
 }
 
-export default AddRecipeFromUrlPage;
+export default function AddRecipeFromUrlPage() {
+    const { user, auth } = useContext(GlobalContext);
+    if (user === "pre-auth") {
+        return <AddRecipeFromUrlOuter><Loading message="Finding user ..." /></AddRecipeFromUrlOuter>;
+    }
+    else if (user) {
+        return <AddRecipeFromUrlOuter><MainContent user={user} /></AddRecipeFromUrlOuter>;
+    }
+    else {
+        return <AddRecipeFromUrlOuter><AuthForm auth={auth} /></AddRecipeFromUrlOuter>;
+    }
+}
