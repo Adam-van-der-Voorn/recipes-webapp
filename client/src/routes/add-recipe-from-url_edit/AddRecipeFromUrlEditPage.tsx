@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import Loading from "../../general/placeholders/Loading";
 import { User } from "firebase/auth";
@@ -10,9 +10,13 @@ import useRecipeStorage from "../../util/hooks/useRecipeStorage";
 import { Firestore } from "firebase/firestore";
 import { RecipeInput } from "../../types/RecipeInputTypes";
 import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe";
-import AddRecipeFromUrlOuter from "../add-recipe-from-url/AddRecipeFromUrlOuter";
+import { isAuthed } from "../../util/auth";
 
 const FORM_ID = "edit-recipe";
+
+const headerStyle: React.CSSProperties = {
+    gridTemplateColumns: 'auto 1fr auto',
+};
 
 type Props = {
     user: User;
@@ -76,16 +80,35 @@ function MainContent({ user, db }: Props) {
     </main>;
 }
 
-export default function AddRecipeFromUrlPageEdit() {
+function Outer({ children }: any) {
+    const { user } = useContext(GlobalContext);
+
+    const isSaveButtonDisabled = !isAuthed(user);
+
+    return <div className="page">
+        <header style={headerStyle}>
+            <Link to="/" className="headerLink">Home</Link>
+            <h1 className="headerTitle">New Recipe from URL</h1>
+            <input type="submit" value="Save"
+                disabled={isSaveButtonDisabled}
+                form={FORM_ID}
+                className="headerButton primary"
+            />
+        </header>
+        {children}
+    </div>
+}
+
+export default function AddRecipeFromUrlEditPage() {
     const { user, auth, db } = useContext(GlobalContext);
 
     if (user === "pre-auth") {
-        return <AddRecipeFromUrlOuter><Loading message="Finding user ..." /></AddRecipeFromUrlOuter>;
+        return <Outer><Loading message="Finding user ..." /></Outer>;
     }
     else if (user) {
-        return <AddRecipeFromUrlOuter><MainContent user={user} db={db} /></AddRecipeFromUrlOuter>;
+        return <Outer><MainContent user={user} db={db} /></Outer>;
     }
     else {
-        return <AddRecipeFromUrlOuter><AuthForm auth={auth} /></AddRecipeFromUrlOuter>;
+        return <Outer><AuthForm auth={auth} /></Outer>;
     }
 }
