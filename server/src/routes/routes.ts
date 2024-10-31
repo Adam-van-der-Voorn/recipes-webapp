@@ -15,26 +15,45 @@ export const MESSAGE_UNAUTHORISED_NO_JWT = "Unauthorised, expected JWT";
 export const MESSAGE_UNAUTHORISED_INVALID_JWT = "Unauthorised, invalid JWT";
 
 
-export function handleRequests(exp: Express, app: admin.app.App, staticDir: string): void {
+export function handleRequests(exp: Express, app: admin.app.App, rootDir: string): void {
+
     // exp.use ('/api', logRawChunks)
-    exp.use ('/api', logReq)
+    exp.use ('/api', logReq("api"))
     exp.use ('/api', express.json());
     exp.get ('/api/external-recipe', (req, res) => getRecipeFromUrl(req, res));
     exp.post('/api/external-recipe', (req, res) => addRecipeFromUrl(req, res, app.firestore()));
-    exp.use ('/api', fallThroughJson)
-    exp.use ('/', express.static(staticDir));
-    exp.use ('/', (req, res) => res.status(200).send(path.join(staticDir, "index.html")))
+    exp.use ('/api', (req, res) => fallThroughJson(req, res))
+    
+    const staticDir = path.join(rootDir, 'static')
+    exp.use ('/static', logReq("s"));
+    exp.use ('/static', express.static(staticDir));
+
+    // we hardcode these, as the browser expects them to be here
+    exp.use ('/favicon.ico', express.static(rootDir));
+    exp.use ('/service-worker.js', express.static(rootDir));
+    exp.use ('/robots.txt', express.static(rootDir));
+    exp.use ('/index.html', express.static(rootDir));
+
+    // finally- serve the index on all other paths, as we are a SPA :)
+    const index = path.join(rootDir, 'index.html')
+    exp.use ('/', (_req, res) => serveFile(index, res));
 } 
 
-function fallThroughJson(req: Request, res: Response, next: NextFunction) {
+function serveFile(absFilePath: string, res: Response) {
+    res.sendFile(absFilePath, e => console.error("failed to serve", absFilePath, e || ""))
+}
+
+function fallThroughJson(req: Request, res: Response) {
     console.log("no matches");
     res.status(404)
         .json({ error: `The requested resource does not exist, or does not support ${req.method} requests.`})
 }
 
-function logReq(req: Request, res: Response, next: NextFunction) {
-    console.log("recieved:", req.method, req.url);
-    next()
+function logReq(prefix: string) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        console.log(`[${prefix}]:`, req.method, req.url);
+        next()
+    }
 }
 
 function logRawChunks(req: Request, res: Response, next: NextFunction) {

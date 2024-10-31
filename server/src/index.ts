@@ -17,5 +17,5 @@ const exp = express()
 handleRequests(exp, app, staticDirResolved);
 exp.listen(port, () => {
     console.log('Express started on port', port)
-    console.log("serving static resources from", staticDirResolved)
+    console.log("serving on-disk resources from", staticDirResolved)
 });

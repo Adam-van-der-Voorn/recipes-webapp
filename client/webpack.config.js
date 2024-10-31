@@ -10,7 +10,7 @@ const base = {
     entry: {
         "main": {
             import: path.resolve(__dirname, 'src', 'index.tsx'),
-            filename: [`js`, `main.bundle.js`].join(sep)
+            filename: [`static`, `js`, `main.bundle.js`].join(sep)
 
         },
         "service-worker": {

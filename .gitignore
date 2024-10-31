@@ -27,7 +27,7 @@ secret.json
 .vscode/settings.json
 
 
-client/dist/js/*.bundle.*
+client/dist/static/js/*.bundle.*
 ts-out
 target
 deploy.sh
