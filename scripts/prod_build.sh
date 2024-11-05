@@ -14,7 +14,7 @@ if [ -d "$target" ]; then
     if [ "$n" -eq 0 ]; then
         echo "deno binary ($deno_bin_name) not found in target folder ($target)"
         echo "this indicates that we my be rm-r'ing the wrong thing!"
-        echo "aborting, please delete target manualy before re-running"
+        echo "aborting, please delete target manually before re-running"
         exit 0
     fi
     rm -r $target/*
@@ -32,7 +32,7 @@ node_modules/.bin/webpack-cli --mode=production
 cp -r dist $target/dist
 
 # test frontend
-$project_root/scripts/frontend_test.sh $project_root
+$project_root/scripts/frontend_test.sh $project_root 
 
 echo "done!"
 

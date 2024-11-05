@@ -51,7 +51,7 @@ function fallThroughJson(req: Request, res: Response) {
 
 function logReq(prefix: string) {
     return (req: Request, res: Response, next: NextFunction) => {
-        console.log(`[${prefix}]:`, req.method, req.url);
+        console.log(`[${prefix}]`, req.method, req.url);
         next()
     }
 }
