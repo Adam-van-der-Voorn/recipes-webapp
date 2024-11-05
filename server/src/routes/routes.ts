@@ -29,13 +29,16 @@ export function handleRequests(exp: Express, app: admin.app.App, rootDir: string
     exp.use ('/static', express.static(staticDir));
 
     // we hardcode these, as the browser expects them to be here
-    exp.use ('/favicon.ico', express.static(rootDir));
-    exp.use ('/service-worker.js', express.static(rootDir));
-    exp.use ('/robots.txt', express.static(rootDir));
-    exp.use ('/index.html', express.static(rootDir));
+    const favicon = path.join(rootDir, 'favicon.ico')
+    exp.use ('/favicon.ico', (_req, res) => serveFile(favicon, res));
+    const sw = path.join(rootDir, 'service-worker.js')
+    exp.use ('/service-worker.js', (_req, res) => serveFile(sw, res));
+    const robots = path.join(rootDir, 'robots.txt')
+    exp.use ('/robots.txt', (_req, res) => serveFile(robots, res));
+    const index = path.join(rootDir, 'index.html')
+    exp.use ('/index.html', (_req, res) => serveFile(index, res));
 
     // finally- serve the index on all other paths, as we are a SPA :)
-    const index = path.join(rootDir, 'index.html')
     exp.use ('/', (_req, res) => serveFile(index, res));
 } 
 
