@@ -25,25 +25,29 @@ export function handleRequests(exp: Express, app: admin.app.App, rootDir: string
     exp.use ('/api', (req, res) => fallThroughJson(req, res))
     
     const staticDir = path.join(rootDir, 'static')
-    exp.use ('/static', logReq("s"));
+    //exp.use ('/static', logReq("s"));
     exp.use ('/static', express.static(staticDir));
 
     // we hardcode these, as the browser expects them to be here
-    const favicon = path.join(rootDir, 'favicon.ico')
-    exp.use ('/favicon.ico', (_req, res) => serveFile(favicon, res));
-    const sw = path.join(rootDir, 'service-worker.js')
-    exp.use ('/service-worker.js', (_req, res) => serveFile(sw, res));
-    const robots = path.join(rootDir, 'robots.txt')
-    exp.use ('/robots.txt', (_req, res) => serveFile(robots, res));
-    const index = path.join(rootDir, 'index.html')
-    exp.use ('/index.html', (_req, res) => serveFile(index, res));
-
+    const rootFiles = ['favicon.ico', 'service-worker.js', 'robots.txt']
+    for (const filename of rootFiles) {
+        exp.get(`/${filename}`, serveFile(rootDir, filename));
+    }
+        
     // finally- serve the index on all other paths, as we are a SPA :)
-    exp.use ('/', (_req, res) => serveFile(index, res));
+    exp.use ('/', serveFile(rootDir, 'index.html'));
 } 
 
-function serveFile(absFilePath: string, res: Response) {
-    res.sendFile(absFilePath, e => console.error("failed to serve", absFilePath, e || ""))
+function serveFile(rootDir: string, filePath: string) {
+    const opts = {
+        root: rootDir
+    }
+    const errCallback = (e: any) => {
+        if (e) {
+            console.error("failed to serve", filePath, e)
+        }
+    }
+    return (_req: any, res: Response) => res.sendFile(filePath, opts, errCallback)
 }
 
 function fallThroughJson(req: Request, res: Response) {
