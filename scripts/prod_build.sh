@@ -6,9 +6,9 @@ project_root=$1
 target=$project_root/target
 deno_bin_name=myrecipes
 
-# rm target if needed
-# The `-d` test command option see if FILE exists and is a directory
-if [ -d "$target" ]; then
+# rm target if it exists and contains files
+N=$(find "$target" -type f | wc -l)
+if [ $N -ne 0 ]; then
     # double check that we are removing what we think we are
     n=$(find $target -maxdepth 1 -name $deno_bin_name | wc -l)
     if [ "$n" -eq 0 ]; then
