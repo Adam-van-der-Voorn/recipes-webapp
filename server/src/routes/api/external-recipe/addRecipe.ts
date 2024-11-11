@@ -1,9 +1,8 @@
 import { Firestore } from "firebase-admin/firestore";
-import { v4 as uuid4 } from 'uuid';
 
 export async function addNewRecipe(db: Firestore, userId: string, recipe: any) {
     try {
-        const id: string = uuid4();
+        const id: string = crypto.randomUUID();
         const newRecipe = db.doc(`users/${userId}/recipies/${id}`);
         return newRecipe.create(recipe);
     } catch (error) {
