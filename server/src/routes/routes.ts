@@ -17,6 +17,7 @@ export const MESSAGE_UNAUTHORISED_INVALID_JWT = "Unauthorised, invalid JWT";
 
 export function handleRequests(exp: Express, app: admin.app.App, rootDir: string): void {
 
+    // exp.use ('/', logReq("all"))
     // exp.use ('/api', logRawChunks)
     exp.use ('/api', logReq("api"))
     exp.use ('/api', express.json());

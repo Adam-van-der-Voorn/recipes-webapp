@@ -1,10 +1,12 @@
-import { useRouteError } from "react-router-dom";
+import { Link, useLocation, useRouteError } from "react-router-dom";
 import AuthForm from "../../auth/AuthForm";
 import { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function ErrorPage() {
     const error = useRouteError() as any;
+    const location = useLocation();
+    
     const { auth } = useContext(GlobalContext);
 
     console.error("route error:", error);
@@ -21,7 +23,9 @@ export default function ErrorPage() {
             // TODO put something nice here :)
             return <div className="routeErrorPage">
                 <h1>404</h1>
-                <p>page not found</p>
+                <p>not found</p>
+                <p>{location.pathname}</p>
+                <Link to="/" style={{ display: "block" }}>return home</Link>
             </div>;
         }
     }
