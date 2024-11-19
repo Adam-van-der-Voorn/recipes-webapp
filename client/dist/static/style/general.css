@@ -21,6 +21,7 @@ main {
     grid-template-columns: minmax(auto, 800px);
     display: grid;
     justify-content: center;
+    align-content: start;
 }
 
 button, input, select, textarea {
