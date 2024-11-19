@@ -18,6 +18,9 @@ html {
 
 main {
     overflow-y: scroll;
+    grid-template-columns: minmax(auto, 800px);
+    display: grid;
+    justify-content: center;
 }
 
 button, input, select, textarea {

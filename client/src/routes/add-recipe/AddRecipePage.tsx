@@ -52,7 +52,7 @@ function AddRecipePage() {
             disabled={user === "pre-auth" || user === null} />
         </header>
         <AuthGate>
-            <main className="recipeFormBody" aria-details="add a new recipe">
+            <main  aria-details="add a new recipe">
                 <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
             </main>
         </AuthGate>

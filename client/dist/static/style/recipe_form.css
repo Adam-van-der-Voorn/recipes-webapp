@@ -1,13 +1,9 @@
 .recipeForm {
     --column-gap: 1.5rem;
-}
-
-.recipeFormBody {
-    margin-top: 12px;
+    margin-top: 16px;
     margin-left: 12px;
     margin-right: 12px;
     padding: 8px;
-    border-radius: 3px;
     background: var(--col-text-backing);
 }
 

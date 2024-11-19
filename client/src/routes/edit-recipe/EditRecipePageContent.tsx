@@ -57,7 +57,7 @@ function EditRecipePageContent({ recipeId }: Props) {
         substitutions: recipe.substitutions || [],
     };
 
-    return <main className="recipeFormBody" aria-details="edit an existing recipe">
+    return <main aria-details="edit an existing recipe">
         <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
     </main>;
 }

@@ -51,8 +51,8 @@ function MainContent({ user }: Props) {
         }
     };
 
-    return <main className="recipeFormBody">
-        <form onSubmit={onSubmit} ref={formRef}>
+    return <main>
+        <form className="recipeForm" onSubmit={onSubmit} ref={formRef}>
             <label htmlFor="add-from-url">URL: </label>
             <input type="text" name="add-from-url"
                 id="add-from-url"

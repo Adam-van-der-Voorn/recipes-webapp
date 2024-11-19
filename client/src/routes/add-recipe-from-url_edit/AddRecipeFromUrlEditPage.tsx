@@ -75,7 +75,7 @@ function MainContent({ user, db }: Props) {
         substitutions: recipe.substitutions || [],
     };
 
-    return <main className="recipeFormBody" aria-details="edit a recipe extracted from a URL">
+    return <main className="recipeForm" aria-details="edit a recipe extracted from a URL">
         <RecipeForm id={FORM_ID} onSubmit={doSubmit} initialValues={initialValues} />
     </main>;
 }
