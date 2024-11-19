@@ -167,21 +167,11 @@ input[type="checkbox"]:focus {
 
 /* LINKS */
 
-.RecipeCard {
-    border-radius: 3px;
-    width: fit-content;
-    padding: 8px;
-    flex: 1 1 auto;
-    background-color: var(--col-text-backing);
-    font-weight: bold;
-    text-decoration-line: none;
-}
-
 a:hover {
     text-decoration-line: underline;
 }
 
 a {
     color: var(--col-dark-highlight);
-    text-decoration-thickness: 1px;
+    text-decoration-line: underline;
 }

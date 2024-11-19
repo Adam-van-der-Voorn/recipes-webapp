@@ -33,8 +33,14 @@
     }
 
     /* Z-INDEX */
-    --z-main-header: 1; 
+    --z-main-header: 1;
 
     /* MISC */
     --line-height-default: 1.2;
+
+    /* PADDING */
+    --padding-selectable: 8px;
+    @media (pointer:coarse) {
+        --padding-selectable: 14px;
+    }
 }

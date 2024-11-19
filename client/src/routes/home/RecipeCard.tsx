@@ -7,13 +7,9 @@ type Props = {
 };
 
 function RecipeCard({ recipeId, recipeName }: Props) {
-    const navigate = useNavigate();
-
-    return (
-        <Link to={`/view/${recipeId}`} className="RecipeCard">
-            {recipeName}
-        </Link>
-    );
+    return <Link to={`/view/${recipeId}`} className="RecipeCard">
+        {recipeName}
+    </Link>;
 }
 
 export default RecipeCard;

@@ -21,9 +21,11 @@ function MyRecipesPageContent() {
         return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
     });
 
-    return <main className="recipeFlexContainer" aria-details='list of saved recipes'>
+    return <main>
+        <div className="recipe-container" aria-details='list of saved recipes'>
             {cards}
-    </main>
+        </div>
+    </main>;
 }
 
 export default MyRecipesPageContent;

@@ -1,18 +1,16 @@
-.recipeFlexContainer {
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
-    gap: 10px;
-    padding-top: 16px;
-    padding-left: 12px;
-    padding-right: 12px;
+.recipe-container {
+    display: block;
+    margin-top: 16px;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 4px;
+    background-color: var(--col-text-backing);
 }
 
 .RecipeCard {
-    border-radius: 3px;
-    width: fit-content;
-    padding: 8px;
-    flex: 0 0 auto;
-    background-color: var(--col-text-backing);
+    display: block;
+    padding: var(--padding-selectable);
+    width: 100%;
+    box-sizing: border-box;
     overflow-wrap: anywhere;
 }
