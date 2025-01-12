@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { MESSAGE_UNKNOWN_UNEXPECTED_ERROR } from "../../routes.ts";
 import { extractRecipe } from "./extractRecipe.ts";
 import { MESSAGE_NO_SCHEMA_ORG } from "./constants.ts";
+import { invalidUrl, noRecipeSchema, unknownUnexpected } from "../../../applicationErrorCodes.ts";
 
 const MESSAGE_BAD_URL = "Invalid request. The request must include a 'url' query parameter. The value of 'url' must be a valid URL.";
 
@@ -21,12 +21,12 @@ export async function getRecipeFromUrl(req: Request, res: Response) {
         if (e instanceof TypeError) {
             console.log('bad recipe url');
             res.status(400)
-                .json({ error: MESSAGE_BAD_URL });
+                .json({ ecode: invalidUrl, context: MESSAGE_BAD_URL });
         }
         else {
             console.error('unexpected error', e);
             res.status(500)
-                .json({ error: MESSAGE_UNKNOWN_UNEXPECTED_ERROR });
+                .json({ ecode: unknownUnexpected });
         }
         return;
     }
@@ -35,12 +35,12 @@ export async function getRecipeFromUrl(req: Request, res: Response) {
     if (!extractRecipeRes?.recipe) {
         if (extractRecipeRes?.error === "schema.org.unsupported") {
             res.status(400)
-                .json({ error: MESSAGE_NO_SCHEMA_ORG });
+                .json({ ecode: noRecipeSchema, context: MESSAGE_NO_SCHEMA_ORG });
             return;
         }
         else {
             res.status(500)
-                .json({ error: MESSAGE_UNKNOWN_UNEXPECTED_ERROR });
+                .json({ ecode: unknownUnexpected });
             return;
         }
     }

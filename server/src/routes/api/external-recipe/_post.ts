@@ -1,10 +1,12 @@
 import { Firestore } from "firebase-admin/firestore";
 import { addNewRecipe } from "./addRecipe.ts";
 import { Request, Response } from 'express';
-import { MESSAGE_UNAUTHORISED_INVALID_JWT, MESSAGE_UNAUTHORISED_NO_JWT, MESSAGE_UNKNOWN_UNEXPECTED_ERROR } from "../../routes.ts";
 import { extractRecipe } from "./extractRecipe.ts";
 import { MESSAGE_NO_SCHEMA_ORG } from "./constants.ts";
 import { getAuth } from "firebase-admin/auth";
+import { invalidUrl, unauthorisedInvalidJWT, unauthorisedNoJWT } from "../../../applicationErrorCodes.ts";
+import { unknownUnexpected } from "../../../applicationErrorCodes.ts";
+import { noRecipeSchema } from "../../../applicationErrorCodes.ts";
 
 const MESSAGE_BAD_URL = "Invalid request. The request body must be a JSON object with a 'url' property. The value of 'url' must be a valid URL.";
 
@@ -24,7 +26,7 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
     if (jwtHeader === undefined) {
         console.log('no Authorization on request, expected JWT token');
         res.status(401)
-            .json({ error: MESSAGE_UNAUTHORISED_NO_JWT });
+            .json({ ecode: unauthorisedNoJWT });
         return;
     }
     
@@ -43,7 +45,7 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
     catch (e) {
         console.log('JWT found on request but could not be validated');
         res.status(401)
-            .json({ error: MESSAGE_UNAUTHORISED_INVALID_JWT });
+            .json({ ecode: unauthorisedInvalidJWT });
         return;
     }
 
@@ -57,12 +59,12 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
         if (e instanceof TypeError) {
             console.log('bad recipe url');
             res.status(400)
-                .json({ error: MESSAGE_BAD_URL });
+                .json({ ecode: invalidUrl, context: MESSAGE_BAD_URL });
         }
         else {
             console.error('unexpected error', e);
             res.status(500)
-                .json({ error: MESSAGE_UNKNOWN_UNEXPECTED_ERROR });
+                .json({ ecode: unknownUnexpected });
         }
         return;
     }
@@ -71,12 +73,12 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
     if (!extractRecipeRes?.recipe) {
         if (extractRecipeRes?.error === "schema.org.unsupported") {
             res.status(400)
-                .json({ error: MESSAGE_NO_SCHEMA_ORG });
+                .json({ ecode: noRecipeSchema, context: MESSAGE_NO_SCHEMA_ORG });
             return;
         }
         else {
             res.status(500)
-                .json({ error: MESSAGE_UNKNOWN_UNEXPECTED_ERROR });
+                .json({ ecode: unknownUnexpected });
             return;
         }
     }
@@ -86,7 +88,7 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
     if (result === null) {
         console.log("failed to  added new recipe");
         res.status(500)
-            .json({ error: MESSAGE_UNKNOWN_UNEXPECTED_ERROR });
+            .json({ ecode: unknownUnexpected });
     }
 
     console.log("successfully added new recipe", `'${recipe.name}'`);

@@ -32,7 +32,14 @@ function MainContent({ user }: Props) {
                 })
                 .catch(e => {
                     console.error("add recipe failed:", e);
-                    alert("add recipe failed");
+                    let msg;
+                    if (e.ecode === "no.recipe.schema") {
+                        msg = "Sorry! This URL does not appear to supply a computer readable recipe, so you will have to add this recipe manually.";
+                    }
+                    else {
+                        msg = "Something went wrong, failed to add recipe :(\n maybe try again?"
+                    }
+                    alert(msg);
                 });
         }
     };
