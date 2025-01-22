@@ -37,7 +37,7 @@ export function IngredientsSection({ ingredients }: Props) {
                 placeholder='1'
                 value={scaleStr}
                 onInput={onScaleInput}
-                inputMode="numeric"
+                inputMode="decimal"
             />
         </div>
         {ingredients.map((sublist, i) => {
