@@ -4,16 +4,13 @@ import { addRecipeFromUrl } from './api/external-recipe/_post.ts';
 import { getRecipeFromUrl } from './api/external-recipe/_get.ts';
 
 import path from 'node:path';
+import { notFound } from "../applicationErrorCodes.ts";
+import { getSchemaOrgDump } from "./api/dev/schema-org-dump/_get.ts";
 
 export type ResponseData = {
     body: Record<string, unknown>,
     statusCode: number;
 };
-
-export const MESSAGE_UNKNOWN_UNEXPECTED_ERROR = 'Unknown, unexpected, error.'
-export const MESSAGE_UNAUTHORISED_NO_JWT = "Unauthorised, expected JWT";
-export const MESSAGE_UNAUTHORISED_INVALID_JWT = "Unauthorised, invalid JWT";
-
 
 export function handleRequests(exp: Express, app: admin.app.App, rootDir: string): void {
 
@@ -23,6 +20,7 @@ export function handleRequests(exp: Express, app: admin.app.App, rootDir: string
     exp.use ('/api', express.json());
     exp.get ('/api/external-recipe', (req, res) => getRecipeFromUrl(req, res));
     exp.post('/api/external-recipe', (req, res) => addRecipeFromUrl(req, res, app.firestore()));
+    exp.get ('/api/dev/schema-org-dump', (req, res) => getSchemaOrgDump(req, res));
     exp.use ('/api', (req, res) => fallThroughJson(req, res))
     
     const staticDir = path.join(rootDir, 'static')
@@ -54,7 +52,7 @@ function serveFile(rootDir: string, filePath: string) {
 function fallThroughJson(req: Request, res: Response) {
     console.log("no matches");
     res.status(404)
-        .json({ error: `The requested resource does not exist, or does not support ${req.method} requests.`})
+        .json({ ecode: notFound, context: `The requested resource does not exist, or does not support ${req.method} requests.`})
 }
 
 function logReq(prefix: string) {

@@ -101,7 +101,8 @@ export function convertSchemaOrgRecipe(input: SchemaOrgRecipe): { recipe: Recipe
     if (input.recipeInstructions) {
         const conversion = convertInstructions(input.recipeInstructions);
         if (conversion.result) {
-            result.instructions = conversion.result;
+            const instructions = he.decode(conversion.result.join("\n"))
+            result.instructions = instructions;
         }
         warnings.push(...conversion.warnings)
     }
@@ -109,30 +110,38 @@ export function convertSchemaOrgRecipe(input: SchemaOrgRecipe): { recipe: Recipe
     return { recipe: result, warnings }
 }
 
-function convertInstructions(instructionsRaw: SchemaOrgRecipe['recipeInstructions']): { result: string, warnings: string[] } {
-    const warnSet = new Set<string>();
+function convertInstructions(instructionsRaw: SchemaOrgRecipe['recipeInstructions']): { result: string[], warnings: Set<string> } {
+    let warnings = new Set<string>();
     if (!Array.isArray(instructionsRaw)) {
         // @ts-ignore - it's not an array, so make it one. trust me
         instructionsRaw = [instructionsRaw]
     }
     
-    let instructions = [];
+    const instructions: string[] = [];
     for (const el of instructionsRaw as unknown[]) {
         const ela = el as any;
         if (typeof el === 'string') {
             instructions.push(el)
         }
         else if (ela['@type'] === 'HowToStep') {
-            instructions.push((el as HowToStep).text)
+            instructions.push(`${(el as HowToStep).text}`)
+        }
+        else if (ela['@type'] === 'HowToSection') {
+            // not really sure what the "correct" way to interpret a HowToSection here
+            // the reason why I am implemeting it is because of this recipe:
+            // https://honest-food.net/roast-venison-recipe-dumplings
+            // where the main instruction is for the meat and the HowToSection is for the dumplings
+            // I think just appending it is fine... and based on that link the structure is the same
+            const { result: subInstructions, warnings: subWarnings } = convertInstructions(ela['itemListElement'])
+            warnings = warnings.union(subWarnings)
+            instructions.push(...subInstructions)
         }
         else {
-            warnSet.add("instruction is an unknown type")
+            warnings.add("instruction is an unknown type")
         }
     }
 
-    const result = he.decode(instructions.join("\n"))
-    const warnings = Array.from(warnSet.values());
-    return { result, warnings }    
+    return { result: instructions, warnings }    
 }
 
 type SchemaOrgIngredient = SchemaOrgRecipe['ingredients'] | SchemaOrgRecipe['recipeIngredient'];
