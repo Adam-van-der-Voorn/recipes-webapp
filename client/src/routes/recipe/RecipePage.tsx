@@ -27,7 +27,7 @@ function RecipePage() {
             return;
         }
         const iden = recipeName ?? recipeId;
-        let confirmation = window.confirm(`Are you sure you want to delete recipe '${iden}'`);
+        let confirmation = window.confirm(`Are you sure you want to delete recipe '${iden}'?`);
         if (confirmation) {
             deleteRecipe(recipeId, () => {
                 navigate(`/`);
