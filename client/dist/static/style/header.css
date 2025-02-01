@@ -65,6 +65,6 @@ input.headerTextInput {
 
 input.searchTextInput {
     padding-left: 20px;
-    background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat left;
+    background: url("/static/vector/search.svg") no-repeat left;
     background-size: 20px;
 }
