@@ -13,6 +13,6 @@ const app = setupFirebase(secretServiceAccountPath);
 const exp = express()
 handleRequests(exp, app, staticDirResolved);
 exp.listen(port, serverIp, () => {
-    console.log('Express started on', `${serverIp}:${port}`)
+    console.log('Express started on', `http://${serverIp}:${port}`)
     console.log("serving on-disk resources from", staticDirResolved)
 });

@@ -12,6 +12,7 @@ function MyRecipesPage() {
     const searchBarRef = useRef<HTMLInputElement>(null);
     const [displayTitle, setDisplayTitle] = useState(false);
     const [dialogueOpen, setDialogueOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("")
 
     useLayoutEffect(() => {
         const threshold = 500;
@@ -22,6 +23,10 @@ function MyRecipesPage() {
             setDisplayTitle(false);
         }
     }, [windowWidth, displayTitle]);
+
+    const onSearchBarInput = (ev: any) => {
+        setSearchQuery(ev?.target?.value ?? "")
+    }
 
     const gridTemplateColumns = displayTitle
         ? `1fr minmax(${minSearchbarSizePx}px, 300px) auto`
@@ -37,7 +42,7 @@ function MyRecipesPage() {
                 ? <h1 className="headerTitle" style={{ whiteSpace: "nowrap" }}>My Recipes</h1>
                 : null
             }
-            <input ref={searchBarRef} className="headerTextInput searchTextInput" type="text" />
+            <input ref={searchBarRef} className="headerTextInput searchTextInput" type="text" onInput={onSearchBarInput}/>
             <button className="headerButton"
                 onClick={() => setDialogueOpen(true)}
             >Add Recipe
@@ -45,7 +50,7 @@ function MyRecipesPage() {
         </header>
         <Dialogue isOpen={dialogueOpen} close={() => setDialogueOpen(false)} />
         <AuthGate>
-            <MyRecipesPageContent />
+            <MyRecipesPageContent searchQuery={searchQuery} />
         </AuthGate>
     </div>;
 }

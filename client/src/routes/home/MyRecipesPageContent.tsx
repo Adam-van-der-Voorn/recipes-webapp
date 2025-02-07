@@ -5,19 +5,29 @@ import RecipeCard from './RecipeCard';
 import Loading from '../../general/placeholders/Loading';
 
 
-function MyRecipesPageContent() {
-    const { recipes } = useContext(GlobalContext);
+type Props = {
+    searchQuery: string
+}
 
-    if (recipes.status === "prefetch") {
+function MyRecipesPageContent({ searchQuery }: Props) {
+    const { recipes: recipesStore } = useContext(GlobalContext);
+
+    if (recipesStore.status === "prefetch") {
         return <Loading message="Loading your recipes ..." />;
     }
 
-    if (recipes.status === "error") {
-        return <MyError message={`Something went wrong :( ${recipes.message ?? ""}`} />;
+    if (recipesStore.status === "error") {
+        return <MyError message={`Something went wrong :( ${recipesStore.message ?? ""}`} />;
     }
 
-    const recipeMap = recipes.data!; // we should have recipes due to guard statements above
-    const cards: JSX.Element[] = Array.from(recipeMap).map(([id, recipe]) => {
+    /** 
+     * `recipes` type example
+     * {
+           name: string
+     * }
+     */
+    const recipes = Array.from(recipesStore.data!); // we should have recipes due to guard statements above
+    const cards: JSX.Element[] = recipes.map(([id, recipe]) => {
         return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
     });
 
