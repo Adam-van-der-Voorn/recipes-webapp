@@ -1,6 +1,7 @@
 header {
     margin: 0;
     width: 100%;
+    height: 60px;
     box-sizing: border-box;
 
     background-color: var(--col-text-backing);
@@ -13,8 +14,8 @@ header {
 
     display: grid;
     grid-template-rows: 1fr;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     padding-left: var(--padding-horizontal-edge);
     padding-right: var(--padding-horizontal-edge);
     gap: var(--padding-horizontal-edge);
@@ -43,27 +44,36 @@ header {
 button.headerButton, input[type="submit"].headerButton {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: var(--font-size-small);
-    height: 28px;
+    height: 100%;
     align-self: center;
     white-space: nowrap;
     text-overflow: clip;
     overflow: hidden;
+
+    /* correct for 3D drop shadow */
+    height: calc(100% - 4px);
 }
 
 input.headerTextInput {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: var(--font-size-small);
-    border: 1px var(--col-neutral-5) solid;
-    border-radius: 3px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    border: 1px var(--col-neutral-6) solid;
+    border-radius: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
     background-color: var(--col-text-backing);
 }
 
+input.headerTextInput:focus {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-color: var(--col-neutral-4);
+}
+
 input.searchTextInput {
-    padding-left: 20px;
+    padding-left: 35px;
     background: url("/static/vector/search.svg") no-repeat left;
-    background-size: 20px;
+    background-size: 25px;
+    background-position-x: 0.5ch;
+    background-position-y: 5px;
 }

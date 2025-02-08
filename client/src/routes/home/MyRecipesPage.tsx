@@ -71,8 +71,6 @@ function Dialogue({ isOpen, close }: DialogProps) {
         const closeButtonStyle = {
             float: "right",
             fontSize: 'smaller',
-            paddingTop: '2px',
-            paddingBottom: '2px',
         };
         content = <>
             <Link to="/add-recipe">Manual</Link>
