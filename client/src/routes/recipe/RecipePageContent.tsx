@@ -7,6 +7,7 @@ import Recipes from "../../types/Recipes";
 import Loading from "../../general/placeholders/Loading";
 import Error from "../../general/placeholders/Error";
 import NotFound from "../../general/placeholders/NotFound";
+import { MetaDataSection } from "./MetaDataSection";
 
 type Props = {
     recipeId: string | undefined
@@ -35,19 +36,31 @@ export function RecipePageContent({ recipeId, recipes }: Props) {
         return <NotFound message={`The recipe with id ${recipeId} does not exist :(`} />;
     }
 
+    const hasMetaData = recipe.servings !== undefined || recipe.makes !== undefined || recipe.timeframe !== undefined;        
+
     return <>
         <main>
-            {tab === "ingredients"
-                ? <IngredientsTab ingredients={recipe.ingredients}
-                    substitutions={recipe.substitutions}
-                    makes={recipe.makes}
-                    servings={recipe.servings}
-                    timeframe={recipe.timeframe}
-                />
-                : <InstructionsTab instructions={recipe.instructions}
-                    notes={recipe.notes}
-                />
-            }
+            <div className="recipePageMainContent">
+                <div className="recipeTitle">
+                    <h1>{recipe.name}</h1>
+                    {hasMetaData
+                        ? <MetaDataSection servings={recipe.servings} makes={recipe.makes} timeframe={recipe.timeframe} />
+                        : null
+                    }
+                </div>
+                
+                {tab === "ingredients"
+                    ? <IngredientsTab ingredients={recipe.ingredients}
+                        substitutions={recipe.substitutions}
+                        makes={recipe.makes}
+                        servings={recipe.servings}
+                        timeframe={recipe.timeframe}
+                    />
+                    : <InstructionsTab instructions={recipe.instructions}
+                        notes={recipe.notes}
+                    />
+                }
+            </div>
         </main>
         <div role="tablist" className="tabBar">
             <button role="tab"

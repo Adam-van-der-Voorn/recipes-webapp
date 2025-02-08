@@ -12,6 +12,7 @@
     --col-neutral-9: white;
 
     --col-text-backing: white;
+    --col-text-backing-divider: var(--col-neutral-7);
     --col-error-red: red;
 
     --col-background: rgb(255, 237, 237);

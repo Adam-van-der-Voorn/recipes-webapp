@@ -25,11 +25,26 @@
     grid-template-rows: auto 1fr auto;
 }
 
+.recipePageMainContent {
+    display: block;
+    margin: 0;
+    padding: 0;
+    background-color: var(--col-text-backing);
+}
+
+.recipeTitle {
+    padding-left: var(--padding-horizontal-edge);
+    padding-right: var(--padding-horizontal-edge);
+    border-bottom: 1px var(--col-text-backing-divider) solid;
+}
+
 .recipePageTabPanel {
-    margin: 12px;
-    margin-top: 16px;
-    padding: 16px;
-    background: var(--col-text-backing);
+    /* margin: 12px;
+    margin-top: 16px; */
+    padding-left: calc(var(--padding-horizontal-edge) + 8px);
+    padding-right: calc(var(--padding-horizontal-edge) + 8px);
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .recipeViewMeta {

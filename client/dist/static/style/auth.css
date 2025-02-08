@@ -27,7 +27,7 @@
     color: var(--col-error-red);
     display: block;
     padding: 12px;
-    border-bottom: solid 1px var(--col-neutral-7);
+    border-bottom: solid 1px var(--col-text-backing-divider);
 }
 
 .authFormTitle {

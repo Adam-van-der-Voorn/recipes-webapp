@@ -38,7 +38,6 @@ function RecipePage() {
     return <div className="page viewRecipePage">
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
-            <h1 className="headerTitle">{recipeName ?? ""}</h1>
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
             <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>

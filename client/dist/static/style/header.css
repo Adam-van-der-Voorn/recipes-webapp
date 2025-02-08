@@ -9,13 +9,15 @@ header {
     we could do soe fancy js/or flex stuff if it bothers us*/
     white-space: wrap;
 
+    border-bottom: 1px var(--col-text-backing-divider) solid;
+
     display: grid;
     grid-template-rows: 1fr;
     padding-top: 16px;
     padding-bottom: 16px;
     padding-left: var(--padding-horizontal-edge);
     padding-right: var(--padding-horizontal-edge);
-    gap: 12px;
+    gap: var(--padding-horizontal-edge);
     z-index: var(--z-main-header);
 }
 
