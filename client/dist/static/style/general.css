@@ -24,6 +24,10 @@ main {
     align-content: start;
 }
 
+button, input[type=submit] {
+    color: black;
+}
+
 button, input, select, textarea {
     font-family: inherit;
     font-size: var(--font-size-normal);
