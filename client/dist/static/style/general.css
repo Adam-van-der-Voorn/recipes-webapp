@@ -179,3 +179,25 @@ a {
     color: var(--col-dark-highlight);
     text-decoration-line: underline;
 }
+
+/* EMPHASIS */
+mark {
+    background-color: rgb(255, 162, 201);
+}
+
+/* PLACEHOLDER */
+
+.placeholder > * {
+    font-size: var(--font-size-large);
+    flex: 0 0 auto;
+}
+
+.placeholder {
+    padding-bottom: 16px;
+    padding-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%
+}

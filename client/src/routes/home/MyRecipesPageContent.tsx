@@ -1,41 +1,80 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import Fuse from 'fuse.js';
 import MyError from "../../general/placeholders/Error";
 import { GlobalContext } from '../../contexts/GlobalContext';
 import RecipeCard from './RecipeCard';
 import Loading from '../../general/placeholders/Loading';
+import { Recipe } from '../../types/recipeTypes';
+import NotFound from '../../general/placeholders/NotFound';
 
+const fuseOptions = {
+    keys: ['recipe.name'],
+    shouldSort: true,
+    includeMatches: true,
+    isCaseSensitive: false,
+    threshold: 0.4, // threshold for fuzzy matching
+};
 
 type Props = {
-    searchQuery: string
-}
+    searchQuery: string;
+};
 
 function MyRecipesPageContent({ searchQuery }: Props) {
     const { recipes: recipesStore } = useContext(GlobalContext);
+    const recipes = recipesStore?.data;
+    const recipeSearchIndex = useMemo(() => {
+        return new Fuse(recipesIndexable(recipes), fuseOptions);
+    }, [recipes]);
 
+    let content;
     if (recipesStore.status === "prefetch") {
-        return <Loading message="Loading your recipes ..." />;
+        content = <Loading message="Loading your recipes ..." />;
     }
 
-    if (recipesStore.status === "error") {
-        return <MyError message={`Something went wrong :( ${recipesStore.message ?? ""}`} />;
+    else if (recipesStore.status === "error") {
+        content = <MyError message={`Something went wrong :( ${recipesStore.message ?? ""}`} />;
     }
 
-    /** 
-     * `recipes` type example
-     * {
-           name: string
-     * }
-     */
-    const recipes = Array.from(recipesStore.data!); // we should have recipes due to guard statements above
-    const cards: JSX.Element[] = recipes.map(([id, recipe]) => {
-        return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
-    });
+    else {
+        if (!searchQuery) {
+            const cards = recipesIndexable(recipes).map(obj => {
+                const { id, recipe } = obj
+                return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} />;
+            });
+            content = <div className="recipe-container">{cards}</div>;
+        }
+        else {
+            const searchResults = recipeSearchIndex.search(searchQuery);
+            if (searchResults.length === 0) {
+                content = <NotFound message={`No recipes found for '${searchQuery}'`} />;
+            }
+            else {
+                const cards = searchResults.map((entry) => {
+                    const x = entry.matches?.[0]?.indices
+                    console.log(JSON.stringify(x))
+                    const { id, recipe } = entry.item;
+                    return <RecipeCard key={id} recipeId={id} recipeName={recipe.name} highlight={x} />;
+                });
+                content = <div className="recipe-container">{cards}</div>;
+            }
+        }
+    }
 
     return <main>
-        <div className="recipe-container" aria-details='list of saved recipes'>
-            {cards}
-        </div>
+        {content}
     </main>;
+}
+
+function recipesIndexable(recipes: Map<string, Recipe> | undefined) {
+    if (recipes === undefined) {
+        return [];
+    }
+    const r = [];
+    for (const [id, recipe] of Array.from(recipes)) {
+        r.push({ id, recipe });
+    }
+
+    return r;
 }
 
 export default MyRecipesPageContent;
