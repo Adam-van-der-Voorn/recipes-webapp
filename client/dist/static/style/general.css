@@ -120,13 +120,22 @@ button, input[type=submit] {
     padding-bottom: 6px;
     padding-left: 10px;
     padding-right: 10px;    
-    box-shadow: 0 4px #373737;
+    box-shadow: 0 4px var(--col-neutral-5);
+    
     /* correct for 3D drop shadow */
     margin-bottom: 4px; 
+
+    user-select: none;
 }
 
 button:hover, input[type=submit]:hover {
-    background-color: var(--col-neutral-5)
+
+    /* background-color: var(--col-neutral-9) */
+}
+
+button:active {
+    background-color: #ffaaaa;
+    box-shadow: 0 2px var(--col-neutral-5);
 }
 
 button.primary, input[type=submit] {
