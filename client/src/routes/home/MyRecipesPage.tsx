@@ -60,6 +60,11 @@ type DialogProps = {
     close: () => void
 };
 
+const dialogCloseButtonStyle = {
+    float: "right",
+    fontSize: 'smaller',
+};
+
 function Dialogue({ isOpen, close }: DialogProps) {
     const { user } = useContext(GlobalContext);
 
@@ -68,22 +73,17 @@ function Dialogue({ isOpen, close }: DialogProps) {
         content = "no user";
     }
     else {
-        const closeButtonStyle = {
-            float: "right",
-            fontSize: 'smaller',
-        };
         content = <>
             <Link to="/add-recipe">Manual</Link>
             {" · "}
             <Link to="/add-recipe-from-url">From URL</Link>
-            {/* @ts-ignore */}
-            <button style={closeButtonStyle} onClick={close}>Close</button>
-
         </>;
     }
 
     return <dialog open={isOpen} style={{ zIndex: 3 }}>
         {content}
+        {/* @ts-ignore */}
+        <button style={dialogCloseButtonStyle} onClick={close}>Close</button>
     </dialog>;
 }
 
