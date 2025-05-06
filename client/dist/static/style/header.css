@@ -44,13 +44,10 @@ header {
 button.headerButton, input[type="submit"].headerButton {
     padding-top: 0;
     padding-bottom: 0;
-    height: 100%;
     align-self: center;
     white-space: nowrap;
     text-overflow: clip;
     overflow: hidden;
-    position: relative;
-    top: -1px;
 
     /* correct for 3D drop shadow */
     height: calc(100% - 2px);

@@ -112,7 +112,10 @@ input[type=text]:focus, input[type=password]:focus {
 /* BUTTONS */
 
 button, input[type=submit] {
+    --button-edge-col: var(--col-neutral-5);
+    position: relative;
     border: 1px solid var(--col-neutral-6);
+    border-bottom: var(--button-edge-col) ;
     background-color: var(--col-text-backing);
     border-radius: 5px;
     box-sizing: border-box;
@@ -120,7 +123,7 @@ button, input[type=submit] {
     padding-bottom: 6px;
     padding-left: 10px;
     padding-right: 10px;    
-    box-shadow: 0 4px var(--col-neutral-5);
+    box-shadow: 0 4px var(--button-edge-col);
     
     /* correct for 3D drop shadow */
     margin-bottom: 4px; 
@@ -128,26 +131,21 @@ button, input[type=submit] {
     user-select: none;
 }
 
-button:hover, input[type=submit]:hover {
+button:active, input[type=submit]:active  {
+    box-shadow: 0 2px var(--button-edge-col);
 
-    /* background-color: var(--col-neutral-9) */
-}
-
-button:active {
-    background-color: #ffaaaa;
-    box-shadow: 0 2px var(--col-neutral-5);
+    /* correct for 3D drop shadow */
+    top: 2px
 }
 
 button.primary, input[type=submit] {
+    --button-edge-col: rgb(57, 93, 175);
     background-color: rgb(119, 160, 255);
     border-color: rgb(66, 115, 229);
-    border-width: 2px;
 }
 
-button.primary:hover, input[type=submit]:hover {
-    background-color: rgb(66, 115, 229);
-    border-color: rgb(42, 89, 198);
-    color: rgb(162, 190, 255);
+button.primary:active, input[type=submit]:active {
+    --button-edge-col: rgb(56, 99, 199);
 }
 
 
