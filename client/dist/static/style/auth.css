@@ -1,40 +1,38 @@
 .authFormContainer {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    margin-top: 40px;
-    margin-left: 8px;
-    margin-right: 8px;
-    box-sizing: border-box;
+    margin-top: 35px;
+    grid-template-columns: minmax(auto, 450px);
 }
 
 .authForm {
-    width: min(350px, 100%);
     background: var(--col-text-backing);
     padding: 24px;
     border-radius: 3px;
     box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px
 }
 
 .authFormErrorContainer {
-    margin-top: 20px;
-    background: var(--col-text-backing);
-    border-radius: 3px;
-    width: min(350px, 100%);
+    border-left: solid 2px var(--col-error-red);
+    padding-left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px
 }
 
 .authFormError {
     color: var(--col-error-red);
     display: block;
-    padding: 12px;
-    border-bottom: solid 1px var(--col-text-backing-divider);
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .authFormTitle {
-    margin-top: 0;
-    width: min(300px, 100%);
     font-size: var(--font-size-xxlarge);
     margin-bottom: 1ch;
+    margin-left: 20px;
 }
 
 .label {
@@ -55,13 +53,10 @@
     width: 100%;
 }
 
-.inputContainer {
-    margin-bottom: 3.5rem
-}
-
 .authFormFooter {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
+    flex-direction: row;
+    justify-content: right;
 }

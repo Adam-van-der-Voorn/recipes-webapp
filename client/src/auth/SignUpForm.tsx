@@ -35,7 +35,7 @@ function SignUpForm({ auth, switchToLogIn, initEmail, initPassword }: PropsWithC
         defaultValues: { email: initEmail, password: initPassword}
     });
 
-    const { register, handleSubmit, formState: { errors }, getValues } = formHelper;
+    const { register, handleSubmit, formState: { errors }, getValues} = formHelper;
     const [topLevelError, setTopLevelError] = useState<string | undefined>(undefined);
 
     const onSubmit: SubmitHandler<SignUpInput> = data => {
@@ -49,8 +49,11 @@ function SignUpForm({ auth, switchToLogIn, initEmail, initPassword }: PropsWithC
             });
     };
 
+    const hasErrors =  (errors.email || errors.password || topLevelError)
+    
+
     return <>
-        <h1 className="authFormTitle">Sign up</h1>
+        <h1 className="authFormTitle">Create an account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="authForm">
             <div className="inputContainer">
                 <label htmlFor="email" className={"label"}>Email</label>
@@ -64,16 +67,16 @@ function SignUpForm({ auth, switchToLogIn, initEmail, initPassword }: PropsWithC
                 <label htmlFor="password" className={"label"}>Password</label>
                 <input {...register("password")} type="password" id="password-input" />
             </div>
+            {hasErrors && <div className="authFormErrorContainer">
+                <FormErrorMessage className="authFormError" error={topLevelError} />
+                <FormErrorMessage className="authFormError" error={errors.email} />
+                <FormErrorMessage className="authFormError" error={errors.password} />
+            </div>}
             <div className="authFormFooter">
-                <input type="submit" value="Sign up" />
-                <button className="switchLogInSignUp" onClick={() => switchToLogIn(getValues())}>Log in instead</button>
+                <button className="switchLogInSignUp" onClick={() => switchToLogIn(getValues())}>I have an account</button>
+                <input type="submit" value="Create" />
             </div>
         </form>
-        <div className="authFormErrorContainer">
-            <FormErrorMessage className="authFormError" error={topLevelError} />
-            <FormErrorMessage className="authFormError" error={errors.email} />
-            <FormErrorMessage className="authFormError" error={errors.password} />
-        </div>
     </>;
 }
 

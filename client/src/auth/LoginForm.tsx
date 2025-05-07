@@ -50,6 +50,8 @@ function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithC
             });
     };
 
+    const hasErrors =  (errors.email || errors.password || topLevelError)
+
     return <>
         <h1 className="authFormTitle">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="authForm">
@@ -65,16 +67,16 @@ function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithC
                 <label htmlFor="password" className={"label"}>Password</label>
                 <input {...register("password")} type="password" id="password-input" />
             </div>
+            {hasErrors && <div className="authFormErrorContainer">
+                <FormErrorMessage className="authFormError" error={topLevelError} />
+                <FormErrorMessage className="authFormError" error={errors.email} />
+                <FormErrorMessage className="authFormError" error={errors.password} />
+            </div>}
             <div className="authFormFooter">
-                <input type="submit" value="Log in" />
                 <button className="switchLogInSignUp" onClick={() => switchToSignUp(getValues())}>Sign up instead</button>
+                <input type="submit" value="Log in" />
             </div>
         </form>
-        <div className="authFormErrorContainer">
-            <FormErrorMessage className="authFormError" error={topLevelError} />
-            <FormErrorMessage className="authFormError" error={errors.email} />
-            <FormErrorMessage className="authFormError" error={errors.password} />
-        </div>
     </>;
 }
 

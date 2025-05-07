@@ -112,9 +112,9 @@ input[type=text]:focus, input[type=password]:focus {
 /* BUTTONS */
 
 button, input[type=submit] {
-    --button-edge-col: var(--col-neutral-5);
+    --button-edge-col: var(--col-neutral-4);
     position: relative;
-    border: 1px solid var(--col-neutral-6);
+    border: 1px solid var(--col-neutral-5);
     border-bottom: var(--button-edge-col) ;
     background-color: var(--col-text-backing);
     border-radius: 5px;
