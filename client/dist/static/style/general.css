@@ -78,6 +78,7 @@ input[type=text], input[type=password] {
     border-bottom-style: solid;
     border-color: var(--col-neutral-7);
     box-sizing: border-box;
+    min-width: 3ch;
 }
 
 input[type=text].in-string, input[type=password].in-string {

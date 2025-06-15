@@ -23,11 +23,13 @@
 
 .recipeFormMeta {
     display: grid;
-    grid-template-columns: min-content min-content;
+    grid-template-columns: min-content minmax(3ch, 35ch);
+    width: 100%;
     grid-auto-rows: auto;
     column-gap: var(--column-gap);
     align-items: baseline;
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .metaLabel {

@@ -37,7 +37,7 @@ function MainContent({ user }: Props) {
                         msg = "Sorry! This URL does not appear to supply a computer readable recipe, so you will have to add this recipe manually.";
                     }
                     else {
-                        msg = "Something went wrong, failed to add recipe :(\n maybe try again?"
+                        msg = "Something went wrong, failed to add recipe :(\n maybe try again?";
                     }
                     alert(msg);
                 });
@@ -60,16 +60,22 @@ function MainContent({ user }: Props) {
 
     return <main>
         <form className="recipeForm" onSubmit={onSubmit} ref={formRef}>
-            <label htmlFor="add-from-url">URL: </label>
-            <input type="text" name="add-from-url"
-                id="add-from-url"
-                onPaste={onPaste}
-                ref={inputRef}
-                autoFocus
-            />
-            <input type="submit" value="Add" />
+            <section>
+                <label htmlFor="add-from-url">URL </label>
+                <input type="text" name="add-from-url"
+                    id="add-from-url"
+                    onPaste={onPaste}
+                    ref={inputRef}
+                    autoFocus
+                    style={{width: "100%"}}
+                />
+            </section>
+            <br></br>
+            <section>
+                <input type="submit" value="Add" />
+            </section>
         </form>
-    </main>
+    </main>;
 }
 
 export default function AddRecipeFromUrlPage() {

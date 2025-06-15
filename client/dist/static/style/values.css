@@ -35,6 +35,8 @@
 
     /* Z-INDEX */
     --z-main-header: 1;
+    --z-dialogue: 2;
+
 
     /* MISC */
     --line-height-default: 1.2;

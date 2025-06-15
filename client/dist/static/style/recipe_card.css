@@ -17,3 +17,15 @@
     overflow-wrap: anywhere;
     text-decoration-line: none;
 }
+
+.add-recipe-dialogue {
+  z-index: var(--z-dialogue);
+}
+
+.add-recipe-dialogue-content {
+  display: grid;
+  gap: 1ch;
+  align-items: center;
+  grid-template-columns: auto auto auto 1fr;
+  justify-items: start;
+}

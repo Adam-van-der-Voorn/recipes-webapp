@@ -61,7 +61,7 @@ type DialogProps = {
 };
 
 const dialogCloseButtonStyle = {
-    float: "right",
+    justifySelf: "right",
     fontSize: 'smaller',
 };
 
@@ -70,7 +70,12 @@ function Dialogue({ isOpen, close }: DialogProps) {
 
     let content;
     if (user === "pre-auth" || user === null) {
-        content = "no user";
+        content = <>
+            {/* filler for grid */}
+            <span></span>
+            <span></span>
+            <span></span>
+        </>;
     }
     else {
         content = <>
@@ -80,10 +85,12 @@ function Dialogue({ isOpen, close }: DialogProps) {
         </>;
     }
 
-    return <dialog open={isOpen} style={{ zIndex: 3 }}>
-        {content}
-        {/* @ts-ignore */}
-        <button style={dialogCloseButtonStyle} onClick={close}>Close</button>
+    return <dialog open={isOpen} className="add-recipe-dialogue">
+        <div className="add-recipe-dialogue-content">
+            {content}
+            {/* @ts-ignore */}
+            <button style={dialogCloseButtonStyle} onClick={close}>Close</button>
+        </div>
     </dialog>;
 }
 
