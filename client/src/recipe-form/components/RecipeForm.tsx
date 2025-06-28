@@ -90,7 +90,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="notes">
                 <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight lineHeight={standardLineHeight} {...register("notes")} />
+                <TextAreaAutoHeight {...register("notes")} lineHeight={standardLineHeight} defaultLines={1} />
                 <FormErrorMessage error={errors.notes} />
             </div>
 
@@ -100,7 +100,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="instructions">
                 <label htmlFor="instructions" className="h-2">Instructions</label>
-                <TextAreaAutoHeight lineHeight={standardLineHeight} {...register("instructions")} />
+                <TextAreaAutoHeight {...register("instructions")} lineHeight={standardLineHeight} defaultLines={1} />
                 <FormErrorMessage error={errors.instructions} />
             </div>
         </form >
