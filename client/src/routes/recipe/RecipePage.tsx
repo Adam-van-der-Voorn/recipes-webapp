@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import AuthGate from "../../auth/AuthGate";
@@ -35,6 +35,14 @@ function RecipePage() {
         }
     };
 
+    const editKeyboardShortcut = (ev: any) => {
+        if (ev.code === "KeyE" && recipeId) {
+            navigate(`/edit/${recipeId}`)
+        }
+    }
+
+    useRegisterHackyKeyboardShortcut(editKeyboardShortcut);
+
     return <div className="page viewRecipePage">
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
@@ -46,6 +54,32 @@ function RecipePage() {
         </AuthGate>
 
     </div>;
+}
+
+/**
+ * This does work, but the key event is caught BEFORE any input events, meaning
+ * that we cannot catch an input event and not trigger a shortcut. This is fine
+ * In this case, but not really "good".
+ * 
+ * I suspect that this happens because of this mix of "Synthetic" react events
+ * and real dom events.
+ * 
+ * I made a working non-react POC here:
+ * https://jsfiddle.net/x7hc5g4z/29/
+ * */
+function useRegisterHackyKeyboardShortcut(handler: (ev: any) => void) {
+    useEffect(() => {
+        const opts: AddEventListenerOptions = {
+            capture: false,
+            passive: true
+        }
+        
+        document.body.addEventListener('keydown', handler, opts);
+        return () => {
+            document.body.removeEventListener('keydown', handler, opts)
+        }
+    }, [handler])
+
 }
 
 export default RecipePage;
