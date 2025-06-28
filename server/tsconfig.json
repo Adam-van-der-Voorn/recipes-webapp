@@ -1,19 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "allowJs": true,
-    "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "outDir": "target",
-    // for deno
-    "noEmit": true,
-    "allowImportingTsExtensions": true
   },
   "include": [
     "src/**/*"

@@ -1,4 +1,4 @@
-import { parseExternalIngredientLine } from "./parseExternalIngredientLine";
+import { parseExternalIngredientLine } from "../../../../shared/parse-external-recipe/parseExternalIngredientLine";
 
 export function parseExternalIngredientText(externalText: string) {
     return externalText

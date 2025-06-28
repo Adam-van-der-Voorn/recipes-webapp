@@ -11,10 +11,9 @@ const clientRoot = path.resolve(projectRoot, 'client')
 // frontend watch & build //
 ////////////////////////////
 
-const clientWebpackBin = path.resolve(clientRoot, 'node_modules', '.bin', 'webpack-cli')
-let feBuild = spawn(clientWebpackBin, ['--mode=development', '--watch', '--stats=minimal'], { cwd: clientRoot });
-relog(feBuild, "stdout", "wpack: ")
-relog(feBuild, "stderr", "wpack: ")
+let feBuild = spawn("node", ['bundle.js', 'dev', 'watch'], { cwd: clientRoot });
+relog(feBuild, "stdout", "bundle: ")
+relog(feBuild, "stderr", "bundle: ")
  
 
 /////////////////////////////////

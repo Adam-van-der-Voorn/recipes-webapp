@@ -61,8 +61,7 @@ function onActivate(event) {
 }
 
 async function cacheThenNetwork(request) {
-    if (process?.env?.NODE_ENV === "development") {
-        // should be compiled away by webpack at build time
+    if (CONST_IS_DEV_BUILD === true) {
         console.log(LOG_TAG, "dev mode, bypassing cache for", request.url)
         return fetch(request);
     }

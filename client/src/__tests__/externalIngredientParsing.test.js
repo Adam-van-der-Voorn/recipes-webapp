@@ -1,5 +1,8 @@
-import { parseExternalIngredientLine } from '../recipe-form/parse-external/parseExternalIngredientLine'
+import { describe } from '@jest/globals';
+import { parseExternalIngredientLine } from '../../../shared/parse-external-recipe/parseExternalIngredientLine'
 import { parseExternalIngredientText } from '../recipe-form/parse-external/parseExternalIngredientText';
+import { it } from '@jest/globals';
+import { expect } from '@jest/globals';
 
 describe('parsing ingredient lines', () => {
     it.each([

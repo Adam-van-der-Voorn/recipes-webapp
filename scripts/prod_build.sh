@@ -7,35 +7,44 @@ target=$project_root/target
 deno_bin_name=myrecipes
 
 # rm target if it exists and contains files
+echo "-- clean --"
 N=$(find "$target" -type f | wc -l)
-if [ $N -ne 0 ]; then
+if [ "$N" -ne 0 ]; then
     # double check that we are removing what we think we are
-    n=$(find $target -maxdepth 1 -name $deno_bin_name | wc -l)
+    n=$(find "$target" -maxdepth 1 -name $deno_bin_name | wc -l)
     if [ "$n" -eq 0 ]; then
         echo "deno binary ($deno_bin_name) not found in target folder ($target)"
         echo "this indicates that we my be rm-r'ing the wrong thing!"
         echo "aborting, please delete target manually before re-running"
         exit 0
     fi
-    rm -r $target/*
+    echo remove "$target/*"
+    # disable rule to try stop rm -r /
+    # shellcheck disable=SC2115
+    rm -r "$target"/*
 else
-    mkdir -p $target
+    mkdir -p "$target"
 fi
 
 # backend_build
-cd $project_root/server
+echo ""
+echo "-- backend build --"
+cd "$project_root/server"
 deno install --allow-scripts
-deno compile --allow-read --allow-env --allow-net --output $target/$deno_bin_name src/index.ts 
+deno compile --allow-read --allow-env --allow-net --output "$target/$deno_bin_name" src/index.ts 
 
 # frontend_build
-cd $project_root/client
+echo ""
+echo "-- frontend build --"
+cd "$project_root/client"
 pnpm i
-node_modules/.bin/webpack-cli --mode=production
-cp -r dist $target/dist
+node bundle.js
+cp -r dist "$target/dist"
 
 # test frontend
-$project_root/scripts/frontend_test.sh $project_root 
+"$project_root/scripts/frontend_test.sh" "$project_root"
 
+echo ""
 echo "done!"
 
 
