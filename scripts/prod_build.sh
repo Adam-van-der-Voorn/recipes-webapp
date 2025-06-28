@@ -24,10 +24,12 @@ fi
 
 # backend_build
 cd $project_root/server
+deno install --allow-scripts
 deno compile --allow-read --allow-env --allow-net --output $target/$deno_bin_name src/index.ts 
 
 # frontend_build
 cd $project_root/client
+pnpm i
 node_modules/.bin/webpack-cli --mode=production
 cp -r dist $target/dist
 
