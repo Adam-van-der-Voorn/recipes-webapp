@@ -1,8 +1,8 @@
 import { Firestore } from "firebase/firestore";
 import { createContext, PropsWithChildren, useState } from "react";
 import { Auth, onAuthStateChanged, User } from "firebase/auth";
-import useRecipeStorage, { RecipesStorageInterface } from "../util/hooks/useRecipeStorage";
-import { UserState } from "../types/user";
+import useRecipeStorage, { RecipesStorageInterface } from "../util/hooks/useRecipeStorage.ts";
+import { UserState } from "../types/user.ts";
 
 export type RecipesContextType = {
     db: Firestore,

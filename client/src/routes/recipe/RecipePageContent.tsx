@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { c } from "../../util/buildClassName";
-import IngredientsTab from "./IngredientsTab";
-import InstructionsTab from "./InstructionsTab";
-import { Recipe } from "../../types/recipeTypes";
-import Recipes from "../../types/Recipes";
-import Loading from "../../general/placeholders/Loading";
-import Error from "../../general/placeholders/Error";
-import NotFound from "../../general/placeholders/NotFound";
-import { MetaDataSection } from "./MetaDataSection";
+import { c } from "../../util/buildClassName.ts";
+import IngredientsTab from "./IngredientsTab.tsx";
+import InstructionsTab from "./InstructionsTab.tsx";
+import { Recipe } from "../../types/recipeTypes.ts";
+import Recipes from "../../types/Recipes.ts";
+import Loading from "../../general/placeholders/Loading.tsx";
+import Error from "../../general/placeholders/Error.tsx";
+import NotFound from "../../general/placeholders/NotFound.tsx";
+import { MetaDataSection } from "./MetaDataSection.tsx";
 
 type Props = {
     recipeId: string | undefined
@@ -63,12 +63,12 @@ export function RecipePageContent({ recipeId, recipes }: Props) {
             </div>
         </main>
         <div role="tablist" className="tabBar">
-            <button role="tab"
+            <button type="button" role="tab"
                 className={c("tab", tab === "ingredients" ? "active" : null)}
                 onClick={() => setTab("ingredients")}
             >Ingredients
             </button>
-            <button role="tab"
+            <button type="button" role="tab"
                 className={c("tab", tab === "instuctions" ? "active" : null)}
                 onClick={() => setTab("instuctions")}
             >Instructions

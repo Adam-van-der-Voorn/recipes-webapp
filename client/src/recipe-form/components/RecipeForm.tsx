@@ -1,15 +1,15 @@
-import { Recipe } from "../../types/recipeTypes";
-import getFullSchema from "../recipeInputSchema";
-import IngredientsField from "./ingredients/IngredientsField";
-import SubstitutionsField from "./substitutions/SubstitutionsField";
+import { Recipe } from "../../types/recipeTypes.ts";
+import getFullSchema from "../recipeInputSchema.ts";
+import IngredientsField from "./ingredients/IngredientsField.tsx";
+import SubstitutionsField from "./substitutions/SubstitutionsField.tsx";
 
-import parseFormData from "../parseFormData";
-import FormErrorMessage from "./FormErrorMessage";
-import TextAreaAutoHeight from "../../general/TextAreaAutoHeight";
+import parseFormData from "../parseFormData.ts";
+import FormErrorMessage from "./FormErrorMessage.tsx";
+import TextAreaAutoHeight from "../../general/TextAreaAutoHeight.tsx";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RecipeInput } from "../../types/RecipeInputTypes";
-import { usePreventUnload } from "../../util/hooks/usePreventUnload";
+import { RecipeInput } from "../../types/RecipeInputTypes.ts";
+import { usePreventUnload } from "../../util/hooks/usePreventUnload.ts";
 
 type Props = {
     id?: string,

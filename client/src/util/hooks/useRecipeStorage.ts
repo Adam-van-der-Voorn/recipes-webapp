@@ -1,8 +1,8 @@
 import { setDoc, doc, onSnapshot, collection, Firestore, deleteDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
-import { Recipe } from "../../types/recipeTypes";
+import { Recipe } from "../../types/recipeTypes.ts";
 import { v4 as uuid4 } from 'uuid';
-import Recipes from "../../types/Recipes";
+import Recipes from "../../types/Recipes.ts";
 
 export type RecipesStorageInterface = {
     recipes: Recipes;

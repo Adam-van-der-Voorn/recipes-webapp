@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import AuthGate from "../../auth/AuthGate";
-import { RecipePageContent } from "./RecipePageContent";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import AuthGate from "../../auth/AuthGate.tsx";
+import { RecipePageContent } from "./RecipePageContent.tsx";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',
@@ -27,7 +27,7 @@ function RecipePage() {
             return;
         }
         const iden = recipeName ?? recipeId;
-        let confirmation = window.confirm(`Are you sure you want to delete recipe '${iden}'?`);
+        const confirmation = confirm(`Are you sure you want to delete recipe '${iden}'?`);
         if (confirmation) {
             deleteRecipe(recipeId, () => {
                 navigate(`/`);
@@ -47,7 +47,7 @@ function RecipePage() {
         <header style={headerStyle}>
             <Link to="/" className="headerLink">Home</Link>
             <Link to={`/edit/${recipeId}`} className="headerLink">Edit</Link>
-            <button className="headerButton" onClick={deleteAndNavigate}>Delete</button>
+            <button type="button" className="headerButton" onClick={deleteAndNavigate}>Delete</button>
         </header>
         <AuthGate>
             <RecipePageContent recipeId={recipeId} recipes={recipes} />

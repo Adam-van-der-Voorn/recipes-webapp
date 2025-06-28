@@ -1,7 +1,7 @@
 import { Link, useLocation, useRouteError } from "react-router-dom";
-import AuthForm from "../../auth/AuthForm";
+import AuthForm from "../../auth/AuthForm.tsx";
 import { useContext } from "react";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
 
 export default function ErrorPage() {
     const error = useRouteError() as any;

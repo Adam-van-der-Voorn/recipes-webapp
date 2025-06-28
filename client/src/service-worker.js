@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 const VERSION = "v16";
 const CACHE_NAME = `vdv-recipes-${VERSION}`;
@@ -62,7 +61,7 @@ function onActivate(event) {
 
 async function cacheThenNetwork(request) {
     if (process?.env?.NODE_ENV === "development") {
-        // should be compiled away by webpack at build time
+        // should be compiled away by webpack (or esbuild???) at build time
         console.log(LOG_TAG, "dev mode, bypassing cache for", request.url)
         return fetch(request);
     }

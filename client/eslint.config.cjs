@@ -1,3 +1,4 @@
+import process from "node:process";
 const tseslint = require('typescript-eslint');
 const reacthooks = require('eslint-plugin-react-hooks');
 

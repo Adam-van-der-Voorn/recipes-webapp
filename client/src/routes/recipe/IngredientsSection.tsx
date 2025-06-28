@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IngredientsSubList } from "../../types/recipeTypes";
-import { IngredientRow } from "./IngredientRow";
+import { IngredientsSubList } from "../../types/recipeTypes.ts";
+import { IngredientRow } from "./IngredientRow.tsx";
 
 type Props = {
     ingredients: IngredientsSubList[];
