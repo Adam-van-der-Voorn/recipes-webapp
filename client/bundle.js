@@ -27,7 +27,8 @@ const config = {
     treeShaking: true,
     logLevel: "info",
     define: {
-        "CONST_IS_DEV_BUILD": `${isDev}`
+        "CONST_IS_DEV_BUILD": `${isDev}`,
+        'global': 'window'
     },
 }
 
