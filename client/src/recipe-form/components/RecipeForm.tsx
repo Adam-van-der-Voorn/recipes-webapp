@@ -1,5 +1,5 @@
 import { Recipe } from "../../types/recipeTypes";
-import getFullSchema from "../recipeInputSchema";
+import { getFullSchema } from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 

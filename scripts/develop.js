@@ -7,6 +7,7 @@ const { networkInterfaces } = require('node:os');
 const projectRoot = process.argv[2];
 const clientRoot = path.resolve(projectRoot, 'client')
 
+
 ////////////////////////////
 // frontend watch & build //
 ////////////////////////////
@@ -48,8 +49,10 @@ let server = spawn("deno", [...denoArgs, ...serverArgs], { cwd: projectRoot });
 relog(server, "stdout", "server: ")
 relog(server, "stderr", "server: ")
 
+
 // hang tight !!
 setTimeout(() => {}, 999999)
+
 
 function relog(childProcess, outname, prefix) {
     childProcess[outname].setEncoding('utf-8')

@@ -11,15 +11,6 @@ const isLastIngredient = (context: any) => {
     return index === listLength - 1;
 };
 
-export const yupQuantitySchema = Yup.string()
-    .test('is-num-unit-optional', 'Must be a number, optionally followed by a unit', (el, context) => {
-        return (!el || unitValPattern.test(el) || isNumStrict(el));
-    })
-    .max(30, 'please make this shorter');
-
-export const yupIngredientNameSchema = Yup.string()
-    .max(200, 'Please make this shorter.');
-
 const yupRecipeNameSchema = Yup.string()
     .required("Required")
     .trim()
@@ -67,7 +58,7 @@ const yupSubstitutionsSchema = Yup.array().of(
     })
 );
 
-export default function getFullSchema() {
+export function getFullSchema() {
     return Yup.object({
         name: yupRecipeNameSchema,
         timeframe: Yup.string()
