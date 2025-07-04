@@ -2,6 +2,7 @@
   "name": "recipes-client",
   "private": true,
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
     "convert-units": "^2.3.4",
     "firebase": "^11.10.0",
     "fuse.js": "^7.1.0",
@@ -15,7 +16,6 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@hookform/resolvers": "^2.9.1",
     "@jest/globals": "^30.0.4",
     "@types/convert-units": "^2.3.4",
     "@types/node": "^20.14.10",
