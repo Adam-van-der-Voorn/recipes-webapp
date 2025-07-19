@@ -53,7 +53,7 @@ const serviceWorkerConfig = {
 }
 
 if (watch) {
-    let ctx2 = await esbuild.context({...serviceWorkerConfig, logLevel: "info"});
+    let ctx2 = await esbuild.context({...mainConfig, logLevel: "info"});
     let ctx1 = await esbuild.context({...serviceWorkerConfig, logLevel: "info"});
     
     // IMPORTANT: this call MUST NOT have an `await`.
