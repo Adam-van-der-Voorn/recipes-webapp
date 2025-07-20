@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { GlobalContextProvider } from "../contexts/GlobalContext";
-import setupFirebase from "../util/setupFirestore";
+import { GlobalContextProvider } from "../contexts/GlobalContext.tsx";
+import setupFirebase from "../util/setupFirestore.ts";
 
 const { db, auth } = setupFirebase();
 

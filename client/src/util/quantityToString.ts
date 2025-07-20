@@ -1,4 +1,4 @@
-import { IngredientQuantity } from "../types/recipeTypes";
+import { IngredientQuantity } from "../types/recipeTypes.ts";
 
 export default function quantityToString(quantity: IngredientQuantity): string {
     if (!quantity) {

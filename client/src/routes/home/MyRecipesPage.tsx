@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import MyRecipesPageContent from "./MyRecipesPageContent";
-import { useWindowDimensions } from "../../util/hooks/useWindowDimensions";
+import MyRecipesPageContent from "./MyRecipesPageContent.tsx";
+import { useWindowDimensions } from "../../util/hooks/useWindowDimensions.ts";
 import { useContext, useLayoutEffect, useRef, useState } from "react";
-import AuthGate from "../../auth/AuthGate";
-import { GlobalContext } from "../../contexts/GlobalContext";
+import AuthGate from "../../auth/AuthGate.tsx";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
 
 const minSearchbarSizePx = 30;
 

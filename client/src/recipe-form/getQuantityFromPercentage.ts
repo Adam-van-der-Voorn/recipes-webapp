@@ -1,6 +1,6 @@
 import convert, { Unit } from "convert-units";
-import { UnitVal } from "../types/recipeTypes";
-import { isSameMeasure } from "../util/units";
+import { UnitVal } from "../types/recipeTypes.ts";
+import { isSameMeasure } from "../util/units.ts";
 
 export const getQuantityFromPercentage = (anchorQuantity: UnitVal | number, subjectPercentage: number, subjectUnit: string | undefined): UnitVal | number | undefined => {
     const proportion = subjectPercentage / 100;

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import ValidChild from "../../types/ValidChild";
+import ValidChild from "../../types/ValidChild.ts";
 
 type Callback<T> = (v: T) => void;
 

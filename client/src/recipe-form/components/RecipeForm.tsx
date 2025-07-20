@@ -1,13 +1,13 @@
-import { Recipe } from "../../types/recipeTypes";
-import IngredientsField from "./ingredients/IngredientsField";
-import SubstitutionsField from "./substitutions/SubstitutionsField";
+import { Recipe } from "../../types/recipeTypes.ts";
+import IngredientsField from "./ingredients/IngredientsField.tsx";
+import SubstitutionsField from "./substitutions/SubstitutionsField.tsx";
 
-import parseFormData from "../parseFormData";
-import FormErrorMessage from "./FormErrorMessage";
-import TextAreaAutoHeight from "../../general/TextAreaAutoHeight";
+import parseFormData from "../parseFormData.ts";
+import FormErrorMessage from "./FormErrorMessage.tsx";
+import TextAreaAutoHeight from "../../general/TextAreaAutoHeight.tsx";
 import { useForm, SubmitHandler, RegisterOptions } from "react-hook-form";
-import { RecipeInput } from "../../types/RecipeInputTypes";
-import { usePreventUnload } from "../../util/hooks/usePreventUnload";
+import { RecipeInput } from "../../types/RecipeInputTypes.ts";
+import { usePreventUnload } from "../../util/hooks/usePreventUnload.ts";
 
 export const RECIPE_FORM_INPUT_REASONABLE_LEN = 1000;
 export const RECIPE_FORM_TEXTAREA_REASONABLE_LEN = 50_000;

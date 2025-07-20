@@ -1,13 +1,14 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run
 
 import esbuild from "esbuild"
+import { denoPlugins } from "@luca/esbuild-deno-loader";
 
-const USAGE_STRING = "usage: ./bundle.js [watch] [dev]"
+const USAGE_STRING = "usage: ./bundle.ts [watch] [dev]"
 
-const args = process.argv.slice(2);
+const args = Deno.args;
 if (args.length > 2) {
     console.error(USAGE_STRING)
-    process.exit(1);
+    Deno.exit(1)
 }
 
 const isDev = args.includes("dev")
@@ -15,11 +16,9 @@ const watch = args.includes("watch");
 
 console.log({isDev, watch})
 
-
-/**
- * @type {import("esbuild").BuildOptions}
-*/
-const config = {
+const config: esbuild.BuildOptions = {
+    // @ts-ignore
+    plugins: denoPlugins(),
     bundle: true,
     platform: "browser",
     format: "esm",
@@ -32,10 +31,7 @@ const config = {
     },
 }
 
-/**
- * @type {import("esbuild").BuildOptions}
-*/
-const mainConfig = {
+const mainConfig: esbuild.BuildOptions = {
     entryPoints: ["src/index.tsx"],
     minify: true,
     sourcemap: true,
@@ -63,6 +59,5 @@ if (watch) {
 else {
     esbuild.build(mainConfig)
     esbuild.build(serviceWorkerConfig)
+    // await esbuild.stop()
 }
-
-// if using deno, need to call esbuild.stop() here.

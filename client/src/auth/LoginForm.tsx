@@ -1,10 +1,8 @@
 import { PropsWithChildren, useState } from "react";
 import { Auth, signInWithEmailAndPassword } from "firebase/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { object, string } from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { parseFirebaseError } from "./firebaseError";
-import FormErrorMessage from "../recipe-form/components/FormErrorMessage";
+import { parseFirebaseError } from "./firebaseError.ts";
+import FormErrorMessage from "../recipe-form/components/FormErrorMessage.tsx";
 
 export type LoginInput = {
     email: string,

@@ -1,11 +1,11 @@
 import { useContext, useMemo } from 'react';
 import Fuse from 'fuse.js';
-import MyError from "../../general/placeholders/Error";
-import { GlobalContext } from '../../contexts/GlobalContext';
-import RecipeCard from './RecipeCard';
-import Loading from '../../general/placeholders/Loading';
-import { Recipe } from '../../types/recipeTypes';
-import NotFound from '../../general/placeholders/NotFound';
+import MyError from "../../general/placeholders/Error.tsx";
+import { GlobalContext } from '../../contexts/GlobalContext.tsx';
+import RecipeCard from './RecipeCard.tsx';
+import Loading from '../../general/placeholders/Loading.tsx';
+import { Recipe } from '../../types/recipeTypes.ts';
+import NotFound from '../../general/placeholders/NotFound.tsx';
 
 const fuseOptions = {
     keys: ['recipe.name'],

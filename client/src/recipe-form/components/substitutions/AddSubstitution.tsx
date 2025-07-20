@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SubstitutionInput } from "../../../types/RecipeInputTypes";
+import { SubstitutionInput } from "../../../types/RecipeInputTypes.ts";
 
 type Props = {
     input: string,

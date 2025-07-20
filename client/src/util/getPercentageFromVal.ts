@@ -1,7 +1,7 @@
 import convert, { Unit } from "convert-units";
-import { IngredientInput } from "../types/RecipeInputTypes";
-import { isSameMeasure, isConvertableUnit } from "./units";
-import { parseIngredientQuantity } from "../recipe-form/parseUnitValInputs";
+import { IngredientInput } from "../types/RecipeInputTypes.ts";
+import { isSameMeasure, isConvertableUnit } from "./units.ts";
+import { parseIngredientQuantity } from "../recipe-form/parseUnitValInputs.ts";
 
 export default function getPercentageFromVal(subject: IngredientInput, anchor: IngredientInput): number | undefined {
     const anchorQuantity = parseIngredientQuantity(anchor.quantity)

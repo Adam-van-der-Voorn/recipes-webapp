@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Recipe } from "../../types/recipeTypes";
+import { Recipe } from "../../types/recipeTypes.ts";
 import { v4 as uuid4 } from 'uuid';
-import RecipeForm from "../../recipe-form/components/RecipeForm";
-import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes";
-import quantityToString from "../../util/quantityToString";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import NotFound from "../../general/placeholders/NotFound";
-import Loading from "../../general/placeholders/Loading";
-import Error from "../../general/placeholders/Error";
-import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe";
+import RecipeForm from "../../recipe-form/components/RecipeForm.tsx";
+import { IngredientListsInput, SubstitutionInput } from "../../types/RecipeInputTypes.ts";
+import quantityToString from "../../util/quantityToString.ts";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import NotFound from "../../general/placeholders/NotFound.tsx";
+import Loading from "../../general/placeholders/Loading.tsx";
+import Error from "../../general/placeholders/Error.tsx";
+import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe.ts";
 
 const FORM_ID = "edit-recipe";
 

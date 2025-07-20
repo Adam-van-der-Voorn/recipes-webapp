@@ -38,12 +38,12 @@ deno lint
 echo ""
 echo "-- frontend build --"
 cd "$project_root/client"
-pnpm i
-node bundle.js
+deno install
+deno --allow-read --allow-env --allow-write --allow-run bundle.ts
 cp -r dist "$target/dist"
 
-# test frontend
-"$project_root/scripts/frontend_test.sh" "$project_root"
+# unit test
+"$project_root/scripts/unit_test.sh" "$project_root" --silent
 
 echo ""
 echo "done!"

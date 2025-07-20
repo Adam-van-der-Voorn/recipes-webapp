@@ -1,6 +1,6 @@
 import { forwardRef, HTMLProps, useImperativeHandle, useRef, ForwardedRef, useEffect } from "react";
-import ValidChild from "../types/ValidChild";
-import isWithinBounds from "../util/isWithinBounds";
+import ValidChild from "../types/ValidChild.ts";
+import isWithinBounds from "../util/isWithinBounds.ts";
 
 type Props = {
     closeOnBackgroudClick?: boolean;

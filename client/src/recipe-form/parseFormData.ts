@@ -1,6 +1,6 @@
-import { Recipe } from "../types/recipeTypes";
-import { RecipeInput } from "../types/RecipeInputTypes";
-import { parseIngredientQuantity } from "./parseUnitValInputs";
+import { Recipe } from "../types/recipeTypes.ts";
+import { RecipeInput } from "../types/RecipeInputTypes.ts";
+import { parseIngredientQuantity } from "./parseUnitValInputs.ts";
 
 export default function parseFormData(formData: RecipeInput): Recipe {
     // parse form data

@@ -1,7 +1,7 @@
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
-import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes";
+import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes.ts";
 import { MdClear } from "react-icons/md"
-import useFieldList from "../../../util/hooks/useFieldList";
+import useFieldList from "../../../util/hooks/useFieldList.ts";
 import { Fragment } from "react";
 
 type FormHelpers = {

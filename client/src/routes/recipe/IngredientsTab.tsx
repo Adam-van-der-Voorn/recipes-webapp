@@ -1,5 +1,5 @@
-import { IngredientsList as IngredientsListType, Substitution } from '../../types/recipeTypes';
-import { IngredientsSection } from './IngredientsSection';
+import { IngredientsList as IngredientsListType, Substitution } from '../../types/recipeTypes.ts';
+import { IngredientsSection } from './IngredientsSection.tsx';
 
 
 type Props = {

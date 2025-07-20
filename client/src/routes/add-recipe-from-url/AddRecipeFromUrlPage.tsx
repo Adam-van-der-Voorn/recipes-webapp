@@ -1,11 +1,11 @@
 import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import { getFromUrl } from "../../api/externalRecipe";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import { getFromUrl } from "../../api/externalRecipe.ts";
 import { User } from "firebase/auth";
-import Loading from "../../general/placeholders/Loading";
-import AuthForm from "../../auth/AuthForm";
-import AddRecipeFromUrlOuter from "./AddRecipeFromUrlOuter";
+import Loading from "../../general/placeholders/Loading.tsx";
+import AuthForm from "../../auth/AuthForm.tsx";
+import AddRecipeFromUrlOuter from "./AddRecipeFromUrlOuter.tsx";
 
 type Props = {
     user: User;

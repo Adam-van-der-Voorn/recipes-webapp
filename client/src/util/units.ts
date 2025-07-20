@@ -30,5 +30,5 @@ export const ingredientUnits = [
 ]
 
 export function validInMeasure(s: Measure) {
-    return convert().list(s).flatMap(e => [e.abbr, e.singular, e.plural]);
+    return convert().list(s).flatMap((e: any) => [e.abbr, e.singular, e.plural]);
 }

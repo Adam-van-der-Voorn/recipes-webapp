@@ -1,4 +1,4 @@
-import { Recipe } from "../../types/recipeTypes";
+import { Recipe } from "../../types/recipeTypes.ts";
 
 type Props = {
     notes: Recipe['notes'];

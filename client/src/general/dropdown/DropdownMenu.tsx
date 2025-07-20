@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import { Popup } from 'reactjs-popup';
 import { PopupPosition } from 'reactjs-popup/dist/types';
-import ValidChild from '../../types/ValidChild';
+import ValidChild from '../../types/ValidChild.ts';
 
 
 

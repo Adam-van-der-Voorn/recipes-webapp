@@ -1,4 +1,4 @@
-import { Recipe } from "./recipeTypes";
+import { Recipe } from "./recipeTypes.ts";
 
 type Recipes = {
     data?: Map<string, Recipe>,

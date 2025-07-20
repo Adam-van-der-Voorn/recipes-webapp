@@ -1,4 +1,4 @@
-import { Ingredient } from "../../types/recipeTypes";
+import { Ingredient } from "../../types/recipeTypes.ts";
 
 type Props = {
     ingredient: Ingredient;

@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Recipe } from "../../types/recipeTypes";
-import RecipeForm from "../../recipe-form/components/RecipeForm";
+import { Recipe } from "../../types/recipeTypes.ts";
+import RecipeForm from "../../recipe-form/components/RecipeForm.tsx";
 import { v4 as uuid4 } from 'uuid';
-import { GlobalContext } from "../../contexts/GlobalContext";
-import AuthGate from "../../auth/AuthGate";
-import { isAuthed } from "../../util/auth";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import AuthGate from "../../auth/AuthGate.tsx";
+import { isAuthed } from "../../util/auth.ts";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto',

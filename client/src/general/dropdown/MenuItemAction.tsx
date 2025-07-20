@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { DropdownContext } from './DropdownMenu';
+import { DropdownContext } from './DropdownMenu.tsx';
 
 
 type Props = {

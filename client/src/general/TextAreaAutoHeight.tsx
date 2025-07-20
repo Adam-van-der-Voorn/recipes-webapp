@@ -1,5 +1,5 @@
 import { forwardRef, HTMLProps, useEffect, useImperativeHandle, useRef, ForwardedRef, useMemo } from "react";
-import extractFields from "../util/extractFields";
+import extractFields from "../util/extractFields.ts";
 
 type Props = {
     name: string;

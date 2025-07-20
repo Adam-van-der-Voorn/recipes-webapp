@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import AuthGate from "../../auth/AuthGate";
-import { RecipePageContent } from "./RecipePageContent";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import AuthGate from "../../auth/AuthGate.tsx";
+import { RecipePageContent } from "./RecipePageContent.tsx";
 
 const headerStyle: React.CSSProperties = {
     gridTemplateColumns: 'auto 1fr auto auto',

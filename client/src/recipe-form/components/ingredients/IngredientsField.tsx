@@ -1,16 +1,16 @@
 import { Control, UseFormRegister, UseFormSetValue, UseFormTrigger, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { parseIngredientQuantity } from "../../parseUnitValInputs";
-import { IngredientQuantity, UnitVal } from "../../../types/recipeTypes";
-import IngredientsSubField from "./IngredientsSubField";
+import { parseIngredientQuantity } from "../../parseUnitValInputs.ts";
+import { IngredientQuantity, UnitVal } from "../../../types/recipeTypes.ts";
+import IngredientsSubField from "./IngredientsSubField.tsx";
 import { MdMoreVert } from 'react-icons/md';
-import DropdownMenu from "../../../general/dropdown/DropdownMenu";
-import MenuItemToggleable from "../../../general/dropdown/MenuItemToggleable";
-import { getQuantityFromPercentage } from "../../getQuantityFromPercentage";
-import getPercentageFromVal from "../../../util/getPercentageFromVal";
-import { RecipeInput } from "../../../types/RecipeInputTypes";
+import DropdownMenu from "../../../general/dropdown/DropdownMenu.tsx";
+import MenuItemToggleable from "../../../general/dropdown/MenuItemToggleable.tsx";
+import { getQuantityFromPercentage } from "../../getQuantityFromPercentage.ts";
+import getPercentageFromVal from "../../../util/getPercentageFromVal.ts";
+import { RecipeInput } from "../../../types/RecipeInputTypes.ts";
 import { v4 as uuid4 } from 'uuid';
-import useFieldList from "../../../util/hooks/useFieldList";
+import useFieldList from "../../../util/hooks/useFieldList.ts";
 
 type FormHelpers = {
     control: Control<RecipeInput, any>;

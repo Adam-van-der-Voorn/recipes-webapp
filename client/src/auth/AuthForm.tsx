@@ -1,7 +1,7 @@
 import { useState } from "react";
-import LoginForm, { LoginInput } from "./LoginForm";
+import LoginForm, { LoginInput } from "./LoginForm.tsx";
 import { Auth } from "firebase/auth";
-import SignUpForm, { SignUpInput } from "./SignUpForm";
+import SignUpForm, { SignUpInput } from "./SignUpForm.tsx";
 
 type Props = {
     auth: Auth;

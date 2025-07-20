@@ -1,5 +1,5 @@
-import { IngredientQuantity, UnitVal } from "../types/recipeTypes";
-import { parseNumStrict } from "../util/numberInputs";
+import { IngredientQuantity, UnitVal } from "../types/recipeTypes.ts";
+import { parseNumStrict } from "../util/numberInputs.ts";
 
 const unitValGroups = /^(?<value>\d+(\.\d+)?) *(?<unit>[aA-zZ ]*?) *$/;
 

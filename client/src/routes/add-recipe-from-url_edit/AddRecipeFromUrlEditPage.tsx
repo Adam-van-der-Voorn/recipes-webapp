@@ -1,16 +1,16 @@
 import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import Loading from "../../general/placeholders/Loading";
+import { GlobalContext } from "../../contexts/GlobalContext.tsx";
+import Loading from "../../general/placeholders/Loading.tsx";
 import { User } from "firebase/auth";
-import AuthForm from "../../auth/AuthForm";
-import RecipeForm from "../../recipe-form/components/RecipeForm";
-import { Recipe } from "../../types/recipeTypes";
-import useRecipeStorage from "../../util/hooks/useRecipeStorage";
+import AuthForm from "../../auth/AuthForm.tsx";
+import RecipeForm from "../../recipe-form/components/RecipeForm.tsx";
+import { Recipe } from "../../types/recipeTypes.ts";
+import useRecipeStorage from "../../util/hooks/useRecipeStorage.ts";
 import { Firestore } from "firebase/firestore";
-import { RecipeInput } from "../../types/RecipeInputTypes";
-import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe";
-import { isAuthed } from "../../util/auth";
+import { RecipeInput } from "../../types/RecipeInputTypes.ts";
+import { ingredientInputsFromExistingRecipe } from "../../recipe-form/ingredientInputsFromExistingRecipe.ts";
+import { isAuthed } from "../../util/auth.ts";
 
 const FORM_ID = "edit-recipe";
 

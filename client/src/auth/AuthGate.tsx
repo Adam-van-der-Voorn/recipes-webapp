@@ -1,7 +1,7 @@
 import { PropsWithChildren, useContext } from "react";
-import AuthForm from "./AuthForm";
-import { GlobalContext } from "../contexts/GlobalContext";
-import Loading from "../general/placeholders/Loading";
+import AuthForm from "./AuthForm.tsx";
+import { GlobalContext } from "../contexts/GlobalContext.tsx";
+import Loading from "../general/placeholders/Loading.tsx";
 
 type Props = {};
 

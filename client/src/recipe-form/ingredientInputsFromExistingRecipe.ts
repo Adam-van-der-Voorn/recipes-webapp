@@ -1,6 +1,6 @@
-import { Recipe } from "../types/recipeTypes";
+import { Recipe } from "../types/recipeTypes.ts";
 import { v4 as uuid4 } from 'uuid';
-import quantityToString from "../util/quantityToString";
+import quantityToString from "../util/quantityToString.ts";
 
 export function ingredientInputsFromExistingRecipe(ingredients: Recipe['ingredients']) {
     return ingredients
