@@ -2,11 +2,9 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/cli@^1.0.6": "1.0.20",
-    "npm:@types/express@^4.17.21": "4.17.23",
+    "jsr:@std/internal@^1.0.9": "1.0.9",
+    "jsr:@std/path@^1.1.1": "1.1.1",
     "npm:@types/express@^5.0.3": "5.0.3",
-    "npm:@types/he@^1.2.3": "1.2.3",
-    "npm:@types/node@^22.4.0": "22.15.34",
-    "npm:@types/uuid@10": "10.0.0",
     "npm:express@^5.1.0": "5.1.0",
     "npm:firebase-admin@^13.4.0": "13.4.0",
     "npm:he@^1.2.0": "1.2.0",
@@ -17,6 +15,15 @@
   "jsr": {
     "@std/cli@1.0.20": {
       "integrity": "a8c384a2c98cec6ec6a2055c273a916e2772485eb784af0db004c5ab8ba52333"
+    },
+    "@std/internal@1.0.9": {
+      "integrity": "bdfb97f83e4db7a13e8faab26fb1958d1b80cc64366501af78a0aee151696eb8"
+    },
+    "@std/path@1.1.1": {
+      "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
     }
   },
   "npm": {
@@ -236,9 +243,6 @@
         "@types/serve-static"
       ]
     },
-    "@types/he@1.2.3": {
-      "integrity": "sha512-q67/qwlxblDzEDvzHhVkwc1gzVWxaNxeyHUBF4xElrvjL11O+Ytze+1fGpBHlr/H9myiBUaUXNnNPmBHxxfAcA=="
-    },
     "@types/http-errors@2.0.5": {
       "integrity": "sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg=="
     },
@@ -302,9 +306,6 @@
     },
     "@types/tough-cookie@4.0.5": {
       "integrity": "sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA=="
-    },
-    "@types/uuid@10.0.0": {
-      "integrity": "sha512-7gqG38EyHgyP1S+7+xomFtL+ZNHcKv6DwNaCZmJmo1vgMugyF3TCnXVg4t1uk89mLNwnLtnY3TpOpCOyp1/xHQ=="
     },
     "abort-controller@3.0.0": {
       "integrity": "sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==",
@@ -1334,21 +1335,15 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/cli@^1.0.6"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:@types/express@^5.0.3",
-        "npm:@types/he@^1.2.3",
-        "npm:@types/node@^22.15.1",
-        "npm:@types/uuid@10",
-        "npm:express@^5.1.0",
-        "npm:firebase-admin@^13.4.0",
-        "npm:he@^1.2.0",
-        "npm:iso8601-duration@^2.1.2",
-        "npm:node-html-parser@^7.0.1",
-        "npm:schema-dts@^1.1.5"
-      ]
-    }
+      "jsr:@std/cli@^1.0.6",
+      "jsr:@std/path@^1.1.1",
+      "npm:@types/express@^5.0.3",
+      "npm:express@^5.1.0",
+      "npm:firebase-admin@^13.4.0",
+      "npm:he@^1.2.0",
+      "npm:iso8601-duration@^2.1.2",
+      "npm:node-html-parser@^7.0.1",
+      "npm:schema-dts@^1.1.5"
+    ]
   }
 }

@@ -43,7 +43,7 @@ export async function addRecipeFromUrl(req: Request, res: Response, db: Firestor
         userId = verifiedJwt.uid;
     }
     catch (e) {
-        console.log('JWT found on request but could not be validated');
+        console.log('JWT found on request but could not be validated', e);
         res.status(401)
             .json({ ecode: unauthorisedInvalidJWT });
         return;

@@ -1,5 +1,4 @@
 import { parseArgs } from "@std/cli/parse-args";
-import { exit } from "node:process";
 
 const PARAM_MESSAGE = "required params: port, static-dir, fb-secrets-file, server"
 
@@ -13,13 +12,13 @@ export default function argParse() {
 
     if (!port || !staticDir || !secretServiceAccountPath || !serverIp) {
         console.error(PARAM_MESSAGE);
-        exit(1);
+        Deno.exit(1)
     }
 
     if (typeof port !== 'number') {
         console.error(PARAM_MESSAGE);
         console.error("port must be a number");
-        exit(1);
+        Deno.exit(1)
     }
 
     const parsed = { port, staticDir, secretServiceAccountPath, serverIp };

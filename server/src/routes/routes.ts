@@ -3,9 +3,9 @@ import express, { Express, NextFunction, Request, Response } from 'express';
 import { addRecipeFromUrl } from './api/external-recipe/_post.ts';
 import { getRecipeFromUrl } from './api/external-recipe/_get.ts';
 
-import path from 'node:path';
 import { notFound } from "../applicationErrorCodes.ts";
 import { getSchemaOrgDump } from "./api/dev/schema-org-dump/_get.ts";
+import * as path from "@std/path"
 
 export type ResponseData = {
     body: Record<string, unknown>,
@@ -56,13 +56,13 @@ function fallThroughJson(req: Request, res: Response) {
 }
 
 function logReq(prefix: string) {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
         console.log(`[${prefix}]`, req.method, req.url);
         next()
     }
 }
 
-function logRawChunks(req: Request, res: Response, next: NextFunction) {
+function _logRawChunks(req: Request, _res: Response, next: NextFunction) {
     req.on('data', (chunk) => {
         console.log("   chunk:", chunk.toString('utf8'))
     });

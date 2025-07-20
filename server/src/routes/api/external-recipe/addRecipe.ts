@@ -1,6 +1,6 @@
 import { Firestore } from "firebase-admin/firestore";
 
-export async function addNewRecipe(db: Firestore, userId: string, recipe: any) {
+export function addNewRecipe(db: Firestore, userId: string, recipe: any) {
     try {
         const id: string = crypto.randomUUID();
         const newRecipe = db.doc(`users/${userId}/recipies/${id}`);

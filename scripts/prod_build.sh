@@ -30,8 +30,9 @@ fi
 echo ""
 echo "-- backend build --"
 cd "$project_root/server"
-deno install --allow-scripts
+deno install
 deno compile --allow-read --allow-env --allow-net --output "$target/$deno_bin_name" src/index.ts 
+deno lint
 
 # frontend_build
 echo ""

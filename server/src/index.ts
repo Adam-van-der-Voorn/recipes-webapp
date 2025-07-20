@@ -1,12 +1,12 @@
 import { handleRequests } from './routes/routes.ts';
 import { setupFirebase } from './firebaseSetup.ts';
 import express from 'express';
-import path from 'node:path';
 import argParse from "./argparse.ts";
+import * as path from "@std/path"
 
 const { staticDir, secretServiceAccountPath, port, serverIp } = argParse()
 
-const staticDirResolved = path.resolve(staticDir)
+const staticDirResolved = await path.resolve(staticDir)
 
 const app = setupFirebase(secretServiceAccountPath);
 

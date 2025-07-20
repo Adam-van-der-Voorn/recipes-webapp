@@ -41,7 +41,7 @@ export async function extractRecipe(url: URL): Promise<ExtractRecipeRes> {
             try {
                 json = JSON.parse(text);
             }
-            catch (e) {
+            catch (_e) {
                 console.log(`el ${i}:`, 'child element is not json');
                 continue;
             }
