@@ -1,4 +1,4 @@
-import { Control, UseFormRegister, UseFormSetValue, useFormState, UseFormTrigger, useWatch } from "react-hook-form";
+import { Control, RegisterOptions, UseFormRegister, UseFormSetValue, useFormState, UseFormTrigger, useWatch } from "react-hook-form";
 import React, { ClipboardEventHandler } from "react";
 import { MdMoreVert } from 'react-icons/md';
 import MenuItemToggleable from "../../../general/dropdown/MenuItemToggleable";
@@ -13,7 +13,9 @@ import Dialog from "../../../general/Dialog";
 import useModal from "../../../util/hooks/useModal";
 import AddSubstitution from "../substitutions/AddSubstitution";
 import { parseExternalIngredientText } from "../../parse-external/parseExternalIngredientText";
+import { RECIPE_FORM_INPUT_REASONABLE_LEN } from "../RecipeForm";
 
+const decimalValPattern = /^\d+(\.\d+)?$/;
 const defaultFieldValues = { name: '', optional: false, percentage: '', quantity: '' };
 
 type FormHelpers = {
@@ -137,12 +139,30 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
         ? `ingredientFormList showPercentages`
         : `ingredientFormList`;
 
+    const ingredientListNameValidation = {
+        maxLength: {value: RECIPE_FORM_INPUT_REASONABLE_LEN, message: "List name is far too long"}
+    }
+    const ingredientNameValidation = {
+        required: {value: true, message: "Ingredient name is required"},
+        maxLength: {value: RECIPE_FORM_INPUT_REASONABLE_LEN, message: "Ingredient name is far too long"}
+    }
+    const ingredientQuantityValidation = {
+        maxLength: {value: RECIPE_FORM_INPUT_REASONABLE_LEN, message: "Ingredient quantity is far too long"},
+    }
+    const ingredientPercentageValidation= {
+        validate: (val: string) => {
+            return val === '' || decimalValPattern.test(val)
+                ? true
+                : "Proportion must be a percentage"
+        }
+    }
+
     return (
         <>
             {dialogue}
             {isNamed &&
                 <div>
-                    <input {...register(`ingredients.lists.${listIdx}.name`)}
+                    <input {...register(`ingredients.lists.${listIdx}.name`, ingredientListNameValidation)}
                         type="text"
                         className="subIngredientsName"
                         placeholder="Untitled List"
@@ -180,7 +200,7 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                         }
                         return (
                             <React.Fragment key={ingredient.id}>
-                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`)}
+                                <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.name`, ingredientNameValidation)}
                                     type="text"
                                     onPaste={onPaste}
                                     className="name"
@@ -188,7 +208,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
                                     aria-label="ingredient name"
                                 />
                                 <input {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.quantity`, {
-                                    onBlur: onQuantityBlur(listIdx, localIdx)
+                                    onBlur: onQuantityBlur(listIdx, localIdx),
+                                    ...ingredientQuantityValidation
                                 })}
                                     type="text"
                                     className="quantity"
@@ -198,7 +219,8 @@ function IngredientsSubField({ listIdx, listPos, isPercentagesIncluded, isNamed,
 
                                 {isPercentagesIncluded &&
                                     <PercentageInput {...register(`ingredients.lists.${listIdx}.ingredients.${localIdx}.percentage`, {
-                                        onBlur: onPercentageBlur(listIdx, localIdx)
+                                        onBlur: onPercentageBlur(listIdx, localIdx),
+                                        ...ingredientPercentageValidation
                                     })}
                                         isAnchor={isAnchor}
                                     />

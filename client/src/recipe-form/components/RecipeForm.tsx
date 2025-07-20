@@ -1,15 +1,17 @@
 import { Recipe } from "../../types/recipeTypes";
-import { getFullSchema } from "../recipeInputSchema";
 import IngredientsField from "./ingredients/IngredientsField";
 import SubstitutionsField from "./substitutions/SubstitutionsField";
 
 import parseFormData from "../parseFormData";
 import FormErrorMessage from "./FormErrorMessage";
 import TextAreaAutoHeight from "../../general/TextAreaAutoHeight";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, SubmitHandler, RegisterOptions } from "react-hook-form";
 import { RecipeInput } from "../../types/RecipeInputTypes";
 import { usePreventUnload } from "../../util/hooks/usePreventUnload";
+
+export const RECIPE_FORM_INPUT_REASONABLE_LEN = 1000;
+export const RECIPE_FORM_TEXTAREA_REASONABLE_LEN = 50_000;
+
 
 type Props = {
     id?: string,
@@ -26,9 +28,7 @@ if (isNaN(standardLineHeight)) {
 }
 
 function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
-
-    const formHelper = useForm<RecipeInput>({
-        resolver: yupResolver(getFullSchema()),
+    const formHelper = useForm({
         mode: 'onBlur',
         reValidateMode: 'onBlur',
         defaultValues: initialValues
@@ -51,9 +51,29 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
         doSubmitAction(parsed);
     };
 
+    const nameValidation: RegisterOptions<RecipeInput, "name"> = { 
+        required: { value: true, message: "Ingredient name is required"},
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "This ingredient name is far too long" }
+    }
+    const timeframeValidation: RegisterOptions<RecipeInput, "timeframe"> = { 
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "Takes far too much time" }
+    }
+    const makesValidation: RegisterOptions<RecipeInput, "makes"> = {
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "Yields far too much food" }
+    }
+    const servingsValidation: RegisterOptions<RecipeInput, "servings"> = {
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "Serves for too many people" }
+    }
+    const notesValidation: RegisterOptions<RecipeInput, "servings"> = {
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "Is this a novel? Please write less notes." }
+    }
+    const instructionsValidation: RegisterOptions<RecipeInput, "servings"> = {
+        maxLength: { value: RECIPE_FORM_INPUT_REASONABLE_LEN, "message": "Is this a manifesto? Please write less instructions." }
+    }
+
     return (
         <form id={id} onSubmit={handleSubmit(onSubmit)} className="recipeForm">
-            <input {...register("name")}
+            <input {...register("name", nameValidation)}
                 type="text"
                 className="recipeName"
                 placeholder="Untitled"
@@ -63,21 +83,21 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <section className="recipeFormMeta">
                 <label htmlFor="timeframe" className="metaLabel">Timeframe</label>
-                <input {...register("timeframe")}
+                <input {...register("timeframe", timeframeValidation)}
                     type="text"
                     placeholder="-"
                     autoComplete="off"
                 />
 
                 <label htmlFor="makes" className="metaLabel">Yields</label>
-                <input {...register("makes")}
+                <input {...register("makes", makesValidation)}
                     type="text"
                     placeholder="-"
                     autoComplete="off"
                 />
 
                 <label htmlFor="servings" className="metaLabel">Serves</label>
-                <input {...register("servings")}
+                <input {...register("servings", servingsValidation)}
                     type="text"
                     placeholder="-"
                     autoComplete="off"
@@ -90,7 +110,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="notes">
                 <label htmlFor="notes">Extra notes</label>
-                <TextAreaAutoHeight {...register("notes")} lineHeight={standardLineHeight} defaultLines={1} />
+                <TextAreaAutoHeight {...register("notes", notesValidation)} lineHeight={standardLineHeight} defaultLines={1} />
                 <FormErrorMessage error={errors.notes} />
             </div>
 
@@ -100,7 +120,7 @@ function RecipeForm({ id, onSubmit: doSubmitAction, initialValues }: Props) {
 
             <div className="instructions">
                 <label htmlFor="instructions" className="h-2">Instructions</label>
-                <TextAreaAutoHeight {...register("instructions")} lineHeight={standardLineHeight} defaultLines={1} />
+                <TextAreaAutoHeight {...register("instructions", instructionsValidation)} lineHeight={standardLineHeight} defaultLines={1} />
                 <FormErrorMessage error={errors.instructions} />
             </div>
         </form >

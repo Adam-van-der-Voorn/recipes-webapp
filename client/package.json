@@ -2,7 +2,6 @@
   "name": "recipes-client",
   "private": true,
   "dependencies": {
-    "@hookform/resolvers": "^5.1.1",
     "convert-units": "^2.3.4",
     "firebase": "^11.10.0",
     "fuse.js": "^7.1.0",
@@ -12,8 +11,7 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "6.24.x",
     "reactjs-popup": "^2.0.6",
-    "uuid": "^11.1.0",
-    "yup": "^1.6.1"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",

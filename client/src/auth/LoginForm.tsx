@@ -6,15 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { parseFirebaseError } from "./firebaseError";
 import FormErrorMessage from "../recipe-form/components/FormErrorMessage";
 
-
-const schema = object().shape({
-    email: string()
-        .email("Must be a valid email")
-        .required("Email is required"),
-    password: string()
-        .required("Password is required")
-});
-
 export type LoginInput = {
     email: string,
     password: string,
@@ -30,7 +21,6 @@ type Props = {
 function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithChildren<Props>) {
 
     const formHelper = useForm<LoginInput>({
-        resolver: yupResolver(schema),
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: { email: initEmail ?? '', password: initPassword ?? '' }
@@ -52,12 +42,22 @@ function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithC
 
     const hasErrors =  (errors.email || errors.password || topLevelError)
 
+    const emailValidation = {
+        required: { value: true, message: "Email is required"},
+        pattern: { value: /.+@.+/, message: "Email is invalid" }
+    };
+
+    const passwordValidation = {
+        required: { value: true, message: "Password is required"},
+    };
+
+
     return <>
         <h1 className="authFormTitle">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="authForm">
             <div className="inputContainer">
                 <label htmlFor="email" className={"label"}>Email</label>
-                <input {...register("email")}
+                <input {...register("email", emailValidation)}
                     type="text"
                     inputMode="email"
                     id="username-input"
@@ -65,7 +65,7 @@ function LoginForm({ auth, switchToSignUp, initEmail, initPassword }: PropsWithC
             </div>
             <div className="inputContainer">
                 <label htmlFor="password" className={"label"}>Password</label>
-                <input {...register("password")} type="password" id="password-input" />
+                <input {...register("password", passwordValidation)} type="password" id="password-input" />
             </div>
             {hasErrors && <div className="authFormErrorContainer">
                 <FormErrorMessage className="authFormError" error={topLevelError} />
