@@ -1,11 +1,13 @@
 #!/bin/sh
 
-cd "$(dirname "$0")" || exit
+set -e 
+
+cd "$(dirname "$0")"
 PROJECT_ROOT=$(pwd)
 
 case "$1" in
     dev)
-        deno --allow-all "$PROJECT_ROOT/scripts/develop.ts" "$PROJECT_ROOT"
+        "$PROJECT_ROOT/scripts/develop.sh" "$PROJECT_ROOT"
         ;;
     production_build)
         "$PROJECT_ROOT/scripts/prod_build.sh" "$PROJECT_ROOT"
