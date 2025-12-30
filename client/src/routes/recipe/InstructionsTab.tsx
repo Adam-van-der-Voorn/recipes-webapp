@@ -35,17 +35,27 @@ function Notes({ notes }: NoteProps) {
 type InstructionsProps = { instructions: string };
 
 function Instructions({ instructions }: InstructionsProps) {
+  const lines = instructions.split("\n");
+  const instructionList: Array<{ text: string; spaceAfter: boolean }> = [];
+  for (const line of lines) {
+    const text = line.trim();
+    if (text.length > 0) {
+      instructionList.push({ text, spaceAfter: false });
+    } else {
+      // blank line
+    }
+  }
+  const instructionEls = instructionList.map((instruction, i) => (
+    <li key={i} className="instruction">
+      <span className="instructionMarker">{i + 1}.{" "}</span>
+      <span>{instruction.text}</span>
+    </li>
+  ));
   return (
     <section aria-details="recipe instructions" className="instructions">
       <h2 className="h2">Method</h2>
       <ol>
-        {instructions.split("\n")
-          .map((line, i) => (
-            <li key={i} className="instruction">
-              <span className="instructionMarker">{i + 1}.</span>
-              <span>{line}</span>
-            </li>
-          ))}
+        {instructionEls}
       </ol>
     </section>
   );
