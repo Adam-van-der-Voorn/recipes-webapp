@@ -1,14 +1,13 @@
 #!/bin/sh
 
 project_root=$1
-client_root=$project_root/client
 
 
 ############################
 ## frontend watch & build ##
 ############################
 
-"$project_root/scripts/relog.ts" "$client_root" "bundle: " ./bundle.ts dev watch &
+"$project_root/scripts/relog.ts" "$project_root" "bundle: " ./scripts/bundle.ts ./client dev watch &
  
 ################################/
 ## backend build, watch, & run ##

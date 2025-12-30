@@ -2,21 +2,22 @@
 
 import esbuild from "esbuild"
 
-const USAGE_STRING = "usage: ./bundle.ts [watch] [dev]"
+const USAGE_STRING = "usage: ./bundle.ts client_dir [watch] [dev]"
 
 const args = Deno.args;
-if (args.length > 2) {
+if (args.length > 3 || args.length < 1) {
     console.error(USAGE_STRING)
     Deno.exit(1)
 }
 
-const isDev = args.includes("dev")
-const watch = args.includes("watch");
+const clientDir = args[0]
+const options = args.slice(1)
+const isDev = options.includes("dev")
+const watch = options.includes("watch");
 
 console.log({isDev, watch})
 
 const config: esbuild.BuildOptions = {
-    // @ts-ignore
     bundle: true,
     platform: "browser",
     format: "esm",
@@ -30,10 +31,10 @@ const config: esbuild.BuildOptions = {
 }
 
 const mainConfig: esbuild.BuildOptions = {
-    entryPoints: ["src/index.tsx"],
+    entryPoints: [`${clientDir}/src/index.tsx`],
     minify: isDev,
     sourcemap: true,
-    outfile: "dist/static/js/main.bundle.js",
+    outfile: `${clientDir}/dist/static/js/main.bundle.js`,
     ...config
 }
 
@@ -41,14 +42,14 @@ const mainConfig: esbuild.BuildOptions = {
  * @type {import("esbuild").BuildOptions}
 */
 const serviceWorkerConfig = {
-    entryPoints: ["src/service-worker.js"],
-    outdir: "dist",
+    entryPoints: [`${clientDir}/src/service-worker.js`],
+    outdir: `${clientDir}/dist`,
     ...config
 }
 
 if (watch) {
-    let ctx2 = await esbuild.context({...mainConfig, logLevel: "info"});
-    let ctx1 = await esbuild.context({...serviceWorkerConfig, logLevel: "info"});
+    const ctx2 = await esbuild.context({...mainConfig, logLevel: "info"});
+    const ctx1 = await esbuild.context({...serviceWorkerConfig, logLevel: "info"});
     
     // IMPORTANT: this call MUST NOT have an `await`.
     ctx1.watch()

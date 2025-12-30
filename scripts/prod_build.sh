@@ -39,7 +39,7 @@ echo ""
 echo "-- frontend build --"
 cd "$project_root/client"
 deno install
-deno --allow-read --allow-env --allow-write --allow-run bundle.ts
+"$project_root/scripts/bundle.ts" .
 cp -r dist "$target/dist"
 
 # unit test
