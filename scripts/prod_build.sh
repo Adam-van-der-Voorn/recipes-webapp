@@ -43,6 +43,8 @@ deno --allow-read --allow-env --allow-write --allow-run bundle.ts
 cp -r dist "$target/dist"
 
 # unit test
+echo ""
+echo "-- unit test --"
 "$project_root/scripts/unit_test.sh" "$project_root" --silent
 
 echo ""

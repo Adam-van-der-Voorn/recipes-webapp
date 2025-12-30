@@ -30,7 +30,6 @@ export default function ErrorPage() {
         }
     }
 
-    debugger;
     return (
         <div className="routeErrorPage" style={{ backgroundColor: 'blue', color: 'white'}}>
             <h1>{`:(`}</h1>

@@ -1,7 +1,6 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run
 
 import esbuild from "esbuild"
-import { denoPlugins } from "@luca/esbuild-deno-loader";
 
 const USAGE_STRING = "usage: ./bundle.ts [watch] [dev]"
 
@@ -18,7 +17,6 @@ console.log({isDev, watch})
 
 const config: esbuild.BuildOptions = {
     // @ts-ignore
-    plugins: denoPlugins(),
     bundle: true,
     platform: "browser",
     format: "esm",
@@ -33,7 +31,7 @@ const config: esbuild.BuildOptions = {
 
 const mainConfig: esbuild.BuildOptions = {
     entryPoints: ["src/index.tsx"],
-    minify: true,
+    minify: isDev,
     sourcemap: true,
     outfile: "dist/static/js/main.bundle.js",
     ...config
@@ -59,5 +57,4 @@ if (watch) {
 else {
     esbuild.build(mainConfig)
     esbuild.build(serviceWorkerConfig)
-    // await esbuild.stop()
 }
