@@ -3,17 +3,16 @@ import {
   Substitution,
 } from "../../types/recipeTypes.ts";
 import { IngredientsSection } from "./IngredientsSection.tsx";
+import { RecipeScaleData } from "./RecipePageContent.tsx";
 
 type Props = {
   ingredients?: IngredientsListType;
   substitutions?: Substitution[];
-  servings?: string;
-  makes?: string;
-  timeframe?: string;
+  scale: RecipeScaleData;
 };
 
 function IngredientsTab(
-  { ingredients, substitutions, servings, makes, timeframe }: Props,
+  { ingredients, substitutions, scale }: Props,
 ) {
   const hasIngredients = ingredients !== undefined && ingredients.lists
         .flatMap((l) => l.ingredients)
@@ -22,7 +21,12 @@ function IngredientsTab(
   return (
     <div role="tabpanel" className="recipePageTabPanel">
       {hasIngredients
-        ? <IngredientsSection ingredients={ingredients.lists} />
+        ? (
+          <IngredientsSection
+            ingredients={ingredients.lists}
+            scale={scale}
+          />
+        )
         : <p>This recipe has no ingredients 🤔</p>}
       {substitutions !== undefined && (
         <p>display of substitutions is not currently supported :(</p>

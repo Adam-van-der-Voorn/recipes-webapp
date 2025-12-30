@@ -14,8 +14,16 @@ type Props = {
   recipes: Recipes;
 };
 
+export type RecipeScaleData = {
+  val: number;
+  inputStr: string;
+  onInput: (ev: any) => void;
+};
+
 export function RecipePageContent({ recipeId, recipes }: Props) {
   const [tab, setTab] = useState<"ingredients" | "instuctions">("ingredients");
+  const [scaleInputStr, setScaleInputStr] = useState("");
+  const [scaleVal, setScaleVal] = useState(1);
 
   if (recipeId === undefined) {
     return <Error message={`Something went wrong :(`} />;
@@ -43,6 +51,23 @@ export function RecipePageContent({ recipeId, recipes }: Props) {
   const hasMetaData = recipe.servings !== undefined ||
     recipe.makes !== undefined || recipe.timeframe !== undefined;
 
+  const onScaleInput = (ev: any) => {
+    const inp = ev.target.value;
+    if (inp === "") {
+      setScaleInputStr(inp);
+      setScaleVal(1);
+    }
+    const valid = /^[\.0-9]*$/;
+    if (valid.test(inp)) {
+      setScaleInputStr(inp);
+    }
+    const num = parseFloat(inp);
+    console.log(inp, num);
+    if (!isNaN(num) && num !== 0) {
+      setScaleVal(num);
+    }
+  };
+
   return (
     <>
       <main>
@@ -65,9 +90,11 @@ export function RecipePageContent({ recipeId, recipes }: Props) {
               <IngredientsTab
                 ingredients={recipe.ingredients}
                 substitutions={recipe.substitutions}
-                makes={recipe.makes}
-                servings={recipe.servings}
-                timeframe={recipe.timeframe}
+                scale={{
+                  val: scaleVal,
+                  inputStr: scaleInputStr,
+                  onInput: onScaleInput,
+                }}
               />
             )
             : (

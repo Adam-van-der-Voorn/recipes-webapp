@@ -1,33 +1,16 @@
-import { useState } from "react";
 import { IngredientsSubList } from "../../types/recipeTypes.ts";
 import { IngredientRow } from "./IngredientRow.tsx";
+import { RecipeScaleData } from "./RecipePageContent.tsx";
 
 type Props = {
   ingredients: IngredientsSubList[];
+  scale: RecipeScaleData;
 };
 
-export function IngredientsSection({ ingredients }: Props) {
-  const [scaleStr, setScaleStr] = useState("");
-  const [scale, setScale] = useState(1);
-
+export function IngredientsSection(
+  { ingredients, scale }: Props,
+) {
   const hasMultipleLists = ingredients.length > 1;
-
-  const onScaleInput = (ev: any) => {
-    const inp = ev.target.value;
-    if (inp === "") {
-      setScaleStr(inp);
-      setScale(1);
-    }
-    const valid = /^[\.0-9]*$/;
-    if (valid.test(inp)) {
-      setScaleStr(inp);
-    }
-    const num = parseFloat(inp);
-    console.log(inp, num);
-    if (!isNaN(num) && num !== 0) {
-      setScale(num);
-    }
-  };
 
   return (
     <section aria-details="recipe ingredients" className="ingredients">
@@ -37,8 +20,8 @@ export function IngredientsSection({ ingredients }: Props) {
           type="text"
           id="quantityScaleInput"
           placeholder="1"
-          value={scaleStr}
-          onInput={onScaleInput}
+          value={scale.inputStr}
+          onInput={scale.onInput}
           inputMode="decimal"
         />
       </div>
@@ -48,7 +31,7 @@ export function IngredientsSection({ ingredients }: Props) {
             key={`sublist-${i}`}
             sublist={sublist}
             renderName={hasMultipleLists}
-            scale={scale}
+            scale={scale.val}
           />
         );
       })}
