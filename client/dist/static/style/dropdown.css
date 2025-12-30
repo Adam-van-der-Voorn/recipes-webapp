@@ -1,26 +1,26 @@
 .dropdown-menu {
-    position: relative;
-    border: var(--col-neutral-3) 1px solid;
-    border-style: solid;
-    border-radius: 0.3rem;
-    background-color: var(--col-neutral-9);
+  position: relative;
+  border: var(--col-neutral-3) 1px solid;
+  border-style: solid;
+  border-radius: 0.3rem;
+  background-color: var(--col-neutral-9);
 }
 
 .menu-button {
-    list-style-type: none;
-    padding: 0.8rem;
-    box-sizing: border-box;
-    user-select: none;
+  list-style-type: none;
+  padding: 0.8rem;
+  box-sizing: border-box;
+  user-select: none;
 }
 
 .menu-button:hover {
-    background-color: var(--col-neutral-6);
-    cursor: pointer;
+  background-color: var(--col-neutral-6);
+  cursor: pointer;
 }
 
 .menu-button-checkbox {
-    float: right;
-    position: relative;
-    top: 0.1ch;
-    padding-left: 1ch;
+  float: right;
+  position: relative;
+  top: 0.1ch;
+  padding-left: 1ch;
 }

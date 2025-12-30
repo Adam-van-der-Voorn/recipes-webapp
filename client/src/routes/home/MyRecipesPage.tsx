@@ -8,90 +8,104 @@ import { GlobalContext } from "../../contexts/GlobalContext.tsx";
 const minSearchbarSizePx = 30;
 
 function MyRecipesPage() {
-    const { windowWidth } = useWindowDimensions();
-    const searchBarRef = useRef<HTMLInputElement>(null);
-    const [displayTitle, setDisplayTitle] = useState(false);
-    const [dialogueOpen, setDialogueOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("")
+  const { windowWidth } = useWindowDimensions();
+  const searchBarRef = useRef<HTMLInputElement>(null);
+  const [displayTitle, setDisplayTitle] = useState(false);
+  const [dialogueOpen, setDialogueOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    useLayoutEffect(() => {
-        const threshold = 500;
-        if (!displayTitle && windowWidth > threshold) {
-            setDisplayTitle(true);
-        }
-        if (displayTitle && windowWidth < threshold) {
-            setDisplayTitle(false);
-        }
-    }, [windowWidth, displayTitle]);
-
-    const onSearchBarInput = (ev: any) => {
-        setSearchQuery(ev?.target?.value ?? "")
+  useLayoutEffect(() => {
+    const threshold = 500;
+    if (!displayTitle && windowWidth > threshold) {
+      setDisplayTitle(true);
     }
+    if (displayTitle && windowWidth < threshold) {
+      setDisplayTitle(false);
+    }
+  }, [windowWidth, displayTitle]);
 
-    const gridTemplateColumns = displayTitle
-        ? `1fr minmax(${minSearchbarSizePx}px, 300px) auto`
-        : `minmax(${minSearchbarSizePx}px, 1fr) auto`;
+  const onSearchBarInput = (ev: any) => {
+    setSearchQuery(ev?.target?.value ?? "");
+  };
 
-    const headerStyle: React.CSSProperties = {
-        gridTemplateColumns
-    };
+  const gridTemplateColumns = displayTitle
+    ? `1fr minmax(${minSearchbarSizePx}px, 300px) auto`
+    : `minmax(${minSearchbarSizePx}px, 1fr) auto`;
 
-    return <div className="page">
-        <header style={headerStyle}>
-            {displayTitle
-                ? <h1 className="headerTitle" style={{ whiteSpace: "nowrap" }}>My Recipes</h1>
-                : null
-            }
-            <input ref={searchBarRef} className="headerTextInput searchTextInput" type="text" onInput={onSearchBarInput}/>
-            <button className="headerButton"
-                onClick={() => setDialogueOpen(true)}
-            >Add Recipe
-            </button>
-        </header>
-        <Dialogue isOpen={dialogueOpen} close={() => setDialogueOpen(false)} />
-        <AuthGate>
-            <MyRecipesPageContent searchQuery={searchQuery} />
-        </AuthGate>
-    </div>;
+  const headerStyle: React.CSSProperties = {
+    gridTemplateColumns,
+  };
+
+  return (
+    <div className="page">
+      <header style={headerStyle}>
+        {displayTitle
+          ? (
+            <h1 className="headerTitle" style={{ whiteSpace: "nowrap" }}>
+              My Recipes
+            </h1>
+          )
+          : null}
+        <input
+          ref={searchBarRef}
+          className="headerTextInput searchTextInput"
+          type="text"
+          onInput={onSearchBarInput}
+        />
+        <button className="headerButton" onClick={() => setDialogueOpen(true)}>
+          Add Recipe
+        </button>
+      </header>
+      <Dialogue isOpen={dialogueOpen} close={() => setDialogueOpen(false)} />
+      <AuthGate>
+        <MyRecipesPageContent searchQuery={searchQuery} />
+      </AuthGate>
+    </div>
+  );
 }
 
 type DialogProps = {
-    isOpen: boolean;
-    close: () => void
+  isOpen: boolean;
+  close: () => void;
 };
 
 const dialogCloseButtonStyle = {
-    justifySelf: "right",
-    fontSize: 'smaller',
+  justifySelf: "right",
+  fontSize: "smaller",
 };
 
 function Dialogue({ isOpen, close }: DialogProps) {
-    const { user } = useContext(GlobalContext);
+  const { user } = useContext(GlobalContext);
 
-    let content;
-    if (user === "pre-auth" || user === null) {
-        content = <>
-            {/* filler for grid */}
-            <span></span>
-            <span></span>
-            <span></span>
-        </>;
-    }
-    else {
-        content = <>
-            <Link to="/add-recipe">Manual</Link>
-            {" · "}
-            <Link to="/add-recipe-from-url">From URL</Link>
-        </>;
-    }
+  let content;
+  if (user === "pre-auth" || user === null) {
+    content = (
+      <>
+        {/* filler for grid */}
+        <span></span>
+        <span></span>
+        <span></span>
+      </>
+    );
+  } else {
+    content = (
+      <>
+        <Link to="/add-recipe">Manual</Link>
+        {" · "}
+        <Link to="/add-recipe-from-url">From URL</Link>
+      </>
+    );
+  }
 
-    return <dialog open={isOpen} className="add-recipe-dialogue">
-        <div className="add-recipe-dialogue-content">
-            {content}
-            {/* @ts-ignore */}
-            <button style={dialogCloseButtonStyle} onClick={close}>Close</button>
-        </div>
-    </dialog>;
+  return (
+    <dialog open={isOpen} className="add-recipe-dialogue">
+      <div className="add-recipe-dialogue-content">
+        {content}
+        {/* @ts-ignore */}
+        <button style={dialogCloseButtonStyle} onClick={close}>Close</button>
+      </div>
+    </dialog>
+  );
 }
 
 export default MyRecipesPage;

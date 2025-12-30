@@ -157,5 +157,5 @@ export const ingredientUnits = [
   "packet",
   "packets",
   "pinch",
-  "pinches"
-]
+  "pinches",
+];

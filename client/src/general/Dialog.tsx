@@ -1,44 +1,63 @@
-import { forwardRef, HTMLProps, useImperativeHandle, useRef, ForwardedRef, useEffect } from "react";
+import {
+  ForwardedRef,
+  forwardRef,
+  HTMLProps,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import ValidChild from "../types/ValidChild.ts";
 import isWithinBounds from "../util/isWithinBounds.ts";
 
 type Props = {
-    closeOnBackgroudClick?: boolean;
-    keepMounted?: boolean;
-    onClose: () => void;
-    children?: ValidChild | ValidChild[];
+  closeOnBackgroudClick?: boolean;
+  keepMounted?: boolean;
+  onClose: () => void;
+  children?: ValidChild | ValidChild[];
 } & HTMLProps<HTMLDialogElement>;
 
-function Dialog({ closeOnBackgroudClick = false, keepMounted = false, onClose, children, ...props }: Props, ref: ForwardedRef<HTMLDialogElement>) {
-    const innerRef = useRef<HTMLDialogElement>(null);
-    useImperativeHandle(ref, () => innerRef.current!);
+function Dialog(
+  {
+    closeOnBackgroudClick = false,
+    keepMounted = false,
+    onClose,
+    children,
+    ...props
+  }: Props,
+  ref: ForwardedRef<HTMLDialogElement>,
+) {
+  const innerRef = useRef<HTMLDialogElement>(null);
+  useImperativeHandle(ref, () => innerRef.current!);
 
-    const handleClick = (e: any) => {
-        if (!closeOnBackgroudClick || !props.open || !innerRef.current || innerRef.current.tagName !== 'DIALOG') {
-            // tagname != DIALOG stuff allegedly prevents issues with forms
-            return;
-        }
+  const handleClick = (e: any) => {
+    if (
+      !closeOnBackgroudClick || !props.open || !innerRef.current ||
+      innerRef.current.tagName !== "DIALOG"
+    ) {
+      // tagname != DIALOG stuff allegedly prevents issues with forms
+      return;
+    }
 
-        const dialogRect = innerRef.current.getBoundingClientRect();
-        const clickedInDialog = isWithinBounds(e.clientX, e.clientY, dialogRect);
+    const dialogRect = innerRef.current.getBoundingClientRect();
+    const clickedInDialog = isWithinBounds(e.clientX, e.clientY, dialogRect);
 
-        if (!clickedInDialog) {
-            onClose();
-        }
+    if (!clickedInDialog) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+    return function cleanup() {
+      document.removeEventListener("click", handleClick);
     };
+  });
 
-    useEffect(() => {
-        document.addEventListener('click', handleClick);
-        return function cleanup() {
-            document.removeEventListener('click', handleClick);
-        };
-    });
-
-    return (
-        <dialog ref={innerRef} {...props}>
-            {(keepMounted && children) || (props.open && children)}
-        </dialog>
-    );
+  return (
+    <dialog ref={innerRef} {...props}>
+      {(keepMounted && children) || (props.open && children)}
+    </dialog>
+  );
 }
 
 export default forwardRef(Dialog);

@@ -5,7 +5,9 @@ import setupFirebase from "../util/setupFirestore.ts";
 const { db, auth } = setupFirebase();
 
 export default function Root() {
-    return <GlobalContextProvider db={db} auth={auth}>
-        <Outlet />
-    </GlobalContextProvider>;
+  return (
+    <GlobalContextProvider db={db} auth={auth}>
+      <Outlet />
+    </GlobalContextProvider>
+  );
 }

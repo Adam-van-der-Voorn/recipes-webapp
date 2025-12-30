@@ -1,219 +1,213 @@
 html, body, #root, .page {
-    height: 100%;
+  height: 100%;
 }
 
 html {
-    background-color: var(--col-background);
-    font-size: 62.5%;
-    font-family: 'Karla', Helvetica, Arial, sans-serif;
+  background-color: var(--col-background);
+  font-size: 62.5%;
+  font-family: "Karla", Helvetica, Arial, sans-serif;
 }
 
 .page {
-    display: grid;
-    grid-template-columns: 1fr;
-    /* default: header content
-    override if required */
-    grid-template-rows: auto 1fr;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* default: header content
+  override if required */
+  grid-template-rows: auto 1fr;
 }
 
 main {
-    overflow-y: scroll;
-    grid-template-columns: minmax(auto, 800px);
-    display: grid;
-    justify-content: center;
-    align-content: start;
+  overflow-y: scroll;
+  grid-template-columns: minmax(auto, 800px);
+  display: grid;
+  justify-content: center;
+  align-content: start;
 }
 
-button, input[type=submit] {
-    color: black;
+button, input[type="submit"] {
+  color: black;
 }
 
 button, input, select, textarea {
-    font-family: inherit;
-    font-size: var(--font-size-normal);
+  font-family: inherit;
+  font-size: var(--font-size-normal);
 }
 
 p, span, a, div, label {
-    font-size: var(--font-size-normal);
+  font-size: var(--font-size-normal);
 }
 
 h1, .h-1 {
-    font-size: var(--font-size-xxlarge);
+  font-size: var(--font-size-xxlarge);
 }
 
 h2, .h-2 {
-    font-size: var(--font-size-xlarge);
+  font-size: var(--font-size-xlarge);
 }
 
 h1, .h-1, h2, .h-2 {
-    margin-top: 1.3ch;
-    margin-bottom: 0.7ch;
-    font-weight: bolder;
+  margin-top: 1.3ch;
+  margin-bottom: 0.7ch;
+  font-weight: bolder;
 }
 
 dialog {
-    position: fixed;
-    top: 2.5rem;
-    width: min(75rem, 100%);
-    margin: auto;
-    border-radius: 0.3rem;
-    border: 1px solid var(--col-neutral-4);
-    box-sizing: border-box;
-    box-shadow: 0rem 2rem 3rem rgba(0, 0, 0, 0.3);
-    padding: 2rem;
+  position: fixed;
+  top: 2.5rem;
+  width: min(75rem, 100%);
+  margin: auto;
+  border-radius: 0.3rem;
+  border: 1px solid var(--col-neutral-4);
+  box-sizing: border-box;
+  box-shadow: 0rem 2rem 3rem rgba(0, 0, 0, 0.3);
+  padding: 2rem;
 }
-
 
 /* TEXT INPUT */
 
-input[type=text], input[type=password] {
-    -webkit-appearance: none;
-    appearance: none;
-    border: none;
-    background-color: transparent;
-    padding: 0rem;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-    border-bottom-width: 0.25rem;
-    border-bottom-style: solid;
-    border-color: var(--col-neutral-7);
-    box-sizing: border-box;
-    min-width: 3ch;
+input[type="text"], input[type="password"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  padding: 0rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom-width: 0.25rem;
+  border-bottom-style: solid;
+  border-color: var(--col-neutral-7);
+  box-sizing: border-box;
+  min-width: 3ch;
 }
 
-input[type=text].in-string, input[type=password].in-string {
-    padding-left: 0;
-    padding-right: 0;
+input[type="text"].in-string, input[type="password"].in-string {
+  padding-left: 0;
+  padding-right: 0;
 }
 
-input[type=text]:focus, input[type=password]:focus {
-    outline: none;
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
 }
-
 
 /* ICON BUTTONS */
 
 .icon-button {
-    -webkit-mask-image: url('/static/vector/circle.svg');
-    mask-image: url('/static/vector/circle.svg');
-
+  -webkit-mask-image: url("/static/vector/circle.svg");
+  mask-image: url("/static/vector/circle.svg");
 }
 
 .icon-button:hover, .icon-button:focus {
-    background-color: var(--col-neutral-8);
-    outline: none;
-    cursor: pointer;
+  background-color: var(--col-neutral-8);
+  outline: none;
+  cursor: pointer;
 }
 
 .icon-button:active {
-    background-color: var(--col-neutral-5);
+  background-color: var(--col-neutral-5);
 }
-
 
 /* BUTTONS */
 
-button, input[type=submit] {
-    --button-edge-col: var(--col-neutral-4);
-    position: relative;
-    border: 1px solid var(--col-neutral-5);
-    border-bottom: var(--button-edge-col) ;
-    background-color: var(--col-text-backing);
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    padding-left: 10px;
-    padding-right: 10px;    
-    box-shadow: 0 4px var(--button-edge-col);
-    
-    /* correct for 3D drop shadow */
-    margin-bottom: 4px; 
+button, input[type="submit"] {
+  --button-edge-col: var(--col-neutral-4);
+  position: relative;
+  border: 1px solid var(--col-neutral-5);
+  border-bottom: var(--button-edge-col);
+  background-color: var(--col-text-backing);
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 4px var(--button-edge-col);
 
-    user-select: none;
+  /* correct for 3D drop shadow */
+  margin-bottom: 4px;
+
+  user-select: none;
 }
 
-button:active, input[type=submit]:active  {
-    box-shadow: 0 2px var(--button-edge-col);
+button:active, input[type="submit"]:active {
+  box-shadow: 0 2px var(--button-edge-col);
 
-    /* correct for 3D drop shadow */
-    top: 2px
+  /* correct for 3D drop shadow */
+  top: 2px;
 }
 
-button.primary, input[type=submit] {
-    --button-edge-col: rgb(57, 93, 175);
-    background-color: rgb(119, 160, 255);
-    border-color: rgb(66, 115, 229);
+button.primary, input[type="submit"] {
+  --button-edge-col: rgb(57, 93, 175);
+  background-color: rgb(119, 160, 255);
+  border-color: rgb(66, 115, 229);
 }
 
-button.primary:active, input[type=submit]:active {
-    --button-edge-col: rgb(56, 99, 199);
+button.primary:active, input[type="submit"]:active {
+  --button-edge-col: rgb(56, 99, 199);
 }
-
 
 /* CHECKBOXES */
 
 input[type="checkbox"] {
-    -webkit-appearance: none;
-    appearance: none;
-    position: relative;
-    width: 1.2rem;
-    height: 1.2rem;
-    border: 1px solid gray;
-    /* Adjusts the position of the checkboxes on the text baseline */
-    vertical-align: -2px;
-    /* Set here so that Windows' High-Contrast Mode can override */
-    color: green;
-    box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid gray;
+  /* Adjusts the position of the checkboxes on the text baseline */
+  vertical-align: -2px;
+  /* Set here so that Windows' High-Contrast Mode can override */
+  color: green;
+  box-sizing: border-box;
 }
 
 input[type="checkbox"]::before {
-    content: "✔";
-    position: absolute;
-    font-size: 1.2em;
-    right: -3px;
-    top: -0.55em;
-    visibility: hidden;
+  content: "✔";
+  position: absolute;
+  font-size: 1.2em;
+  right: -3px;
+  top: -0.55em;
+  visibility: hidden;
 }
 
 input[type="checkbox"]:checked::before {
-    /* Use `visibility` instead of `display` to avoid recalculating layout */
-    visibility: visible;
+  /* Use `visibility` instead of `display` to avoid recalculating layout */
+  visibility: visible;
 }
 
 input[type="checkbox"]:focus {
-    border: 1px solid black;
+  border: 1px solid black;
 }
-
 
 /* LINKS */
 
 a:hover {
-    text-decoration-line: underline;
+  text-decoration-line: underline;
 }
 
 a {
-    color: var(--col-dark-highlight);
-    text-decoration-line: underline;
+  color: var(--col-dark-highlight);
+  text-decoration-line: underline;
 }
 
 /* EMPHASIS */
 mark {
-    background-color: rgb(255, 162, 201);
+  background-color: rgb(255, 162, 201);
 }
 
 /* PLACEHOLDER */
 
 .placeholder > * {
-    font-size: var(--font-size-large);
-    flex: 0 0 auto;
+  font-size: var(--font-size-large);
+  flex: 0 0 auto;
 }
 
 .placeholder {
-    padding-bottom: 16px;
-    padding-top: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%
+  padding-bottom: 16px;
+  padding-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

@@ -1,78 +1,78 @@
 header {
-    margin: 0;
-    width: 100%;
-    height: 60px;
-    box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
 
-    background-color: var(--col-text-backing);
+  background-color: var(--col-text-backing);
 
-    /* this is a bit ugly bit it keeps the title visible
-    we could do soe fancy js/or flex stuff if it bothers us*/
-    white-space: wrap;
+  /* this is a bit ugly bit it keeps the title visible
+  we could do soe fancy js/or flex stuff if it bothers us*/
+  white-space: wrap;
 
-    border-bottom: 1px var(--col-text-backing-divider) solid;
+  border-bottom: 1px var(--col-text-backing-divider) solid;
 
-    display: grid;
-    grid-template-rows: 1fr;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: var(--padding-horizontal-edge);
-    padding-right: var(--padding-horizontal-edge);
-    gap: var(--padding-horizontal-edge);
-    z-index: var(--z-main-header);
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: var(--padding-horizontal-edge);
+  padding-right: var(--padding-horizontal-edge);
+  gap: var(--padding-horizontal-edge);
+  z-index: var(--z-main-header);
 }
 
 .headerTitle {
-    font-size: var(--font-size-large);
-    margin: 0;
-    align-self: center;
-    position: relative;
-    top: 1px;
+  font-size: var(--font-size-large);
+  margin: 0;
+  align-self: center;
+  position: relative;
+  top: 1px;
 }
 
 .headerLink {
-    font-size: var(--font-size-normal);
-    margin: 0;
-    color: var(--col-dark-highlight);
-    font-weight: bold;
-    align-self: center;
-    position: relative;
-    /* slight adjustment*/
-    top: 1px;
+  font-size: var(--font-size-normal);
+  margin: 0;
+  color: var(--col-dark-highlight);
+  font-weight: bold;
+  align-self: center;
+  position: relative;
+  /* slight adjustment*/
+  top: 1px;
 }
 
 button.headerButton, input[type="submit"].headerButton {
-    padding-top: 0;
-    padding-bottom: 0;
-    align-self: center;
-    white-space: nowrap;
-    text-overflow: clip;
-    overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-self: center;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
 
-    /* correct for 3D drop shadow */
-    height: calc(100% - 2px);
+  /* correct for 3D drop shadow */
+  height: calc(100% - 2px);
 }
 
 input.headerTextInput {
-    padding-top: 0;
-    padding-bottom: 0;
-    border: 1px var(--col-neutral-6) solid;
-    border-radius: 5px;
-    padding-left: 8px;
-    padding-right: 8px;
-    background-color: var(--col-text-backing);
+  padding-top: 0;
+  padding-bottom: 0;
+  border: 1px var(--col-neutral-6) solid;
+  border-radius: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: var(--col-text-backing);
 }
 
 input.headerTextInput:focus {
-    padding-top: 0;
-    padding-bottom: 0;
-    border-color: var(--col-neutral-4);
+  padding-top: 0;
+  padding-bottom: 0;
+  border-color: var(--col-neutral-4);
 }
 
 input.searchTextInput {
-    padding-left: 35px;
-    background: url("/static/vector/search.svg") no-repeat left;
-    background-size: 25px;
-    background-position-x: 0.5ch;
-    background-position-y: 5px;
+  padding-left: 35px;
+  background: url("/static/vector/search.svg") no-repeat left;
+  background-size: 25px;
+  background-position-x: 0.5ch;
+  background-position-y: 5px;
 }

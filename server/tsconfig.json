@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src/**/*"
-  ],
+  ]
 }

@@ -1,53 +1,58 @@
 import { Control, UseFormSetValue, useWatch } from "react-hook-form";
-import { RecipeInput, SubstitutionInput } from "../../../types/RecipeInputTypes.ts";
-import { MdClear } from "react-icons/md"
+import {
+  RecipeInput,
+  SubstitutionInput,
+} from "../../../types/RecipeInputTypes.ts";
+import { MdClear } from "react-icons/md";
 import useFieldList from "../../../util/hooks/useFieldList.ts";
 import { Fragment } from "react";
 
 type FormHelpers = {
-    control: Control<RecipeInput, any>;
-    setValue: UseFormSetValue<RecipeInput>;
+  control: Control<RecipeInput, any>;
+  setValue: UseFormSetValue<RecipeInput>;
 };
 
 type Props = {} & FormHelpers;
 
 const isBasicSubstitution = (substitution: SubstitutionInput) => {
-    return substitution.removals.length === 1 &&
-        substitution.additions.length === 1
+  return substitution.removals.length === 1 &&
+    substitution.additions.length === 1;
 };
 
 function SubstitutionsField({ control, setValue }: Props) {
-    const substitutions = useWatch({ control, name: "substitutions" });
-    const { remove } = useFieldList("substitutions", setValue, substitutions)
+  const substitutions = useWatch({ control, name: "substitutions" });
+  const { remove } = useFieldList("substitutions", setValue, substitutions);
 
-
-    return <div className="substitutionsGrid">
-        {
-            substitutions.map((substitution, i) => <Fragment key={i}>
-                    <SubstitutionLabel substitution={substitution} />
-                    <MdClear className="substitutionsRemoveButton icon-button" style={{left: "10px"}}
-                        onClick={() => remove(i)}
-                    />
-                </Fragment>
-            )
-        }
+  return (
+    <div className="substitutionsGrid">
+      {substitutions.map((substitution, i) => (
+        <Fragment key={i}>
+          <SubstitutionLabel substitution={substitution} />
+          <MdClear
+            className="substitutionsRemoveButton icon-button"
+            style={{ left: "10px" }}
+            onClick={() => remove(i)}
+          />
+        </Fragment>
+      ))}
     </div>
-};
-
-type SubstitutionLabelProps = {
-    substitution: SubstitutionInput
+  );
 }
 
-function SubstitutionLabel({substitution}: SubstitutionLabelProps) {
-    const { removals, additions } = substitution;
-    return isBasicSubstitution(substitution)
-        ? <p>The {removals[0]} can be substituted for {additions[0]}</p>
-        : (
-            <pre>
+type SubstitutionLabelProps = {
+  substitution: SubstitutionInput;
+};
+
+function SubstitutionLabel({ substitution }: SubstitutionLabelProps) {
+  const { removals, additions } = substitution;
+  return isBasicSubstitution(substitution)
+    ? <p>The {removals[0]} can be substituted for {additions[0]}</p>
+    : (
+      <pre>
                 display of this substitution is not yet suppourted :)
                 {JSON.stringify(substitution)}
-            </pre>
-        )
+      </pre>
+    );
 }
 
 export default SubstitutionsField;

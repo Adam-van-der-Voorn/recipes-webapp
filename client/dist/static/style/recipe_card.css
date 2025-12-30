@@ -1,21 +1,21 @@
 .recipe-container {
-    display: block;
-    margin: 0;
-    padding: 0;
-    background-color: var(--col-text-backing);
+  display: block;
+  margin: 0;
+  padding: 0;
+  background-color: var(--col-text-backing);
 }
 
 .RecipeCard {
-    color: black;
-    display: block;
-    padding-top: var(--padding-selectable);
-    padding-bottom: var(--padding-selectable);
-    padding-left: var(--padding-horizontal-edge);
-    padding-right: var(--padding-horizontal-edge);
-    width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: anywhere;
-    text-decoration-line: none;
+  color: black;
+  display: block;
+  padding-top: var(--padding-selectable);
+  padding-bottom: var(--padding-selectable);
+  padding-left: var(--padding-horizontal-edge);
+  padding-right: var(--padding-horizontal-edge);
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  text-decoration-line: none;
 }
 
 .add-recipe-dialogue {

@@ -1,50 +1,49 @@
 :root {
-    /* COLOR */
-    --col-neutral-0: black;
-    --col-neutral-1: rgb(24, 24, 24);
-    --col-neutral-2: rgb(74, 74, 74);
-    --col-neutral-3: rgb(118, 118, 118);
-    --col-neutral-4: rgb(155, 155, 155);
-    --col-neutral-5: rgb(186, 186, 186);
-    --col-neutral-6: rgb(209, 209, 209);
-    --col-neutral-7: rgb(226, 226, 226);
-    --col-neutral-8: rgb(236, 236, 236);
-    --col-neutral-9: white;
+  /* COLOR */
+  --col-neutral-0: black;
+  --col-neutral-1: rgb(24, 24, 24);
+  --col-neutral-2: rgb(74, 74, 74);
+  --col-neutral-3: rgb(118, 118, 118);
+  --col-neutral-4: rgb(155, 155, 155);
+  --col-neutral-5: rgb(186, 186, 186);
+  --col-neutral-6: rgb(209, 209, 209);
+  --col-neutral-7: rgb(226, 226, 226);
+  --col-neutral-8: rgb(236, 236, 236);
+  --col-neutral-9: white;
 
-    --col-text-backing: white;
-    --col-text-backing-divider: var(--col-neutral-7);
-    --col-error-red: red;
+  --col-text-backing: white;
+  --col-text-backing-divider: var(--col-neutral-7);
+  --col-error-red: red;
 
-    --col-background: rgb(255, 237, 237);
-    --col-dark-highlight: rgb(36, 36, 36);
+  --col-background: rgb(255, 237, 237);
+  --col-dark-highlight: rgb(36, 36, 36);
 
-    /* FONT */
-    --font-size-small: 1.4rem;
-    --font-size-normal: 1.6rem;
-    --font-size-large: 2.0rem;
-    --font-size-xlarge: 2.6rem;
+  /* FONT */
+  --font-size-small: 1.4rem;
+  --font-size-normal: 1.6rem;
+  --font-size-large: 2.0rem;
+  --font-size-xlarge: 2.6rem;
+  --font-size-xxlarge: 3.6rem;
+
+  @media (pointer: coarse) {
+    --font-size-small: 1.6rem;
+    --font-size-normal: 1.7rem;
+    --font-size-large: 2.2rem;
+    --font-size-xlarge: 2.8rem;
     --font-size-xxlarge: 3.6rem;
+  }
 
-    @media (pointer:coarse) {
-        --font-size-small: 1.6rem;
-        --font-size-normal: 1.7rem;
-        --font-size-large: 2.2rem;
-        --font-size-xlarge: 2.8rem;
-        --font-size-xxlarge: 3.6rem;
-    }
+  /* Z-INDEX */
+  --z-main-header: 1;
+  --z-dialogue: 2;
 
-    /* Z-INDEX */
-    --z-main-header: 1;
-    --z-dialogue: 2;
+  /* MISC */
+  --line-height-default: 1.2;
 
-
-    /* MISC */
-    --line-height-default: 1.2;
-
-    /* PADDING */
-    --padding-horizontal-edge: 12px;
-    --padding-selectable: 8px;
-    @media (pointer:coarse) {
-        --padding-selectable: 12px;
-    }
+  /* PADDING */
+  --padding-horizontal-edge: 12px;
+  --padding-selectable: 8px;
+  @media (pointer: coarse) {
+    --padding-selectable: 12px;
+  }
 }
