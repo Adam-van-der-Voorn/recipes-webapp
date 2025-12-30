@@ -18,8 +18,8 @@ const fractionalTestCases = [
 for (const [input, quantity, ingredient] of fractionalTestCases) {
     Deno.test(`fractional case: "${input}"`, () => {
         const res = parseExternalIngredientLine(input)
-        expect(res.quantity).toEqual(quantity)
-        expect(res.ingredient).toEqual(ingredient)
+        expect(res?.quantity).toEqual(quantity)
+        expect(res?.ingredient).toEqual(ingredient)
     });
 }
 
@@ -34,8 +34,8 @@ const decimalTestCases = [
 for (const [input, quantity, ingredient] of decimalTestCases) {
     Deno.test(`decimal case: "${input}"`, () => {
         const res = parseExternalIngredientLine(input)
-        expect(res.quantity).toEqual(quantity)
-        expect(res.ingredient).toEqual(ingredient)
+        expect(res?.quantity).toEqual(quantity)
+        expect(res?.ingredient).toEqual(ingredient)
     });
 }
 
@@ -59,8 +59,8 @@ const integerTestCases = [
 for (const [input, quantity, ingredient] of integerTestCases) {
     Deno.test(`integer case: "${input}"`, () => {
         const res = parseExternalIngredientLine(input)
-        expect(res.quantity).toEqual(quantity)
-        expect(res.ingredient).toEqual(ingredient)
+        expect(res?.quantity).toEqual(quantity)
+        expect(res?.ingredient).toEqual(ingredient)
     });
 }
 
@@ -71,9 +71,9 @@ const nullTestCases = [
 ]
 for (const [input, quantity, ingredient] of nullTestCases) {
     Deno.test(`null case: "${input}"`, () => {
-        const res = parseExternalIngredientLine(input)
-        expect(res.quantity).toEqual(quantity)
-        expect(res.ingredient).toEqual(ingredient)
+        const res = parseExternalIngredientLine(input as any)
+        expect(res?.quantity).toEqual(quantity)
+        expect(res?.ingredient).toEqual(ingredient)
     });
 }
 
@@ -84,7 +84,7 @@ const multiTestCases = [
 for (const [input, quantity, ingredient] of multiTestCases) {
     Deno.test(`multi case: "${input}"`, () => {
         const res = parseExternalIngredientLine(input)
-        expect(res.quantity).toEqual(quantity)
-        expect(res.ingredient).toEqual(ingredient)
+        expect(res?.quantity).toEqual(quantity)
+        expect(res?.ingredient).toEqual(ingredient)
     });
 }
